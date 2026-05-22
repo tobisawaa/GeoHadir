@@ -1,0 +1,7 @@
+{
+  "name": "GeoHadir",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
