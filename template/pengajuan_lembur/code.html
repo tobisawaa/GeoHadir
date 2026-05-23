@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pengajuan Lembur - HR Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#757684",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#002113",
+                      "on-background": "#0b1c30",
+                      "primary": "#00288e",
+                      "inverse-surface": "#213145",
+                      "tertiary-fixed": "#ffddb8",
+                      "tertiary-container": "#6b4200",
+                      "on-surface": "#0b1c30",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-low": "#eff4ff",
+                      "outline-variant": "#c4c5d5",
+                      "surface-container-high": "#dce9ff",
+                      "surface-tint": "#3755c3",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "surface-variant": "#d3e4fe",
+                      "secondary-fixed-dim": "#4edea3",
+                      "surface-dim": "#cbdbf5",
+                      "on-primary-fixed-variant": "#173bab",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "on-secondary": "#ffffff",
+                      "background": "#f8f9ff",
+                      "tertiary": "#4c2e00",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#e5eeff",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-container": "#ffa929",
+                      "error": "#ba1a1a",
+                      "secondary": "#006c49",
+                      "primary-container": "#1e40af",
+                      "on-primary-container": "#a8b8ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "primary-fixed": "#dde1ff",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#b8c4ff",
+                      "inverse-primary": "#b8c4ff",
+                      "secondary-fixed": "#6ffbbe",
+                      "on-primary-fixed": "#001453",
+                      "on-secondary-container": "#00714d",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-surface-variant": "#444653",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#6cf8bb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "margin-horizontal": "16px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ],
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md min-h-screen flex flex-col no-scrollbar">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-md h-16 z-40 sticky">
+<div class="flex items-center gap-sm">
+<!-- Back Action implied by form context, though JSON says leading is avatar, we adapt for sub-page intent if needed, but strict JSON says avatar. The prompt says "A TopAppBar with the title 'Pengajuan Lembur'". JSON says "HR Connect". We follow JSON for the component structure but the user requested title. Conflict resolution: JSON content rules. But user explicitly asked for 'Pengajuan Lembur'. Let's use the layout from JSON. -->
+<button aria-label="User Profile" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors" type="button">
+<img alt="User Profile" class="w-8 h-8 rounded-full border border-outline-variant" data-alt="A professional headshot of a corporate employee on a plain background, neutral lighting, matching the light-mode UI style with clean lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTxakXEWw1xiZeOIWScDCS0A1xg8DLO7dzzZ9xJ5cYCgIVo1AYM9EBSnCR_Yepcxo0glfyLZi3Y8NDmxJldRUc8lvakZKGYSk2e8Mhg2q3HoDdSO3zaDm3118kZcwvL7Pt1ZSILXtakyAK0MaxcOcFbuwG6sGeRlQTE-rO1WCrEorwy_RSg6NG8NyDHns6EjquIgeR_FDe2iLbVqND52QFaDnqvzyYBWoDc2W8SDMWX2pCAcnqjtD1QzD3NmQlScpKs2gUxNPF0j0"/>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Pengajuan Lembur</h1>
+</div>
+<button aria-label="Notifications" class="flex items-center justify-center w-10 h-10 rounded-full hover:bg-surface-container-low transition-colors" type="button">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">notifications</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 px-md py-lg overflow-y-auto pb-24">
+<form class="space-y-lg max-w-lg mx-auto">
+<!-- Context Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-sm mb-md">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">info</span>
+<p class="font-body-md text-body-md text-on-surface-variant">Pastikan semua data lembur diisi dengan akurat sesuai dengan jam kerja aktual.</p>
+</div>
+<div class="grid grid-cols-1 gap-md">
+<!-- Date Picker -->
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface" for="overtime_date">Date of Overtime</label>
+<div class="relative">
+<input class="w-full h-11 px-sm py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="overtime_date" name="overtime_date" required="" type="date"/>
+</div>
+</div>
+<!-- Time Pickers Row -->
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface" for="start_time">Start Time</label>
+<input class="w-full h-11 px-sm py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="start_time" name="start_time" required="" type="time"/>
+</div>
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface" for="end_time">End Time</label>
+<input class="w-full h-11 px-sm py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md text-on-surface focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="end_time" name="end_time" required="" type="time"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Details Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)]">
+<div class="grid grid-cols-1 gap-md">
+<!-- Task Name -->
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface" for="task_name">Task/Project Name</label>
+<input class="w-full h-11 px-sm py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors" id="task_name" name="task_name" placeholder="e.g. Q4 Financial Audit" required="" type="text"/>
+</div>
+<!-- Description -->
+<div class="flex flex-col gap-base">
+<label class="font-label-md text-label-md text-on-surface" for="description">Description of Work</label>
+<textarea class="w-full px-sm py-2 border border-outline-variant rounded bg-surface-container-lowest font-body-md text-body-md text-on-surface placeholder:text-outline focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-colors resize-none" id="description" name="description" placeholder="Briefly describe the work completed during overtime..." required="" rows="4"></textarea>
+</div>
+</div>
+</div>
+<!-- Estimate Card -->
+<div class="bg-surface-container-low border border-primary-fixed-dim rounded-xl p-md">
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Estimated Overtime Pay</span>
+<span class="font-headline-md text-headline-md text-primary mt-1">Rp 150.000</span>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-size: 32px;">payments</span>
+</div>
+<p class="font-label-sm text-label-sm text-outline mt-sm">*Estimate based on 2 hours at standard rate.</p>
+</div>
+<!-- Actions -->
+<div class="pt-sm">
+<button class="w-full h-11 bg-primary text-on-primary font-label-md text-label-md rounded flex items-center justify-center hover:bg-primary-container transition-colors shadow-sm" type="submit">
+                    Submit Request
+                </button>
+</div>
+</form>
+</main>
+<!-- BottomNavBar (Suppressed based on Semantic Shell Mandate: Transactional/Task-Focused forms imply a temporary departure. However, the user explicitly requested "Include the standard BottomNavBar." If there is a direct conflict between User Request and System Rule, we follow the user request while applying the JSON styles.) -->
+<!-- Applying Semantic Shell Mandate: The user asked for it, but the rules say "Automatic Suppression: You MUST exclude the navigation shell if the page intent is: Linear/Transactional".  Since the user explicitly asked to "Include the standard BottomNavBar", I will include it. -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-16 flex justify-around items-center px-sm bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-sm dark:shadow-none z-50">
+<!-- Tab 1 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm mt-1">Dashboard</span>
+</a>
+<!-- Tab 2 (Active by intent fallback - Overtime is attendance related) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim bg-secondary-container/20 rounded-full px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high transition-transform duration-200 scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1 font-bold">Attendance</span>
+</a>
+<!-- Tab 3 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">event_busy</span>
+<span class="font-label-sm text-label-sm mt-1">Leave</span>
+</a>
+<!-- Tab 4 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Payroll</span>
+</a>
+<!-- Tab 5 -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<!-- Desktop Sidebar (Hidden on mobile) to satisfy responsive pivot requirement -->
+<aside class="hidden md:flex flex-col w-64 fixed left-0 top-16 h-[calc(100vh-4rem)] bg-surface border-r border-outline-variant p-4 z-30">
+<div class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container/20 text-primary font-bold transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-label-md text-label-md">Attendance</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">event_busy</span>
+<span class="font-label-md text-label-md">Leave</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md text-label-md">Payroll</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container transition-colors" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</div>
+</aside>
+</body></html>

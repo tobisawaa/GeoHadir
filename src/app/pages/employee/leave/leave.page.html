@@ -1,0 +1,97 @@
+<ion-content class="employee-content" fullscreen>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="page-title">
+        <h1>Leave Request</h1>
+        <p>Ajukan cuti dan pantau approval manager.</p>
+      </div>
+      <button type="button" class="icon-btn" (click)="goTo('/app/employee/leave-history')"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+    </header>
+
+    <section class="stat-grid three">
+      <div class="info-card"><strong>{{ leaveBalance }}</strong><span>Sisa Cuti</span></div>
+      <div class="info-card"><strong>{{ usedLeave }}</strong><span>Terpakai</span></div>
+      <div class="info-card"><strong>{{ pendingLeave }}</strong><span>Pending</span></div>
+    </section>
+
+    <section class="form-card">
+      <div class="section-heading">
+        <div>
+          <h2>Form Cuti</h2>
+          <p>[BACKEND] Submit ke endpoint leave/request.</p>
+        </div>
+      </div>
+
+      <div class="form-grid">
+        <div class="field">
+          <label>Jenis Cuti</label>
+          <select [(ngModel)]="form.type">
+            <option>Cuti Tahunan</option>
+            <option>Sakit</option>
+            <option>Cuti Darurat</option>
+            <option>Cuti Melahirkan</option>
+          </select>
+        </div>
+
+        <div class="two-col">
+          <div class="field">
+            <label>Tanggal Mulai</label>
+            <input type="date" [(ngModel)]="form.startDate" />
+          </div>
+          <div class="field">
+            <label>Tanggal Selesai</label>
+            <input type="date" [(ngModel)]="form.endDate" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Alasan</label>
+          <textarea [(ngModel)]="form.reason" placeholder="Tulis alasan pengajuan cuti..."></textarea>
+        </div>
+
+        <button type="button" class="submit-btn" (click)="submitLeave()">Ajukan Cuti</button>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div><h2>Request Terbaru</h2><p>Status cuti terakhir</p></div>
+        <button type="button" class="link-btn" (click)="goTo('/app/employee/leave-history')">Lihat semua</button>
+      </div>
+
+      <div class="list-stack">
+        <article class="list-card" *ngFor="let item of recentRequests">
+          <div>
+            <h3>{{ item.type }}</h3>
+            <p>{{ item.period }}</p>
+            <small>{{ item.reason }}</small>
+          </div>
+          <span class="status-badge" [class.approved]="item.status === 'Disetujui'" [class.rejected]="item.status === 'Ditolak'">{{ item.status }}</span>
+        </article>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item " (click)="goTo('/app/employee/dashboard')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4H10V10H4V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 4H20V10H14V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M4 14H10V20H4V14Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" class="nav-item " (click)="goTo('/app/employee/attendance')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span>Attendance</span>
+      </button>
+      <button type="button" class="nav-item active" (click)="goTo('/app/employee/leave')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <span>Leave</span>
+      </button>
+      <button type="button" class="nav-item " (click)="goTo('/app/employee/payslip')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 15C13.657 15 15 13.657 15 12C15 10.343 13.657 9 12 9C10.343 9 9 10.343 9 12C9 13.657 10.343 15 12 15Z" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Payroll</span>
+      </button>
+      <button type="button" class="nav-item " (click)="goTo('/app/employee/profile')">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M20 21C20 17.7 16.4 15 12 15C7.6 15 4 17.7 4 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+</ion-content>

@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Riwayat Cuti - HR Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary": "#ffffff",
+                      "surface-container-high": "#dce9ff",
+                      "surface": "#f8f9ff",
+                      "background": "#f8f9ff",
+                      "on-tertiary-container": "#ffa929",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#001453",
+                      "tertiary": "#4c2e00",
+                      "on-tertiary-fixed": "#2a1700",
+                      "surface-container-low": "#eff4ff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "on-surface-variant": "#444653",
+                      "on-primary-container": "#a8b8ff",
+                      "on-secondary-container": "#00714d",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "primary-fixed": "#dde1ff",
+                      "surface-container-highest": "#d3e4fe",
+                      "secondary-fixed": "#6ffbbe",
+                      "surface-variant": "#d3e4fe",
+                      "inverse-surface": "#213145",
+                      "surface-container": "#e5eeff",
+                      "on-error": "#ffffff",
+                      "outline": "#757684",
+                      "tertiary-fixed": "#ffddb8",
+                      "error": "#ba1a1a",
+                      "surface-tint": "#3755c3",
+                      "inverse-primary": "#b8c4ff",
+                      "surface-dim": "#cbdbf5",
+                      "primary": "#00288e",
+                      "error-container": "#ffdad6",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#4edea3",
+                      "primary-fixed-dim": "#b8c4ff",
+                      "primary-container": "#1e40af",
+                      "tertiary-container": "#6b4200",
+                      "surface-bright": "#f8f9ff",
+                      "on-primary-fixed-variant": "#173bab",
+                      "on-surface": "#0b1c30",
+                      "secondary": "#006c49",
+                      "on-secondary-fixed": "#002113",
+                      "secondary-container": "#6cf8bb",
+                      "outline-variant": "#c4c5d5",
+                      "on-error-container": "#93000a",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#0b1c30",
+                      "tertiary-fixed-dim": "#ffb95f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xl": "32px",
+                      "xs": "4px",
+                      "sm": "8px",
+                      "gutter": "12px",
+                      "margin-horizontal": "16px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "base": "4px"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": [
+                              "Inter"
+                      ],
+                      "headline-lg": [
+                              "Inter"
+                      ],
+                      "label-md": [
+                              "Inter"
+                      ],
+                      "body-md": [
+                              "Inter"
+                      ],
+                      "body-lg": [
+                              "Inter"
+                      ],
+                      "label-sm": [
+                              "Inter"
+                      ],
+                      "headline-md": [
+                              "Inter"
+                      ]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "30px",
+                              {
+                                      "lineHeight": "38px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "label-md": [
+                              "12px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-md": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "body-lg": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-sm": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "headline-md": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "600"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+        /* Custom scrollbar to match minimalist design */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c4c5d5;
+            border-radius: 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background antialiased flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline docked full-width top-0 z-40">
+<div class="flex justify-between items-center w-full px-md h-16">
+<button aria-label="Kembali" class="text-primary dark:text-primary-fixed hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-sm rounded-full active:opacity-80 active:scale-95 transition-all duration-150">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed truncate px-sm">Riwayat Cuti</h1>
+<div class="w-10"></div> <!-- Placeholder for balance -->
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto w-full pb-24">
+<!-- Filter Tabs (Sticky below header) -->
+<div class="bg-surface sticky top-0 z-30 px-md py-sm border-b border-outline-variant/50 shadow-sm shadow-black/5 overflow-x-auto no-scrollbar">
+<div class="flex space-x-sm w-max">
+<button class="px-md py-sm rounded-full bg-primary-container text-on-primary-container font-label-md text-label-md whitespace-nowrap transition-colors border border-transparent">
+                    Semua
+                </button>
+<button class="px-md py-sm rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors border border-outline-variant/30">
+                    Menunggu
+                </button>
+<button class="px-md py-sm rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors border border-outline-variant/30">
+                    Disetujui
+                </button>
+<button class="px-md py-sm rounded-full bg-surface-container text-on-surface-variant font-label-md text-label-md whitespace-nowrap hover:bg-surface-container-high transition-colors border border-outline-variant/30">
+                    Ditolak
+                </button>
+</div>
+</div>
+<!-- Leave Requests List -->
+<div class="px-md py-md space-y-md max-w-2xl mx-auto">
+<!-- Card 1: Pending -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cuti Tahunan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diajukan pada 10 Nov 2023</p>
+</div>
+<!-- Status Badge: Pending (Amber) -->
+<div class="px-2 py-1 rounded bg-[#fff8e1] text-[#f57f17] border border-[#fbc02d]/30 font-label-sm text-label-sm flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1" style="font-variation-settings: 'FILL' 1;">schedule</span>
+                        Menunggu
+                    </div>
+</div>
+<div class="bg-surface-container/30 rounded-lg p-sm mb-md flex items-center border border-outline-variant/20">
+<div class="bg-surface-container p-sm rounded-full mr-sm text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">date_range</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">12 Nov - 14 Nov 2023</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Durasi: 3 Hari</p>
+</div>
+</div>
+</div>
+<!-- Card 2: Approved -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cuti Sakit</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diajukan pada 01 Okt 2023</p>
+</div>
+<!-- Status Badge: Approved (Green) -->
+<div class="px-2 py-1 rounded bg-[#e8f5e9] text-[#2e7d32] border border-[#4caf50]/30 font-label-sm text-label-sm flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Disetujui
+                    </div>
+</div>
+<div class="bg-surface-container/30 rounded-lg p-sm mb-md flex items-center border border-outline-variant/20">
+<div class="bg-surface-container p-sm rounded-full mr-sm text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">date_range</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">02 Okt - 03 Okt 2023</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Durasi: 2 Hari</p>
+</div>
+</div>
+</div>
+<!-- Card 3: Rejected -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08)] transition-shadow opacity-80">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cuti Alasan Penting</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diajukan pada 15 Ags 2023</p>
+</div>
+<!-- Status Badge: Rejected (Red) -->
+<div class="px-2 py-1 rounded bg-error-container text-on-error-container border border-error/30 font-label-sm text-label-sm flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1" style="font-variation-settings: 'FILL' 1;">cancel</span>
+                        Ditolak
+                    </div>
+</div>
+<div class="bg-surface-container/30 rounded-lg p-sm mb-sm flex items-center border border-outline-variant/20">
+<div class="bg-surface-container p-sm rounded-full mr-sm text-primary opacity-70">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">date_range</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium line-through decoration-outline-variant">20 Ags - 21 Ags 2023</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Durasi: 2 Hari</p>
+</div>
+</div>
+<div class="mt-sm pt-sm border-t border-outline-variant/30">
+<p class="font-body-sm text-body-sm text-on-surface-variant flex items-start">
+<span class="material-symbols-outlined text-[16px] mr-1 mt-0.5 text-outline">info</span>
+                        Alasan: Periode sibuk akhir bulan, operasional butuh full team.
+                    </p>
+</div>
+</div>
+<!-- Card 4: Approved (Past) -->
+<div class="bg-surface-container-lowest border border-outline-variant/50 rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_8px_rgba(0,0,0,0.08)] transition-shadow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-xs">Cuti Tahunan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diajukan pada 10 Jan 2023</p>
+</div>
+<!-- Status Badge: Approved (Green) -->
+<div class="px-2 py-1 rounded bg-[#e8f5e9] text-[#2e7d32] border border-[#4caf50]/30 font-label-sm text-label-sm flex items-center">
+<span class="material-symbols-outlined text-[14px] mr-1" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                        Disetujui
+                    </div>
+</div>
+<div class="bg-surface-container/30 rounded-lg p-sm mb-md flex items-center border border-outline-variant/20">
+<div class="bg-surface-container p-sm rounded-full mr-sm text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">date_range</span>
+</div>
+<div>
+<p class="font-body-md text-body-md text-on-surface font-medium">15 Jan - 20 Jan 2023</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Durasi: 6 Hari</p>
+</div>
+</div>
+</div>
+<!-- End of list marker -->
+<div class="text-center py-md">
+<p class="font-label-md text-label-md text-outline-variant">Akhir dari riwayat</p>
+</div>
+</div>
+</main>
+<!-- Bottom Actions / Navigation (Since this is a sub-page, we suppress the main BottomNavBar and show contextual action) -->
+<div class="fixed bottom-0 left-0 w-full bg-surface-container-lowest border-t border-outline-variant/30 p-md shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-50">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-body-lg text-body-lg font-semibold py-sm px-lg rounded-xl flex items-center justify-center transition-colors shadow-sm active:scale-[0.98]">
+<span class="material-symbols-outlined mr-sm" style="font-variation-settings: 'FILL' 0;">add</span>
+            Ajukan Cuti Baru
+        </button>
+</div>
+</body></html>

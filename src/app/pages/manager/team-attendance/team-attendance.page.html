@@ -1,0 +1,73 @@
+<ion-content>
+  <header class="top-app-bar">
+    <div class="top-bar-left">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h1 class="top-app-bar-title">Absensi Tim</h1>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <div class="page-wrap">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="loading-indicator" *ngIf="loading">
+      <p>Memuat data...</p>
+    </div>
+
+    <div class="state-wrap" *ngIf="error && !loading">
+      <span class="material-symbols-outlined state-icon">error_outline</span>
+      <h3>Gagal Memuat Data</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn-outline" (click)="loadAttendance()">Coba Lagi</button>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && !error && attendances.length === 0">
+      <span class="material-symbols-outlined">calendar_today</span>
+      <h3>Belum Ada Data Absensi</h3>
+      <p>Data absensi tim belum tersedia.</p>
+    </div>
+
+    <div class="list-area" *ngIf="!loading && !error && attendances.length > 0">
+      <div class="att-item" *ngFor="let att of attendances">
+        <div class="att-head">
+          <span class="att-date">{{ att.date | date:'dd MMM yyyy' }}</span>
+          <span class="status-badge" [class.present]="att.status === 'present'" [class.late]="att.status === 'late'" [class.absent]="att.status === 'absent'">
+            {{ getStatusText(att.status) }}
+          </span>
+        </div>
+        <div class="att-info">
+          <span class="att-time">Check In: <strong>{{ (att.check_in | date:'HH:mm') || '-' }}</strong></span>
+          <span class="att-sep">&middot;</span>
+          <span class="att-time">Check Out: <strong>{{ (att.check_out | date:'HH:mm') || '-' }}</strong></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/dashboard')">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team')">
+      <span class="material-symbols-outlined">group</span>
+      <span class="nav-label">Team</span>
+    </a>
+    <a class="bottom-nav-item active">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">event_available</span>
+      <span class="nav-label">Attendance</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team-leave')">
+      <span class="material-symbols-outlined">event_busy</span>
+      <span class="nav-label">Leave</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/profile')">
+      <span class="material-symbols-outlined">person</span>
+      <span class="nav-label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

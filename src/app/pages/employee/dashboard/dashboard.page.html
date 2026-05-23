@@ -1,0 +1,226 @@
+<ion-content class="employee-content" fullscreen>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="user-mini">
+        <div class="avatar">R</div>
+
+        <div class="user-copy">
+          <h1>Selamat Sore, {{ employeeName }}</h1>
+          <p>{{ position }}</p>
+        </div>
+      </div>
+
+      <button type="button" class="icon-btn" aria-label="Notifikasi">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M18 9C18 6.24 15.76 4 13 4H11C8.24 4 6 6.24 6 9V13.5L4.75 16H19.25L18 13.5V9Z"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M10 19C10.45 19.61 11.16 20 12 20C12.84 20 13.55 19.61 14 19"
+            stroke="currentColor"
+            stroke-width="1.8"
+            stroke-linecap="round"
+          />
+        </svg>
+      </button>
+    </header>
+
+    <section class="hero-card">
+      <div class="date-line">
+        <span>{{ today | date:'EEEE, dd MMMM yyyy' }}</span>
+        <strong>{{ currentTime }}</strong>
+        <div class="location-pill">Lokasi Terdeteksi · Kantor Pusat</div>
+      </div>
+
+      <div class="action-row">
+        <button type="button" class="primary-btn" (click)="goTo('/app/employee/attendance')">
+          Check-In
+        </button>
+
+        <button type="button" class="secondary-btn" (click)="goTo('/app/employee/attendance')">
+          Check-Out
+        </button>
+      </div>
+    </section>
+
+    <section class="stat-grid">
+      <button type="button" class="info-card" (click)="goTo('/app/employee/leave-history')">
+        <span class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+        </span>
+        <strong>8 Hari</strong>
+        <p>Sisa Cuti Tahunan</p>
+      </button>
+
+      <button type="button" class="info-card" (click)="goTo('/app/employee/attendance-history')">
+        <span class="card-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+            <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <strong>98%</strong>
+        <p>Kehadiran Bulan Ini</p>
+      </button>
+    </section>
+
+    <button type="button" class="salary-card" (click)="goTo('/app/employee/payslip')">
+      <span class="salary-icon">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+      </span>
+
+      <div class="salary-copy">
+        <h3>Estimasi Gaji Berikutnya</h3>
+        <p>{{ nextPayrollDate }}</p>
+      </div>
+
+      <span class="salary-arrow">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </span>
+    </button>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <h2>Menu Utama</h2>
+          <p>Akses fitur HR harian</p>
+        </div>
+      </div>
+
+      <div class="menu-grid">
+        <button
+          type="button"
+          class="menu-card"
+          *ngFor="let item of menuItems"
+          (click)="goTo(item.route)"
+        >
+          <span class="menu-icon" [ngSwitch]="item.icon">
+            <ng-container *ngSwitchCase="'attendance'">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'leave'">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'overtime'">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C14.4 3 16.58 3.94 18.19 5.47" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M18 3V6H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </ng-container>
+
+            <ng-container *ngSwitchCase="'payroll'">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="1.8" />
+              </svg>
+            </ng-container>
+          </span>
+
+          <span>{{ item.label }}</span>
+        </button>
+      </div>
+    </section>
+
+    <section class="section-block">
+      <div class="section-heading">
+        <div>
+          <h2>Aktivitas Terbaru</h2>
+          <p>Riwayat HR terakhir</p>
+        </div>
+
+        <button type="button" class="link-btn" (click)="goTo('/app/employee/attendance-history')">
+          Lihat Semua
+        </button>
+      </div>
+
+      <div class="list-stack">
+        <article class="list-card" *ngFor="let item of activities">
+          <div>
+            <h3>{{ item.title }}</h3>
+            <p>{{ item.date }}</p>
+          </div>
+
+          <span
+            class="status-badge"
+            [class.approved]="item.status === 'Disetujui'"
+            [class.rejected]="item.status === 'Ditolak'"
+          >
+            {{ item.status }}
+          </span>
+        </article>
+      </div>
+    </section>
+
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item active" (click)="goTo('/app/employee/dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 4H10V10H4V4Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M14 4H20V10H14V4Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M4 14H10V20H4V14Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Dashboard</span>
+      </button>
+
+      <button type="button" class="nav-item" (click)="goTo('/app/employee/attendance')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Attendance</span>
+      </button>
+
+      <button type="button" class="nav-item" (click)="goTo('/app/employee/leave')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        <span>Leave</span>
+      </button>
+
+      <button type="button" class="nav-item" (click)="goTo('/app/employee/payslip')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Payroll</span>
+      </button>
+
+      <button type="button" class="nav-item" (click)="goTo('/app/employee/profile')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 21C20 17.7 16.4 15 12 15C7.6 15 4 17.7 4 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+</ion-content>

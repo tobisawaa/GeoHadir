@@ -1,0 +1,104 @@
+<ion-content>
+  <header class="top-app-bar">
+    <div class="top-bar-left">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h1 class="top-app-bar-title">Profil</h1>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <div class="page-wrap">
+    <div class="prof-head" *ngIf="user">
+      <div class="avatar-wrap">
+        <div class="avatar-init">{{ getInitials() }}</div>
+      </div>
+      <h2>{{ user.name }}</h2>
+      <span class="role-badge">Manager</span>
+      <p class="position">{{ user.position }} &middot; {{ user.department }}</p>
+    </div>
+
+    <div class="info-card" *ngIf="user">
+      <div class="info-row">
+        <div class="info-item">
+          <span class="material-symbols-outlined info-icon">mail</span>
+          <div class="info-text">
+            <span class="info-lbl">Email</span>
+            <span class="info-val">{{ user.email }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-item">
+          <span class="material-symbols-outlined info-icon">call</span>
+          <div class="info-text">
+            <span class="info-lbl">Telepon</span>
+            <span class="info-val">{{ user.phone || '-' }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-item">
+          <span class="material-symbols-outlined info-icon">briefcase</span>
+          <div class="info-text">
+            <span class="info-lbl">Jabatan</span>
+            <span class="info-val">{{ user.position }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-item">
+          <span class="material-symbols-outlined info-icon">business</span>
+          <div class="info-text">
+            <span class="info-lbl">Departemen</span>
+            <span class="info-val">{{ user.department }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-row no-border">
+        <div class="info-item">
+          <span class="material-symbols-outlined info-icon">calendar_today</span>
+          <div class="info-text">
+            <span class="info-lbl">Bergabung</span>
+            <span class="info-val">{{ user.join_date | date:'dd MMM yyyy' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-area">
+      <button class="btn-outline action-btn" (click)="changePassword()">
+        <span class="material-symbols-outlined">lock</span>
+        Ubah Password
+      </button>
+      <button class="btn-outline action-btn logout-btn" (click)="logout()">
+        <span class="material-symbols-outlined" style="color:var(--ion-color-danger)">logout</span>
+        <span style="color:var(--ion-color-danger)">Keluar</span>
+      </button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/dashboard')">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team')">
+      <span class="material-symbols-outlined">group</span>
+      <span class="nav-label">Team</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team-attendance')">
+      <span class="material-symbols-outlined">event_available</span>
+      <span class="nav-label">Attendance</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team-leave')">
+      <span class="material-symbols-outlined">event_busy</span>
+      <span class="nav-label">Leave</span>
+    </a>
+    <a class="bottom-nav-item active">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">person</span>
+      <span class="nav-label">Profile</span>
+    </a>
+  </nav>
+</ion-content>

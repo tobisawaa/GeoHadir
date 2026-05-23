@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>Leave Request Form - HR Connect</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-tertiary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "outline": "#757684",
+                      "error-container": "#ffdad6",
+                      "on-secondary-fixed": "#002113",
+                      "on-background": "#0b1c30",
+                      "primary": "#00288e",
+                      "inverse-surface": "#213145",
+                      "tertiary-fixed": "#ffddb8",
+                      "tertiary-container": "#6b4200",
+                      "on-surface": "#0b1c30",
+                      "surface-container-highest": "#d3e4fe",
+                      "surface-container-low": "#eff4ff",
+                      "outline-variant": "#c4c5d5",
+                      "surface-container-high": "#dce9ff",
+                      "surface-tint": "#3755c3",
+                      "on-tertiary-fixed-variant": "#653e00",
+                      "surface-variant": "#d3e4fe",
+                      "secondary-fixed-dim": "#4edea3",
+                      "surface-dim": "#cbdbf5",
+                      "on-primary-fixed-variant": "#173bab",
+                      "tertiary-fixed-dim": "#ffb95f",
+                      "on-secondary": "#ffffff",
+                      "background": "#f8f9ff",
+                      "tertiary": "#4c2e00",
+                      "on-error-container": "#93000a",
+                      "surface-container": "#e5eeff",
+                      "surface": "#f8f9ff",
+                      "on-tertiary-container": "#ffa929",
+                      "error": "#ba1a1a",
+                      "secondary": "#006c49",
+                      "primary-container": "#1e40af",
+                      "on-primary-container": "#a8b8ff",
+                      "inverse-on-surface": "#eaf1ff",
+                      "on-secondary-fixed-variant": "#005236",
+                      "primary-fixed": "#dde1ff",
+                      "on-error": "#ffffff",
+                      "primary-fixed-dim": "#b8c4ff",
+                      "inverse-primary": "#b8c4ff",
+                      "secondary-fixed": "#6ffbbe",
+                      "on-primary-fixed": "#001453",
+                      "on-secondary-container": "#00714d",
+                      "surface-bright": "#f8f9ff",
+                      "on-tertiary-fixed": "#2a1700",
+                      "on-surface-variant": "#444653",
+                      "on-primary": "#ffffff",
+                      "secondary-container": "#6cf8bb"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "sm": "8px",
+                      "base": "4px",
+                      "margin-horizontal": "16px",
+                      "xs": "4px",
+                      "xl": "32px",
+                      "md": "16px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "label-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg-mobile": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                      "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-lg": ["30px", {"lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        body { -webkit-tap-highlight-color: transparent; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .pb-safe { padding-bottom: env(safe-area-inset-bottom); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col relative pb-[80px]">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim font-headline-md text-headline-md docked full-width top-0 border-b border-outline-variant dark:border-outline flat no shadows flex justify-between items-center w-full px-md h-16 sticky z-40">
+<div class="flex items-center gap-sm">
+<button class="text-primary dark:text-primary-fixed p-sm -ml-sm hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors rounded-full" onclick="history.back()">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">Pengajuan Cuti</h1>
+</div>
+<button class="text-primary dark:text-primary-fixed hover:bg-surface-container-low dark:hover:bg-surface-container-high transition-colors p-sm -mr-sm rounded-full relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 flex flex-col px-margin-horizontal pt-md pb-xl gap-md max-w-2xl mx-auto w-full">
+<!-- Leave Balance Card -->
+<section class="bg-surface-container-low rounded-xl p-md flex items-center justify-between shadow-[0_2px_4px_rgba(0,0,0,0.05)] border border-outline-variant">
+<div class="flex flex-col gap-xs">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Remaining Annual Leave</span>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">12</span>
+<span class="font-body-md text-body-md text-on-surface-variant">Days</span>
+</div>
+</div>
+<div class="w-12 h-12 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">event_available</span>
+</div>
+</section>
+<!-- Form Section -->
+<form class="flex flex-col gap-md bg-surface rounded-xl p-md shadow-[0_2px_4px_rgba(0,0,0,0.05)] border border-outline-variant" onsubmit="event.preventDefault(); alert('Request Submitted');">
+<!-- Type of Leave -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="leave_type">Type of Leave</label>
+<div class="relative">
+<select class="w-full h-11 bg-surface border border-outline-variant rounded-lg px-sm font-body-md text-body-md text-on-surface appearance-none focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors pr-10" id="leave_type">
+<option disabled="" selected="" value="">Select leave type</option>
+<option value="annual">Cuti Tahunan</option>
+<option value="sick">Cuti Sakit</option>
+<option value="important">Cuti Alasan Penting</option>
+<option value="maternity">Cuti Melahirkan</option>
+<option value="unpaid">Cuti Di Luar Tanggungan</option>
+</select>
+<span class="material-symbols-outlined absolute right-sm top-1/2 -translate-y-1/2 text-on-surface-variant pointer-events-none">expand_more</span>
+</div>
+</div>
+<!-- Dates Row -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="start_date">Start Date</label>
+<div class="relative">
+<input class="w-full h-11 bg-surface border border-outline-variant rounded-lg px-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors [color-scheme:light]" id="start_date" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="end_date">End Date</label>
+<div class="relative">
+<input class="w-full h-11 bg-surface border border-outline-variant rounded-lg px-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors [color-scheme:light]" id="end_date" type="date"/>
+</div>
+</div>
+</div>
+<!-- Duration (Read-only) -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="duration">Duration (Days)</label>
+<input class="w-full h-11 bg-surface-container-lowest border border-outline-variant/50 rounded-lg px-sm font-body-md text-body-md text-on-surface-variant cursor-not-allowed select-none" id="duration" readonly="" type="text" value="0"/>
+</div>
+<!-- Reason/Notes -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface" for="reason">Reason / Notes</label>
+<textarea class="w-full bg-surface border border-outline-variant rounded-lg p-sm font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-colors resize-none" id="reason" placeholder="Provide details for your request..." rows="3"></textarea>
+</div>
+<!-- Attachment -->
+<div class="flex flex-col gap-xs">
+<label class="font-label-md text-label-md text-on-surface">Attachment (Optional)</label>
+<div class="border-2 border-dashed border-outline-variant rounded-lg p-md flex flex-col items-center justify-center gap-sm bg-surface-container-lowest hover:bg-surface-container-low transition-colors cursor-pointer relative">
+<input accept="image/*,.pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" id="attachment" type="file"/>
+<span class="material-symbols-outlined text-outline text-[32px]">upload_file</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant text-center">Tap to upload medical certificate or supporting document</span>
+</div>
+</div>
+<!-- Submit Button -->
+<div class="pt-sm mt-sm border-t border-outline-variant/30">
+<button class="w-full h-12 bg-primary text-on-primary rounded-lg font-label-md text-label-md flex items-center justify-center gap-xs hover:opacity-90 active:scale-[0.98] transition-all" type="submit">
+<span class="material-symbols-outlined text-[20px]">send</span>
+                    Submit Request
+                </button>
+</div>
+</form>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t border-outline-variant dark:border-outline bg-surface dark:bg-surface-dim shadow-sm dark:shadow-none fixed bottom-0 left-0 w-full h-16 flex justify-around items-center px-sm pb-safe md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="font-label-sm text-label-sm mt-1">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">calendar_today</span>
+<span class="font-label-sm text-label-sm mt-1">Attendance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim bg-secondary-container/20 rounded-full px-3 py-1 scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">event_busy</span>
+<span class="font-label-sm text-label-sm mt-1 font-semibold">Leave</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">payments</span>
+<span class="font-label-sm text-label-sm mt-1">Payroll</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline px-3 py-1 hover:bg-surface-container dark:hover:bg-surface-container-high rounded-full transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">account_circle</span>
+<span class="font-label-sm text-label-sm mt-1">Profile</span>
+</a>
+</nav>
+<script>
+        // Basic calculation logic for demo
+        const startInput = document.getElementById('start_date');
+        const endInput = document.getElementById('end_date');
+        const durationInput = document.getElementById('duration');
+
+        function calculateDuration() {
+            if (startInput.value && endInput.value) {
+                const start = new Date(startInput.value);
+                const end = new Date(endInput.value);
+                
+                if (end >= start) {
+                    const diffTime = Math.abs(end - start);
+                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1; 
+                    durationInput.value = diffDays;
+                } else {
+                    durationInput.value = "Invalid Dates";
+                }
+            } else {
+                durationInput.value = "0";
+            }
+        }
+
+        startInput.addEventListener('change', calculateDuration);
+        endInput.addEventListener('change', calculateDuration);
+    </script>
+</body></html>

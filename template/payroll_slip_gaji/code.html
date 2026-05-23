@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slip Gaji &amp; Payroll</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#173bab",
+                        "primary-fixed-dim": "#b8c4ff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-fixed": "#2a1700",
+                        "primary-fixed": "#dde1ff",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#ffb95f",
+                        "background": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-background": "#0b1c30",
+                        "surface-variant": "#d3e4fe",
+                        "outline": "#757684",
+                        "inverse-surface": "#213145",
+                        "tertiary": "#4c2e00",
+                        "on-surface": "#0b1c30",
+                        "on-primary-container": "#a8b8ff",
+                        "secondary-fixed-dim": "#4edea3",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "surface-container": "#e5eeff",
+                        "inverse-primary": "#b8c4ff",
+                        "secondary": "#006c49",
+                        "surface-container-low": "#eff4ff",
+                        "surface": "#f8f9ff",
+                        "primary": "#00288e",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#6b4200",
+                        "on-secondary": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffddb8",
+                        "outline-variant": "#c4c5d5",
+                        "on-tertiary-container": "#ffa929",
+                        "on-secondary-fixed": "#002113",
+                        "on-secondary-container": "#00714d",
+                        "secondary-fixed": "#6ffbbe",
+                        "on-primary-fixed": "#001453",
+                        "primary-container": "#1e40af",
+                        "surface-tint": "#3755c3",
+                        "on-primary": "#ffffff",
+                        "on-surface-variant": "#444653",
+                        "surface-container-highest": "#d3e4fe",
+                        "surface-bright": "#f8f9ff",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-fixed-variant": "#653e00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin-horizontal": "16px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "gutter": "12px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+                        "label-sm": ["11px", { "lineHeight": "14px", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["30px", { "lineHeight": "38px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-lg-mobile": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24 pt-14">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin-horizontal h-14 bg-surface dark:bg-inverse-surface shadow-sm">
+<div class="flex items-center gap-sm">
+<img alt="Employee Profile Picture" class="w-8 h-8 rounded-full border border-outline-variant hover:opacity-70 transition-opacity" data-alt="A professional headshot of a corporate employee on a plain background, used as an avatar in a light-mode HR application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCHnXv8Ly-L5hcUKxnDRYLPiZm9Xw2eXIrkyQ4Xjr1ntbS2IZNWlsKVFCwnE4GSutA19qx5PLZqBJPLao007EQ114Cy4kuERttXffb0mVNd6Kxa79Y4BpSkUhjVstCGqubIkM13rInTL1tUNiW6_7lC6i2uz44arIZkudMuXMUVwrnuKV1d-oqFikz4LLJFCwMa9KB4P7HTjagiYLtsW_LLuFD_NryMp6KWPeU79_5b799rI-W-W_KlxzMtfo272ahNoH72bnTPAd4"/>
+<span class="font-headline-md text-headline-md-mobile font-bold text-primary dark:text-primary-fixed-dim">WorkPulse HR</span>
+</div>
+<div class="flex items-center">
+<button class="p-2 rounded-full hover:bg-surface-container-low transition-colors text-on-surface-variant dark:text-surface-variant hover:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<main class="px-margin-horizontal mt-lg max-w-3xl mx-auto">
+<div class="mb-lg">
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile text-on-background">Slip Gaji &amp; Payroll</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mt-xs">Riwayat kompensasi bulanan Anda.</p>
+</div>
+<!-- Current Month Summary Card -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm overflow-hidden mb-lg transition-transform hover:-translate-y-1 duration-300">
+<div class="p-md border-b border-surface-container">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Periode Gaji</span>
+<span class="bg-primary-container text-on-primary-container font-label-sm text-label-sm px-2 py-1 rounded-full">Oktober 2023</span>
+</div>
+<div class="flex flex-col gap-xs mt-sm">
+<span class="font-body-md text-body-md text-on-surface-variant">Total Diterima (Net Salary)</span>
+<span class="font-headline-lg-mobile text-headline-lg-mobile text-primary">Rp 12.450.000</span>
+</div>
+</div>
+<!-- Detailed Breakdown -->
+<div class="p-md bg-surface-container-low">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mb-sm tracking-wider">Rincian Pendapatan</h3>
+<ul class="space-y-sm">
+<li class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-background">Gaji Pokok</span>
+<span class="font-body-md text-body-md text-on-background font-medium">Rp 10.000.000</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="font-body-md text-body-md text-on-background">Tunjangan Jabatan</span>
+<span class="font-body-md text-body-md text-on-background font-medium">Rp 2.000.000</span>
+</li>
+<li class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-body-md text-body-md text-on-background">Lembur</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">12 Jam x Rp 75.000</span>
+</div>
+<span class="font-body-md text-body-md text-on-background font-medium">Rp 900.000</span>
+</li>
+</ul>
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase mt-md mb-sm tracking-wider">Potongan</h3>
+<ul class="space-y-sm">
+<li class="flex justify-between items-center text-error">
+<span class="font-body-md text-body-md">PPH 21</span>
+<span class="font-body-md text-body-md font-medium">- Rp 350.000</span>
+</li>
+<li class="flex justify-between items-center text-error">
+<span class="font-body-md text-body-md">BPJS Ketenagakerjaan</span>
+<span class="font-body-md text-body-md font-medium">- Rp 100.000</span>
+</li>
+</ul>
+</div>
+<div class="p-md border-t border-surface-container bg-surface-container-lowest">
+<button class="w-full flex items-center justify-center gap-sm bg-primary text-on-primary font-label-md text-label-md py-sm rounded-lg hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                    Download Slip Gaji
+                 </button>
+</div>
+</section>
+<!-- Previous Months List -->
+<section class="mb-xl">
+<h2 class="font-headline-md text-headline-md-mobile text-on-background mb-md">Riwayat Gaji Sebelumnya</h2>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-sm divide-y divide-surface-container">
+<!-- Month Item -->
+<div class="flex items-center justify-between p-md hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">September 2023</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Rp 11.500.000</p>
+</div>
+</div>
+<button aria-label="Download PDF September 2023" class="text-primary hover:bg-primary-fixed-dim hover:text-on-primary-fixed-variant p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</button>
+</div>
+<!-- Month Item -->
+<div class="flex items-center justify-between p-md hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">Agustus 2023</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Rp 12.100.000</p>
+</div>
+</div>
+<button aria-label="Download PDF Agustus 2023" class="text-primary hover:bg-primary-fixed-dim hover:text-on-primary-fixed-variant p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</button>
+</div>
+<!-- Month Item -->
+<div class="flex items-center justify-between p-md hover:bg-surface-container-low transition-colors group cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-semibold text-on-background">Juli 2023</h4>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Rp 10.000.000</p>
+</div>
+</div>
+<button aria-label="Download PDF Juli 2023" class="text-primary hover:bg-primary-fixed-dim hover:text-on-primary-fixed-variant p-2 rounded-full transition-colors flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="picture_as_pdf">picture_as_pdf</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-margin-horizontal py-sm bg-surface dark:bg-inverse-surface shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors w-16 h-14 rounded-lg">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors w-16 h-14 rounded-lg">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="event_available">event_available</span>
+<span class="font-label-sm text-label-sm">Attendance</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors w-16 h-14 rounded-lg">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="event_busy">event_busy</span>
+<span class="font-label-sm text-label-sm">Leave</span>
+</button>
+<!-- ACTIVE STATE -->
+<button class="flex flex-col items-center justify-center text-primary dark:text-secondary-fixed-dim font-bold opacity-80 scale-95 transition-transform duration-150 w-16 h-14 rounded-lg bg-surface-container-low">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="payments" data-weight="fill" style="font-variation-settings: 'FILL' 1;">payments</span>
+<span class="font-label-sm text-label-sm">Payroll</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:bg-surface-container-low dark:hover:bg-surface-container-highest transition-colors w-16 h-14 rounded-lg">
+<span class="material-symbols-outlined text-2xl mb-1" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+</body></html>

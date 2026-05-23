@@ -1,37 +1,426 @@
-/*
- * App Global CSS
- * ----------------------------------------------------------------------------
- * Put style rules here that you want to apply globally. These styles are for
- * the entire app and not just one component. Additionally, this file can be
- * used as an entry point to import other CSS/Sass files to be included in the
- * output CSS.
- * For more information on global stylesheets, visit the documentation:
- * https://ionicframework.com/docs/layout/global-stylesheets
- */
-
-/* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 @import "@ionic/angular/css/normalize.css";
 @import "@ionic/angular/css/structure.css";
 @import "@ionic/angular/css/typography.css";
 @import "@ionic/angular/css/display.css";
-
-/* Optional CSS utils that can be commented out */
 @import "@ionic/angular/css/padding.css";
 @import "@ionic/angular/css/float-elements.css";
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
-
-/**
- * Ionic Dark Mode
- * -----------------------------------------------------
- * For more info, please see:
- * https://ionicframework.com/docs/theming/dark-mode
- */
-
-/* @import "@ionic/angular/css/palettes/dark.always.css"; */
-/* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
+
+* {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+ion-content {
+  --padding-top: 0;
+  --padding-bottom: 0;
+}
+
+ion-toast {
+  --border-radius: 0.5rem;
+  --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+  font-size: 14px;
+}
+
+ion-refresher {
+  z-index: 1;
+}
+
+/* ===== Scrollbar ===== */
+.hide-scrollbar::-webkit-scrollbar { display: none; }
+.hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ===== Bottom Nav ===== */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 16px;
+  padding-bottom: calc(8px + env(safe-area-inset-bottom, 0));
+  background: var(--ion-color-light);
+  border-top: 1px solid var(--outline-variant);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.bottom-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--on-surface-variant);
+  min-width: 64px;
+  padding: 4px 8px;
+  border-radius: 0.5rem;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  span.material-symbols-outlined {
+    font-size: 24px;
+    margin-bottom: 2px;
+  }
+
+  .nav-label {
+    font-size: 11px;
+    font-weight: 500;
+    line-height: 14px;
+  }
+
+  &.active {
+    color: var(--ion-color-primary);
+    font-weight: bold;
+
+    .nav-label {
+      font-weight: 600;
+    }
+  }
+}
+
+/* ===== Top App Bar ===== */
+.top-app-bar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 50;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  height: 56px;
+  background: var(--ion-color-light);
+  border-bottom: 1px solid var(--outline-variant);
+}
+
+.top-app-bar-title {
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--ion-color-primary);
+}
+
+/* ===== Page wrapper ===== */
+.page-wrap {
+  padding: 72px 16px 90px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== Empty state ===== */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 24px;
+  text-align: center;
+
+  .material-symbols-outlined {
+    font-size: 56px;
+    color: var(--outline-variant);
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin: 0 0 6px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--on-surface-variant);
+    margin: 0;
+    max-width: 260px;
+    line-height: 1.5;
+  }
+}
+
+/* ===== Loading ===== */
+.loading-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 24px;
+
+  p {
+    font-size: 14px;
+    color: var(--on-surface-variant);
+    margin: 8px 0 0;
+  }
+}
+
+/* ===== Status Badges ===== */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 100px;
+  line-height: 14px;
+  white-space: nowrap;
+
+  &.approved, &.present, &.paid {
+    background: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid rgba(76, 175, 80, 0.3);
+  }
+
+  &.pending, &.late {
+    background: #fff8e1;
+    color: #f57f17;
+    border: 1px solid rgba(251, 192, 45, 0.3);
+  }
+
+  &.rejected, &.absent, &.cancelled {
+    background: var(--error-container);
+    color: var(--ion-color-danger);
+    border: 1px solid rgba(186, 26, 26, 0.3);
+  }
+
+  &.info {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+}
+
+/* ===== Loading Skeleton ===== */
+.skeleton-card {
+  margin: 10px 14px;
+  padding: 20px;
+  background: var(--ion-card-background);
+  border-radius: 0.75rem;
+
+  ion-skeleton-text {
+    margin-bottom: 10px;
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, var(--surface-container-low) 25%, var(--surface-container) 50%, var(--surface-container-low) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+  border-radius: 8px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* ===== Buttons ===== */
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background: var(--ion-color-primary);
+  color: var(--ion-color-primary-contrast);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 16px;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 48px;
+  background: transparent;
+  color: var(--ion-color-primary);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* ===== Form fields ===== */
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  line-height: 16px;
+  color: var(--ion-text-color);
+}
+
+.form-input {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ion-text-color);
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 1px var(--ion-color-primary);
+  }
+
+  &::placeholder {
+    color: var(--outline);
+  }
+}
+
+.form-select {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.5rem;
+  font-size: 14px;
+  color: var(--ion-text-color);
+  outline: none;
+  appearance: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 1px var(--ion-color-primary);
+  }
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 12px;
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.5rem;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: var(--ion-text-color);
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: var(--ion-color-primary);
+    box-shadow: 0 0 0 1px var(--ion-color-primary);
+  }
+
+  &::placeholder {
+    color: var(--outline);
+  }
+}
+
+.select-wrap {
+  position: relative;
+
+  .material-symbols-outlined {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--on-surface-variant);
+    pointer-events: none;
+  }
+}
+
+/* ===== Section header ===== */
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+
+  h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin: 0;
+  }
+
+  a {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    color: var(--ion-color-primary);
+    text-decoration: none;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .status-badge {
+    &.approved, &.present, &.paid {
+      background: rgba(0, 108, 73, 0.2);
+      color: #6cf8bb;
+    }
+
+    &.pending, &.late {
+      background: rgba(245, 127, 23, 0.2);
+      color: #ffb95f;
+    }
+
+    &.rejected, &.absent, &.cancelled {
+      background: rgba(147, 0, 10, 0.3);
+      color: #ffdad6;
+    }
+
+    &.info {
+      background: #1e3a5f;
+      color: #93c5fd;
+    }
+  }
+}

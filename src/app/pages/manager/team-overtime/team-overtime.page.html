@@ -1,0 +1,95 @@
+<ion-content>
+  <header class="top-app-bar">
+    <div class="top-bar-left">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h1 class="top-app-bar-title">Lembur Tim</h1>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <div class="page-wrap">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <div class="loading-indicator" *ngIf="loading">
+      <p>Memuat data...</p>
+    </div>
+
+    <div class="state-wrap" *ngIf="error && !loading">
+      <span class="material-symbols-outlined state-icon">error_outline</span>
+      <h3>Gagal Memuat Data</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn-outline" (click)="loadOvertimes()">Coba Lagi</button>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && !error && overtimes.length === 0">
+      <span class="material-symbols-outlined">schedule</span>
+      <h3>Belum Ada Pengajuan Lembur</h3>
+      <p>Tidak ada pengajuan lembur dari tim.</p>
+    </div>
+
+    <div class="list-area" *ngIf="!loading && !error && overtimes.length > 0">
+      <div class="ot-card" *ngFor="let ot of overtimes">
+        <div class="card-top">
+          <div class="card-user">
+            <div class="user-avatar">{{ (ot.user_name || 'A')?.charAt(0)?.toUpperCase() }}</div>
+            <div class="user-detail">
+              <span class="user-name">{{ ot.user_name || 'Anggota Tim' }}</span>
+              <span class="ot-date">{{ ot.date | date:'dd MMM yyyy' }}</span>
+            </div>
+          </div>
+          <span class="status-badge" [class.pending]="ot.status === 'pending'" [class.approved]="ot.status === 'approved'" [class.rejected]="ot.status === 'rejected'">
+            {{ getStatusText(ot.status) }}
+          </span>
+        </div>
+        <div class="card-body">
+          <div class="info-row">
+            <span class="material-symbols-outlined info-icon">schedule</span>
+            <span>{{ ot.start_time }} - {{ ot.end_time }}</span>
+          </div>
+          <div class="info-row">
+            <span class="material-symbols-outlined info-icon">hourglass</span>
+            <span>Durasi: {{ ot.duration_hours }} jam</span>
+          </div>
+          <p class="reason" *ngIf="ot.reason">{{ ot.reason }}</p>
+        </div>
+        <div class="card-actions" *ngIf="ot.status === 'pending'">
+          <button class="btn-outline action-btn action-approve" (click)="approveOvertime(ot)">
+            <span class="material-symbols-outlined">check</span>
+            Setujui
+          </button>
+          <button class="btn-outline action-btn action-reject" (click)="rejectOvertime(ot)">
+            <span class="material-symbols-outlined">close</span>
+            Tolak
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/dashboard')">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team')">
+      <span class="material-symbols-outlined">group</span>
+      <span class="nav-label">Team</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team-attendance')">
+      <span class="material-symbols-outlined">event_available</span>
+      <span class="nav-label">Attendance</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/manager/team-leave')">
+      <span class="material-symbols-outlined">event_busy</span>
+      <span class="nav-label">Leave</span>
+    </a>
+    <a class="bottom-nav-item active">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">payments</span>
+      <span class="nav-label">Payroll</span>
+    </a>
+  </nav>
+</ion-content>

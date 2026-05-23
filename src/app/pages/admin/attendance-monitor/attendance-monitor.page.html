@@ -1,0 +1,83 @@
+<ion-content>
+  <header class="top-app-bar">
+    <div class="top-bar-left">
+      <button class="back-btn" (click)="goBack()">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <h1 class="top-app-bar-title">Monitoring Absensi</h1>
+    </div>
+    <div style="width:40px"></div>
+  </header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="onDateChange()">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="page-wrap">
+    <div class="loading-indicator" *ngIf="loading">
+      <p>Memuat data...</p>
+    </div>
+
+    <div class="empty-state" *ngIf="error && !loading">
+      <span class="material-symbols-outlined">error</span>
+      <h3>Gagal Memuat Data</h3>
+      <p>{{ errorMessage }}</p>
+      <button class="btn-outline" (click)="loadAttendance()">Coba Lagi</button>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && !error && attendances.length === 0">
+      <span class="material-symbols-outlined">camera_alt</span>
+      <h3>Belum Ada Absensi</h3>
+      <p>Tidak ada data absensi untuk tanggal yang dipilih.</p>
+    </div>
+
+    <div class="list-area" *ngIf="!loading && !error && attendances.length > 0">
+      <div class="att-card" *ngFor="let att of attendances">
+        <div class="att-top">
+          <div class="att-user">
+            <div class="att-avatar">{{ getInitials(att.name) }}</div>
+            <div class="att-detail">
+              <span class="att-name">{{ att.name }}</span>
+            </div>
+          </div>
+          <span class="status-badge" [class.present]="att.status === 'present'" [class.late]="att.status === 'late'" [class.absent]="att.status === 'absent'">
+            {{ getStatusText(att.status) }}
+          </span>
+        </div>
+        <div class="att-body">
+          <div class="time-col">
+            <span class="tm-lbl">Masuk</span>
+            <span class="tm-val">{{ att.check_in || '-' }}</span>
+          </div>
+          <div class="time-col">
+            <span class="tm-lbl">Keluar</span>
+            <span class="tm-val">{{ att.check_out || '-' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bottom-nav-item" (click)="navigateTo('/admin/dashboard')">
+      <span class="material-symbols-outlined">dashboard</span>
+      <span class="nav-label">Dashboard</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/admin/employees')">
+      <span class="material-symbols-outlined">group</span>
+      <span class="nav-label">Karyawan</span>
+    </a>
+    <a class="bottom-nav-item active">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">event_available</span>
+      <span class="nav-label">Absensi</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/admin/leave-management')">
+      <span class="material-symbols-outlined">event_busy</span>
+      <span class="nav-label">Cuti</span>
+    </a>
+    <a class="bottom-nav-item" (click)="navigateTo('/admin/payroll-management')">
+      <span class="material-symbols-outlined">payments</span>
+      <span class="nav-label">Payroll</span>
+    </a>
+  </nav>
+</ion-content>
