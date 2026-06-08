@@ -133,7 +133,7 @@ export class TeamOvertimePage implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/manager/dashboard']);
+    this.router.navigate(['/app/manager/dashboard']);
   }
 
   navigateTo(url: string) {

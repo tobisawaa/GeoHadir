@@ -21,7 +21,7 @@
       <p>Memuat data...</p>
     </div>
 
-    <ng-container *ngIf="!loading && dashboard">
+    <ng-container *ngIf="!loading">
       <section class="hero-card">
         <div class="hero-head">
           <div>
@@ -34,15 +34,15 @@
         <div class="hero-grid">
           <article class="hero-metric">
             <span>Anggota Tim</span>
-            <strong>{{ (dashboard.team_stats.total_present || 0) + (dashboard.team_stats.total_absent || 0) + (dashboard.team_stats.total_late || 0) }}</strong>
+            <strong>{{ (dashboard?.team_stats?.total_present || 0) + (dashboard?.team_stats?.total_absent || 0) + (dashboard?.team_stats?.total_late || 0) }}</strong>
           </article>
           <article class="hero-metric">
             <span>Cuti Pending</span>
-            <strong>{{ dashboard.pending_requests.leave }}</strong>
+            <strong>{{ dashboard?.pending_requests?.leave ?? '-' }}</strong>
           </article>
           <article class="hero-metric">
             <span>Lembur Pending</span>
-            <strong>{{ dashboard.pending_requests.overtime }}</strong>
+            <strong>{{ dashboard?.pending_requests?.overtime ?? '-' }}</strong>
           </article>
         </div>
       </section>
@@ -106,7 +106,7 @@
         </div>
 
         <div class="list-stack">
-          <article class="list-card" *ngFor="let member of dashboard.today_attendance">
+          <article class="list-card" *ngFor="let member of dashboard?.today_attendance || []">
             <div>
               <h3>{{ member.name }}</h3>
               <p>{{ member.department }}</p>
@@ -115,6 +115,10 @@
               {{ member.attendance_today === 'present' ? 'Hadir' : member.attendance_today === 'late' ? 'Telat' : 'Tidak Hadir' }}
             </span>
           </article>
+          <div class="empty-state-sm" *ngIf="!(dashboard?.today_attendance?.length) || dashboard?.today_attendance?.length === 0">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>Tidak ada data hadir tim hari ini</p>
+          </div>
         </div>
       </section>
     </ng-container>
