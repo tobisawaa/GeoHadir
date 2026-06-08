@@ -52,7 +52,6 @@ export class AppComponent implements OnInit {
     const labels: Record<string, string> = {
       employee: 'Karyawan',
       manager: 'Manager',
-      admin: 'Administrator',
     };
     return labels[role || ''] || role || 'User';
   }
@@ -60,18 +59,7 @@ export class AppComponent implements OnInit {
   private buildMenu() {
     const role = this.auth.getRole();
     
-    if (role === 'admin') {
-      this.appPages = [
-        { title: 'Dashboard', url: '/app/admin/dashboard', icon: 'grid-outline' },
-        { title: 'Karyawan', url: '/app/admin/employees', icon: 'people-outline' },
-        { title: 'Monitoring Absensi', url: '/app/admin/attendance-monitor', icon: 'camera-outline' },
-        { title: 'Manajemen Cuti', url: '/app/admin/leave-management', icon: 'calendar-outline' },
-        { title: 'Manajemen Lembur', url: '/app/admin/overtime-management', icon: 'moon-outline' },
-        { title: 'Payroll', url: '/app/admin/payroll-management', icon: 'wallet-outline' },
-        { title: 'Laporan', url: '/app/admin/reports', icon: 'bar-chart-outline' },
-        { title: 'Profil', url: '/app/admin/profile', icon: 'person-outline' },
-      ];
-    } else if (role === 'employee') {
+    if (role === 'employee') {
       this.appPages = [
         { title: 'Dashboard', url: '/app/employee/dashboard', icon: 'grid-outline' },
         { title: 'Absensi', url: '/app/employee/attendance', icon: 'camera-outline' },

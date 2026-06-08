@@ -20,7 +20,7 @@ interface MockUser {
   name: string;
   email: string;
   password: string;
-  role: 'employee' | 'manager' | 'admin';
+  role: 'employee' | 'manager';
   department: string;
   position: string;
   phone: string;
@@ -49,17 +49,6 @@ const MOCK_USERS: MockUser[] = [
     position: 'Manager IT',
     phone: '081234567891',
     join_date: '2022-06-01',
-  },
-  {
-    id: 3,
-    name: 'Admin Geohadir',
-    email: 'admin@geohadir.com',
-    password: 'password123',
-    role: 'admin',
-    department: 'Human Resources',
-    position: 'HR Administrator',
-    phone: '081234567892',
-    join_date: '2021-03-10',
   },
 ];
 
@@ -358,7 +347,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private handleTeamLeaves(currentUser: MockUser) {
-    if (currentUser.role !== 'manager' && currentUser.role !== 'admin') return this.fail('Forbidden', 403);
+    if (currentUser.role !== 'manager') return this.fail('Forbidden', 403);
     const teamUserIds = TEAM_MEMBERS.map(m => m.id);
     const records = leaveRecords.filter(l => teamUserIds.includes(l.user_id)).sort((a, b) => b.created_at.localeCompare(a.created_at));
     return this.ok(records);
@@ -382,7 +371,7 @@ export class MockInterceptor implements HttpInterceptor {
   }
 
   private handleTeamOvertimes(currentUser: MockUser) {
-    if (currentUser.role !== 'manager' && currentUser.role !== 'admin') return this.fail('Forbidden', 403);
+    if (currentUser.role !== 'manager') return this.fail('Forbidden', 403);
     const teamUserIds = TEAM_MEMBERS.map(m => m.id);
     const records = overtimeRecords.filter(o => teamUserIds.includes(o.user_id)).sort((a, b) => b.created_at.localeCompare(a.created_at));
     return this.ok(records);

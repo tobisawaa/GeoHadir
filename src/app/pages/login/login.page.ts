@@ -26,12 +26,6 @@ export class LoginPage implements OnInit {
 
   demoAccounts: DemoAccount[] = [
     {
-      role: 'Admin',
-      email: 'admin@geohadir.com',
-      password: 'password123',
-      icon: 'shield',
-    },
-    {
       role: 'Manager',
       email: 'manager@geohadir.com',
       password: 'password123',
@@ -150,10 +144,6 @@ export class LoginPage implements OnInit {
 
       case 'manager':
         this.router.navigateByUrl('/app/manager/dashboard', { replaceUrl: true });
-        break;
-
-      case 'admin':
-        this.router.navigateByUrl('/app/admin/dashboard', { replaceUrl: true });
         break;
 
       default:

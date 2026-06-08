@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { UserService } from '../../../services/user.service';
+import { AuthService } from '../../../services/auth.service';
 import { ManagerDashboardData } from '../../../interfaces/models';
 
 @Component({
@@ -15,14 +16,20 @@ export class DashboardPage implements OnInit {
   loading = true;
   error = false;
   errorMessage = '';
+  userName = 'Manager';
+  userInitial = 'M';
 
   constructor(
     private userService: UserService,
+    private auth: AuthService,
     private router: Router,
     private toastCtrl: ToastController
   ) {}
 
   ngOnInit() {
+    const user = this.auth.getCurrentUser();
+    this.userName = user?.name ?? 'Manager';
+    this.userInitial = this.userName.trim().charAt(0).toUpperCase() || 'M';
     this.loadDashboard();
   }
 

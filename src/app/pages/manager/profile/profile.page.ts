@@ -81,7 +81,7 @@ export class ProfilePage implements OnInit {
   }
 
   getRoleLabel(role?: string): string {
-    const labels: Record<string, string> = { admin: 'Admin', manager: 'Manager', employee: 'Karyawan' };
+    const labels: Record<string, string> = { manager: 'Manager', employee: 'Karyawan' };
     return labels[role || ''] || role || 'Manager';
   }
 

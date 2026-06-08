@@ -15,7 +15,7 @@ const routes: Routes = [
       {
         path: 'employee',
         canActivate: [RoleGuard],
-        data: { roles: ['employee', 'admin'] },
+        data: { roles: ['employee'] },
         children: [
           { path: 'dashboard', loadChildren: () => import('./pages/employee/dashboard/dashboard.module').then((m) => m.DashboardPageModule) },
           { path: 'attendance', loadChildren: () => import('./pages/employee/attendance/attendance.module').then((m) => m.AttendancePageModule) },
@@ -42,22 +42,6 @@ const routes: Routes = [
           { path: 'team-leave', loadChildren: () => import('./pages/manager/team-leave/team-leave.module').then((m) => m.TeamLeavePageModule) },
           { path: 'team-overtime', loadChildren: () => import('./pages/manager/team-overtime/team-overtime.module').then((m) => m.TeamOvertimePageModule) },
           { path: 'profile', loadChildren: () => import('./pages/manager/profile/profile.module').then((m) => m.ProfilePageModule) },
-          { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-        ],
-      },
-      {
-        path: 'admin',
-        canActivate: [RoleGuard],
-        data: { roles: ['admin'] },
-        children: [
-          { path: 'dashboard', loadChildren: () => import('./pages/admin/dashboard/dashboard.module').then((m) => m.DashboardPageModule) },
-          { path: 'employees', loadChildren: () => import('./pages/admin/employees/employees.module').then((m) => m.EmployeesPageModule) },
-          { path: 'attendance-monitor', loadChildren: () => import('./pages/admin/attendance-monitor/attendance-monitor.module').then((m) => m.AttendanceMonitorPageModule) },
-          { path: 'leave-management', loadChildren: () => import('./pages/admin/leave-management/leave-management.module').then((m) => m.LeaveManagementPageModule) },
-          { path: 'overtime-management', loadChildren: () => import('./pages/admin/overtime-management/overtime-management.module').then((m) => m.OvertimeManagementPageModule) },
-          { path: 'payroll-management', loadChildren: () => import('./pages/admin/payroll-management/payroll-management.module').then((m) => m.PayrollManagementPageModule) },
-          { path: 'reports', loadChildren: () => import('./pages/admin/reports/reports.module').then((m) => m.ReportsPageModule) },
-          { path: 'profile', loadChildren: () => import('./pages/admin/profile/profile.module').then((m) => m.ProfilePageModule) },
           { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
         ],
       },

@@ -47,7 +47,7 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
-    if (environment.mock) {
+    if (environment.useMock) {
       return this.mockLogin(credentials).pipe(
         tap((res) => {
           this.setSession(res);
@@ -169,10 +169,6 @@ export class AuthService {
     return this.getRole() === 'manager';
   }
 
-  isAdmin(): boolean {
-    return this.getRole() === 'admin';
-  }
-
   changePassword(data: {
     current_password: string;
     new_password: string;
@@ -201,27 +197,23 @@ export class AuthService {
       }));
     }
 
-    let role: 'employee' | 'manager' | 'admin' = 'employee';
+    let role: 'employee' | 'manager' = 'employee';
     let name = 'Muhamad Ridho';
     let position = 'Frontend Developer';
 
-    if (email.includes('admin')) {
-      role = 'admin';
-      name = 'Admin Demo';
-      position = 'HR Administrator';
-    } else if (email.includes('manager')) {
+    if (email.includes('manager')) {
       role = 'manager';
       name = 'Manager Demo';
       position = 'Team Manager';
     }
 
     const user = {
-      id: role === 'admin' ? 1 : role === 'manager' ? 2 : 3,
+      id: role === 'manager' ? 2 : 1,
       name,
       email,
       role,
       position,
-      department: role === 'admin' ? 'Human Resource' : 'Information Technology',
+      department: 'Information Technology',
       phone: '0812-3456-7890',
     } as unknown as User;
 
