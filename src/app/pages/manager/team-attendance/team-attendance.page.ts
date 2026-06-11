@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AttendanceService } from '../../../services/attendance.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { Attendance } from '../../../interfaces/models';
 
 @Component({
@@ -18,11 +19,15 @@ export class TeamAttendancePage implements OnInit {
 
   constructor(
     private attendanceService: AttendanceService,
+    private offlineSync: OfflineSyncService,
     private router: Router,
     private toastCtrl: ToastController
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
     this.loadAttendance();
   }
 
@@ -72,6 +77,10 @@ export class TeamAttendancePage implements OnInit {
       case 'absent': return 'Absen';
       default: return status;
     }
+  }
+
+  trackByAttendance(index: number, attendance: Attendance): number | string {
+    return attendance.id ?? `${attendance.user_id}-${attendance.date}-${index}`;
   }
 
   goBack() {

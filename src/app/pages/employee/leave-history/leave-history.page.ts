@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 type HistoryType = 'Semua' | 'Absensi' | 'Cuti' | 'Lembur' | 'Payroll';
 
@@ -30,9 +31,16 @@ export class LeaveHistoryPage implements OnInit {
     { id: 5, type: 'Cuti', title: 'Sakit', description: '10 Mei 2026 - 11 Mei 2026', date: '10 Mei 2026', status: 'Disetujui' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private offlineSync: OfflineSyncService
+  ) {}
 
   ngOnInit(): void {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+  }
 
   get filteredHistories(): HistoryItem[] {
     if (this.selectedFilter === 'Semua') return this.histories;

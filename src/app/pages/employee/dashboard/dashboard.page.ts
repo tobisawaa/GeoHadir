@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 interface MenuItem {
   label: string;
@@ -41,20 +42,24 @@ export class DashboardPage implements OnInit, OnDestroy {
     { title: 'Lembur', date: '18 Mei 2026 · 18:00 - 20:30', status: 'Disetujui' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private offlineSync: OfflineSyncService
+  ) {}
 
-  ngOnInit(): void {
-    this.updateClock();
-
-    this.clockInterval = setInterval(() => {
-      this.updateClock();
-    }, 1000);
-  }
+  ngOnInit(): void {}
 
   ngOnDestroy(): void {
-    if (this.clockInterval) {
-      clearInterval(this.clockInterval);
-    }
+    this.stopClock();
+  }
+
+  ionViewWillEnter(): void {
+    this.startClock();
+    void this.offlineSync.syncWhenOnline();
+  }
+
+  ionViewWillLeave(): void {
+    this.stopClock();
   }
 
   goTo(route: string): void {
@@ -74,5 +79,26 @@ export class DashboardPage implements OnInit, OnDestroy {
 
     this.today = now;
     this.currentTime = `${hour}.${minute}`;
+  }
+
+  private startClock(): void {
+    this.updateClock();
+
+    if (this.clockInterval) {
+      return;
+    }
+
+    this.clockInterval = setInterval(() => {
+      this.updateClock();
+    }, 1000);
+  }
+
+  private stopClock(): void {
+    if (!this.clockInterval) {
+      return;
+    }
+
+    clearInterval(this.clockInterval);
+    this.clockInterval = undefined;
   }
 }

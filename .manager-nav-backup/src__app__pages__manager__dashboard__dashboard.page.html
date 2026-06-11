@@ -1,0 +1,168 @@
+<ion-content class="manager-content" fullscreen>
+  <div class="page-shell">
+    <header class="topbar">
+      <div class="user-mini">
+        <div class="avatar">{{ userInitial }}</div>
+        <div class="user-copy">
+          <h1>Selamat Datang, {{ userName }}</h1>
+          <p>Manager Tim</p>
+        </div>
+      </div>
+
+      <button type="button" class="icon-btn" aria-label="Notifikasi">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M18 9C18 6.24 15.76 4 13 4H11C8.24 4 6 6.24 6 9V13.5L4.75 16H19.25L18 13.5V9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+          <path d="M10 19C10.45 19.61 11.16 20 12 20C12.84 20 13.55 19.61 14 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+      </button>
+    </header>
+
+    <div *ngIf="loading" class="loading-indicator">
+      <p>Memuat data...</p>
+    </div>
+
+    <ng-container *ngIf="!loading">
+      <section class="hero-card">
+        <div class="hero-head">
+          <div>
+            <p class="hero-overline">Ringkasan Tim</p>
+            <h2>Kelola persetujuan dan absensi</h2>
+          </div>
+          <span class="hero-badge">Manager</span>
+        </div>
+
+        <div class="hero-grid">
+          <article class="hero-metric">
+            <span>Anggota Tim</span>
+            <strong>{{ (dashboard?.team_stats?.total_present || 0) + (dashboard?.team_stats?.total_absent || 0) + (dashboard?.team_stats?.total_late || 0) }}</strong>
+          </article>
+          <article class="hero-metric">
+            <span>Cuti Pending</span>
+            <strong>{{ dashboard?.pending_requests?.leave ?? '-' }}</strong>
+          </article>
+          <article class="hero-metric">
+            <span>Lembur Pending</span>
+            <strong>{{ dashboard?.pending_requests?.overtime ?? '-' }}</strong>
+          </article>
+        </div>
+      </section>
+
+      <section class="stat-grid">
+        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team')">
+          <span class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M16 21V19C16 17.895 15.105 17 14 17H10C8.895 17 8 17.895 8 19V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M12 12C14.209 12 16 10.209 16 8C16 5.791 14.209 4 12 4C9.791 4 8 5.791 8 8C8 10.209 9.791 12 12 12Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <strong>Tim Saya</strong>
+          <p>Kelola anggota tim</p>
+        </button>
+
+        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team-attendance')">
+          <span class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <strong>Absensi Tim</strong>
+          <p>Pantau kehadiran</p>
+        </button>
+
+        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team-leave')">
+          <span class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+              <path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </span>
+          <strong>Cuti Bawahan</strong>
+          <p>Persetujuan cepat</p>
+        </button>
+
+        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team-overtime')">
+          <span class="card-icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C14.4 3 16.58 3.94 18.19 5.47" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M18 3V6H21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </span>
+          <strong>Lembur Bawahan</strong>
+          <p>Kelola permintaan</p>
+        </button>
+      </section>
+
+      <section class="section-block">
+        <div class="section-heading">
+          <div>
+            <h2>Absensi Hari Ini</h2>
+            <p>Data kehadiran tim</p>
+          </div>
+          <button type="button" class="link-btn" (click)="navigateTo('/app/manager/team-attendance')">Lihat Semua</button>
+        </div>
+
+        <div class="list-stack">
+          <article class="list-card" *ngFor="let member of dashboard?.today_attendance || []">
+            <div>
+              <h3>{{ member.name }}</h3>
+              <p>{{ member.department }}</p>
+            </div>
+            <span class="status-badge" [class.present]="member.attendance_today === 'present'" [class.late]="member.attendance_today === 'late'" [class.absent]="member.attendance_today === 'absent'">
+              {{ member.attendance_today === 'present' ? 'Hadir' : member.attendance_today === 'late' ? 'Telat' : 'Tidak Hadir' }}
+            </span>
+          </article>
+          <div class="empty-state-sm" *ngIf="!(dashboard?.today_attendance?.length) || dashboard?.today_attendance?.length === 0">
+            <span class="material-symbols-outlined">check_circle</span>
+            <p>Tidak ada data hadir tim hari ini</p>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+
+    <nav class="bottom-nav">
+      <button type="button" class="nav-item active" (click)="navigateTo('/app/manager/dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M4 4H10V10H4V4Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M14 4H20V10H14V4Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M4 14H10V20H4V14Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Dashboard</span>
+      </button>
+      <button type="button" class="nav-item" (click)="navigateTo('/app/manager/team')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M16 21V19C16 17.895 15.105 17 14 17H10C8.895 17 8 17.895 8 19V21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M12 12C14.209 12 16 10.209 16 8C16 5.791 14.209 4 12 4C9.791 4 8 5.791 8 8C8 10.209 9.791 12 12 12Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Tim</span>
+      </button>
+      <button type="button" class="nav-item" (click)="navigateTo('/app/manager/team-attendance')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        <span>Attendance</span>
+      </button>
+      <button type="button" class="nav-item" (click)="navigateTo('/app/manager/team-leave')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8" />
+          <path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        <span>Leave</span>
+      </button>
+      <button type="button" class="nav-item" (click)="navigateTo('/app/manager/profile')">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M20 21C20 17.7 16.4 15 12 15C7.6 15 4 17.7 4 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+          <path d="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z" stroke="currentColor" stroke-width="1.8" />
+        </svg>
+        <span>Profile</span>
+      </button>
+    </nav>
+  </div>
+</ion-content>

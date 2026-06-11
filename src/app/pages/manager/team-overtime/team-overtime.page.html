@@ -1,4 +1,4 @@
-<ion-content>
+﻿<ion-content>
   <header class="top-app-bar">
     <div class="top-bar-left">
       <button class="back-btn" (click)="goBack()">
@@ -32,7 +32,7 @@
     </div>
 
     <div class="list-area" *ngIf="!loading && !error && overtimes.length > 0">
-      <div class="ot-card" *ngFor="let ot of overtimes">
+      <div class="ot-card" *ngFor="let ot of overtimes; trackBy: trackByOvertime">
         <div class="card-top">
           <div class="card-user">
             <div class="user-avatar">{{ (ot.user_name || 'A')?.charAt(0)?.toUpperCase() }}</div>
@@ -70,26 +70,6 @@
     </div>
   </div>
 
-  <nav class="bottom-nav">
-    <a class="bottom-nav-item" (click)="navigateTo('/app/manager/dashboard')">
-      <span class="material-symbols-outlined">dashboard</span>
-      <span class="nav-label">Dashboard</span>
-    </a>
-    <a class="bottom-nav-item" (click)="navigateTo('/app/manager/team')">
-      <span class="material-symbols-outlined">group</span>
-      <span class="nav-label">Team</span>
-    </a>
-    <a class="bottom-nav-item" (click)="navigateTo('/app/manager/team-attendance')">
-      <span class="material-symbols-outlined">event_available</span>
-      <span class="nav-label">Attendance</span>
-    </a>
-    <a class="bottom-nav-item" (click)="navigateTo('/app/manager/team-leave')">
-      <span class="material-symbols-outlined">event_busy</span>
-      <span class="nav-label">Leave</span>
-    </a>
-    <a class="bottom-nav-item active">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1">payments</span>
-      <span class="nav-label">Payroll</span>
-    </a>
-  </nav>
+  <app-manager-bottom-nav active="approval"></app-manager-bottom-nav>
 </ion-content>
+

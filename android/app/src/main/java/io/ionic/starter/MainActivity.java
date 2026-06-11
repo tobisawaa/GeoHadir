@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package com.gaskeunproject.geohadir;
 
 import com.getcapacitor.BridgeActivity;
 

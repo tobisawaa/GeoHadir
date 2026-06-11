@@ -1,3 +1,4 @@
+﻿import { ManagerBottomNavModule } from '../../../components/manager-bottom-nav/manager-bottom-nav.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -6,7 +7,10 @@ import { TeamAttendancePageRoutingModule } from './team-attendance-routing.modul
 import { TeamAttendancePage } from './team-attendance.page';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, IonicModule, TeamAttendancePageRoutingModule],
+  imports: [
+    ManagerBottomNavModule,CommonModule, FormsModule, IonicModule, TeamAttendancePageRoutingModule],
   declarations: [TeamAttendancePage],
 })
 export class TeamAttendancePageModule {}
+
+

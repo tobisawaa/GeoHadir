@@ -1,4 +1,4 @@
-ion-content {
+﻿ion-content {
   --background: var(--ion-background-color);
 }
 
@@ -69,3 +69,7 @@ ion-content {
     margin: 0 0 16px;
   }
 }
+
+/* manager-bottom-nav-spacing */
+:host { padding-bottom: 120px; }
+

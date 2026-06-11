@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { LeaveService } from '../../../services/leave.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { LeaveRequest } from '../../../interfaces/models';
 
 @Component({
@@ -18,12 +19,16 @@ export class TeamLeavePage implements OnInit {
 
   constructor(
     private leaveService: LeaveService,
+    private offlineSync: OfflineSyncService,
     private router: Router,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
     this.loadLeaves();
   }
 
@@ -141,6 +146,10 @@ export class TeamLeavePage implements OnInit {
       other: 'Lainnya',
     };
     return labels[type] || type;
+  }
+
+  trackByLeave(index: number, leave: LeaveRequest): number | string {
+    return leave.id ?? `${leave.user_id}-${leave.start_date}-${index}`;
   }
 
   goBack() {

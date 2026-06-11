@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { User } from '../../../interfaces/models';
 
 @Component({
@@ -15,6 +16,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private offlineSync: OfflineSyncService,
     private router: Router,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController
@@ -22,6 +24,10 @@ export class ProfilePage implements OnInit {
 
   ngOnInit() {
     this.user = this.auth.getCurrentUser();
+  }
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
   }
 
   async changePassword() {

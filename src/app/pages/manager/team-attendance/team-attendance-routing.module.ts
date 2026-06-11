@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TeamAttendancePage } from './team-attendance.page';
 
@@ -9,3 +9,4 @@ const routes: Routes = [{ path: '', component: TeamAttendancePage }];
   exports: [RouterModule],
 })
 export class TeamAttendancePageRoutingModule {}
+

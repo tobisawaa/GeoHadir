@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
+import { OfflineSyncService } from '../../services/offline-sync.service';
 
 interface DemoAccount {
   role: string;
@@ -45,7 +46,8 @@ export class LoginPage implements OnInit {
     private router: Router,
     private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
-    private toastCtrl: ToastController
+    private toastCtrl: ToastController,
+    private offlineSync: OfflineSyncService
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
@@ -57,6 +59,10 @@ export class LoginPage implements OnInit {
     if (this.auth.isLoggedIn()) {
       this.navigateByRole();
     }
+  }
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
   }
 
   fillDemoAccount(account: DemoAccount): void {

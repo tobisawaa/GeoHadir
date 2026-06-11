@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 @Component({
   selector: 'app-profile',
@@ -24,10 +25,15 @@ export class ProfilePage implements OnInit {
   constructor(
     private router: Router,
     private alertCtrl: AlertController,
-    private auth: AuthService
+    private auth: AuthService,
+    private offlineSync: OfflineSyncService
   ) {}
 
   ngOnInit(): void {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+  }
 
   goTo(route: string): void {
     this.router.navigateByUrl(route);

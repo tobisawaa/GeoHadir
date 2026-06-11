@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AlertController, Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
+import { SplashScreen } from '@capacitor/splash-screen';
+
 import { AuthService } from './services/auth.service';
 import { User } from './interfaces/models';
 
@@ -21,30 +25,106 @@ export class AppComponent implements OnInit {
   appPages: MenuItem[] = [];
   userInitials = '';
   roleLabel = '';
+  private exitAlertOpen = false;
 
   constructor(
     private auth: AuthService,
-    public router: Router
-  ) {}
+    public router: Router,
+    private platform: Platform,
+    private alertCtrl: AlertController
+  ) {
+    this.initializeApp();
+  }
 
   ngOnInit() {
     this.auth.currentUser$.subscribe((user) => {
       this.user = user;
       this.isLoggedIn = !!user;
+
       if (user) {
         this.userInitials = this.getInitials(user.name);
         this.roleLabel = this.getRoleLabel(user.role);
       }
+
       this.buildMenu();
     });
   }
 
+  private async initializeApp(): Promise<void> {
+    await this.platform.ready();
+
+    setTimeout(async () => {
+      try {
+        await SplashScreen.hide();
+      } catch {
+        // Browser testing biasanya tidak butuh native splash. Diam saja, tidak usah drama.
+      }
+    }, 500);
+
+    this.registerHardwareBackButton();
+  }
+
+  private registerHardwareBackButton(): void {
+    this.platform.backButton.subscribeWithPriority(10, async () => {
+      const url = this.router.url.split('?')[0].split('#')[0];
+
+      if (this.isExitConfirmationRoute(url)) {
+        await this.confirmExitApp();
+        return;
+      }
+
+      window.history.back();
+    });
+  }
+
+  private isExitConfirmationRoute(url: string): boolean {
+    return [
+      '/',
+      '/welcome',
+      '/login',
+      '/app/employee/dashboard',
+      '/app/manager/dashboard',
+    ].includes(url);
+  }
+
+  private async confirmExitApp(): Promise<void> {
+    if (this.exitAlertOpen) {
+      return;
+    }
+
+    this.exitAlertOpen = true;
+
+    const alert = await this.alertCtrl.create({
+      header: 'Keluar Aplikasi?',
+      message: 'Anda yakin ingin menutup GeoHadir?',
+      buttons: [
+        { text: 'Batal', role: 'cancel' },
+        {
+          text: 'Keluar',
+          role: 'destructive',
+          handler: () => {
+            void App.exitApp();
+          },
+        },
+      ],
+    });
+
+    alert.onDidDismiss().then(() => {
+      this.exitAlertOpen = false;
+    });
+
+    await alert.present();
+  }
+
   private getInitials(name: string | undefined): string {
     if (!name) return 'U';
+
     const parts = name.trim().split(/\s+/);
+
     if (parts.length >= 2) {
       return (parts[0].charAt(0) + parts[1].charAt(0)).toUpperCase();
     }
+
     return name.charAt(0).toUpperCase();
   }
 
@@ -53,12 +133,13 @@ export class AppComponent implements OnInit {
       employee: 'Karyawan',
       manager: 'Manager',
     };
+
     return labels[role || ''] || role || 'User';
   }
 
   private buildMenu() {
     const role = this.auth.getRole();
-    
+
     if (role === 'employee') {
       this.appPages = [
         { title: 'Dashboard', url: '/app/employee/dashboard', icon: 'grid-outline' },
@@ -81,6 +162,8 @@ export class AppComponent implements OnInit {
         { title: 'Lembur Bawahan', url: '/app/manager/team-overtime', icon: 'moon-outline' },
         { title: 'Profil', url: '/app/manager/profile', icon: 'person-outline' },
       ];
+    } else {
+      this.appPages = [];
     }
   }
 

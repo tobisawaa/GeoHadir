@@ -1,0 +1,145 @@
+ion-content {
+  --background: var(--ion-background-color);
+}
+
+.list-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ot-card {
+  background: var(--surface-container-lowest);
+  border: 1px solid var(--outline-variant);
+  border-radius: 0.75rem;
+  padding: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  gap: 12px;
+}
+
+.card-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.user-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--ion-color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ion-color-primary-contrast);
+  flex-shrink: 0;
+}
+
+.user-detail {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+
+.user-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ion-text-color);
+}
+
+.ot-date {
+  font-size: 12px;
+  color: var(--ion-color-primary);
+  font-weight: 500;
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--on-surface-variant);
+}
+
+.info-icon {
+  font-size: 15px;
+  color: var(--outline);
+}
+
+.reason {
+  font-size: 12px;
+  color: var(--outline);
+  margin: 2px 0 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--surface-container-low);
+}
+
+.action-btn {
+  height: 40px;
+  font-size: 12px;
+}
+
+.action-approve {
+  border-color: var(--ion-color-success);
+  color: var(--ion-color-success);
+}
+
+.action-reject {
+  border-color: var(--ion-color-danger);
+  color: var(--ion-color-danger);
+}
+
+.state-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 24px;
+  text-align: center;
+
+  .state-icon {
+    font-size: 48px;
+    color: var(--ion-color-danger);
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ion-text-color);
+    margin: 0 0 4px;
+  }
+
+  p {
+    font-size: 14px;
+    color: var(--on-surface-variant);
+    margin: 0 0 16px;
+  }
+}

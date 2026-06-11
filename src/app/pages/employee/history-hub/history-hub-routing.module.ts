@@ -1,7 +1,6 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HistoryHubPage } from './history-hub.page';
-
 const routes: Routes = [
   {
     path: '',

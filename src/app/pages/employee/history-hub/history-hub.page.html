@@ -1,9 +1,59 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>History Hub</ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content class="history-content" fullscreen>
+  <div class="page-shell">
+    <header class="page-header">
+      <button type="button" class="back-btn" (click)="goTo('/app/employee/dashboard')" aria-label="Kembali ke dashboard">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
 
-<ion-content class="ion-padding">
-  <p>History hub placeholder page.</p>
+      <div>
+        <p class="eyebrow">History Center</p>
+        <h1>Riwayat Aktivitas</h1>
+        <span>Semua aktivitas HR karyawan dalam satu tempat.</span>
+      </div>
+    </header>
+
+    <section class="summary-card">
+      <div>
+        <p>Total Riwayat</p>
+        <strong>{{ histories.length }}</strong>
+      </div>
+      <span>Absensi · Cuti · Lembur · Payroll</span>
+    </section>
+
+    <div class="filter-row">
+      <button
+        type="button"
+        *ngFor="let filter of filters"
+        [class.active]="activeFilter === filter.value"
+        (click)="setFilter(filter.value)"
+      >
+        {{ filter.label }}
+      </button>
+    </div>
+
+    <section class="history-list">
+      <article class="history-item" *ngFor="let item of filteredHistories">
+        <div class="history-icon">
+          {{ item.type.charAt(0) }}
+        </div>
+
+        <div class="history-copy">
+          <div class="history-title-row">
+            <span>{{ item.type }}</span>
+            <strong class="status-badge" [class.approved]="getStatusClass(item.status) === 'approved'">
+              {{ item.status }}
+            </strong>
+          </div>
+
+          <h3>{{ item.title }}</h3>
+          <p>{{ item.date }}</p>
+          <small>{{ item.description }}</small>
+        </div>
+      </article>
+    </section>
+
+    <app-employee-bottom-nav active="requests"></app-employee-bottom-nav>
+  </div>
 </ion-content>

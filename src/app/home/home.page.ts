@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { OfflineSyncService } from '../services/offline-sync.service';
 
 @Component({
   selector: 'app-home',
@@ -8,6 +9,10 @@ import { Component } from '@angular/core';
 })
 export class HomePage {
 
-  constructor() {}
+  constructor(private offlineSync: OfflineSyncService) {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+  }
 
 }

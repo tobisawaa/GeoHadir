@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { UserService } from '../../../services/user.service';
 import { AuthService } from '../../../services/auth.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { ManagerDashboardData } from '../../../interfaces/models';
 
 @Component({
@@ -22,6 +23,7 @@ export class DashboardPage implements OnInit {
   constructor(
     private userService: UserService,
     private auth: AuthService,
+    private offlineSync: OfflineSyncService,
     private router: Router,
     private toastCtrl: ToastController
   ) {}
@@ -30,6 +32,10 @@ export class DashboardPage implements OnInit {
     const user = this.auth.getCurrentUser();
     this.userName = user?.name ?? 'Manager';
     this.userInitial = this.userName.trim().charAt(0).toUpperCase() || 'M';
+  }
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
     this.loadDashboard();
   }
 
@@ -61,6 +67,10 @@ export class DashboardPage implements OnInit {
         this.showToast('Gagal memperbarui data', 'danger');
       },
     });
+  }
+
+  trackByDashboardMember(index: number, member: any): number | string {
+    return member?.id ?? `${member?.name || 'member'}-${index}`;
   }
 
   private async showToast(message: string, color: string = 'danger') {

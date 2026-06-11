@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 @Component({
   selector: 'app-change-password',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
   standalone: false,
 })
 export class ChangePasswordPage implements OnInit {
-  constructor() {}
+  constructor(private offlineSync: OfflineSyncService) {}
 
   ngOnInit(): void {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+  }
 }

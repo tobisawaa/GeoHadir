@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { OvertimeHistoryPage } from './overtime-history.page';
-
 const routes: Routes = [
   {
     path: '',

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { OvertimeService } from '../../../services/overtime.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { OvertimeRequest } from '../../../interfaces/models';
 
 @Component({
@@ -18,12 +19,16 @@ export class TeamOvertimePage implements OnInit {
 
   constructor(
     private overtimeService: OvertimeService,
+    private offlineSync: OfflineSyncService,
     private router: Router,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController
   ) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
     this.loadOvertimes();
   }
 
@@ -130,6 +135,10 @@ export class TeamOvertimePage implements OnInit {
       case 'rejected': return 'Ditolak';
       default: return status;
     }
+  }
+
+  trackByOvertime(index: number, overtime: OvertimeRequest): number | string {
+    return overtime.id ?? `${overtime.user_id}-${overtime.date}-${index}`;
   }
 
   goBack() {

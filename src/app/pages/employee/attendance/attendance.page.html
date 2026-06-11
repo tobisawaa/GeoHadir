@@ -2,68 +2,183 @@
   <div class="page-shell">
     <header class="topbar">
       <div class="page-title">
+        <span class="page-kicker">Employee Attendance</span>
         <h1>Presensi & Lokasi</h1>
-        <p>Check-in dan check-out berbasis lokasi.</p>
+        <p>Check-in dan check-out menggunakan geolocation.</p>
       </div>
-      <button type="button" class="icon-btn"><svg viewBox="0 0 24 24" fill="none"><path d="M18 9C18 6.24 15.76 4 13 4H11C8.24 4 6 6.24 6 9V13.5L4.75 16H19.25L18 13.5V9Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M10 19C10.45 19.61 11.16 20 12 20C12.84 20 13.55 19.61 14 19" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+
+      <button
+        type="button"
+        class="icon-btn"
+        (click)="loadTodayAttendance(); loadAttendanceHistory()"
+        aria-label="Refresh absensi"
+      >
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M20 12C20 16.42 16.42 20 12 20C9.42 20 7.13 18.78 5.67 16.89"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+          />
+          <path
+            d="M4 12C4 7.58 7.58 4 12 4C14.58 4 16.87 5.22 18.33 7.11"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+          />
+          <path
+            d="M18.5 4.5V7.5H15.5"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <path
+            d="M5.5 19.5V16.5H8.5"
+            stroke="currentColor"
+            stroke-width="1.9"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
     </header>
 
-    <section class="hero-card">
-      <p class="eyebrow">Attendance</p>
-      <h2>{{ currentTime }}</h2>
-      <p>Monday, Oct 24, 2026</p>
-      <div class="location-pill">{{ locationStatus }}</div>
+    <section class="attendance-card">
+      <div class="date-line">
+        <span>{{ currentDate | date:'EEEE, dd MMMM yyyy' }}</span>
+        <strong>{{ currentTime }}</strong>
+        <div class="status-pill">{{ todayAttendance.status }}</div>
+      </div>
 
       <div class="action-row">
-        <button type="button" class="primary-btn" (click)="checkIn()" [disabled]="checkedIn">Check In Now</button>
-        <button type="button" class="secondary-btn" (click)="checkOut()" [disabled]="checkedOut">Check Out</button>
+        <button
+          type="button"
+          class="primary-btn"
+          [disabled]="isCheckingIn"
+          (click)="checkIn()"
+        >
+          {{ isCheckingIn ? 'Memproses...' : 'Check-In' }}
+        </button>
+
+        <button
+          type="button"
+          class="secondary-btn"
+          [disabled]="isCheckingOut"
+          (click)="checkOut()"
+        >
+          {{ isCheckingOut ? 'Memproses...' : 'Check-Out' }}
+        </button>
       </div>
+    </section>
+
+    <section class="location-card">
+      <div class="location-header">
+        <div>
+          <h2>Lokasi Saat Ini</h2>
+          <p>Koordinat dipakai saat check-in dan check-out.</p>
+        </div>
+
+        <button
+          type="button"
+          class="detect-btn"
+          [disabled]="isDetectingLocation"
+          (click)="detectLocation()"
+        >
+          {{ isDetectingLocation ? 'Mendeteksi...' : 'Deteksi' }}
+        </button>
+      </div>
+
+      <div class="coordinate-grid" *ngIf="currentLocation; else noLocation">
+        <article>
+          <span>Latitude</span>
+          <strong>{{ currentLocation.lat }}</strong>
+        </article>
+
+        <article>
+          <span>Longitude</span>
+          <strong>{{ currentLocation.lng }}</strong>
+        </article>
+
+        <article class="wide">
+          <span>Akurasi</span>
+          <strong>{{ currentLocation.accuracy || 0 }} meter</strong>
+        </article>
+      </div>
+
+      <ng-template #noLocation>
+        <div class="empty-location">
+          <strong>Lokasi belum tersedia</strong>
+          <p>Tekan Deteksi atau lakukan check-in/check-out untuk mengambil lokasi.</p>
+        </div>
+      </ng-template>
+    </section>
+
+    <section class="today-grid">
+      <article class="today-card">
+        <span>Check-In</span>
+        <strong>{{ todayAttendance.checkIn }}</strong>
+        <p>
+          Lat:
+          {{ todayAttendance.checkInLatitude || '-' }}
+        </p>
+        <p>
+          Lng:
+          {{ todayAttendance.checkInLongitude || '-' }}
+        </p>
+      </article>
+
+      <article class="today-card">
+        <span>Check-Out</span>
+        <strong>{{ todayAttendance.checkOut }}</strong>
+        <p>
+          Lat:
+          {{ todayAttendance.checkOutLatitude || '-' }}
+        </p>
+        <p>
+          Lng:
+          {{ todayAttendance.checkOutLongitude || '-' }}
+        </p>
+      </article>
     </section>
 
     <section class="section-block">
       <div class="section-heading">
         <div>
-          <h2>Recent Logs</h2>
-          <p>Your attendance history</p>
+          <h2>Riwayat Absensi</h2>
+          <p>Histori check-in dan check-out terakhir.</p>
         </div>
-        <button type="button" class="link-btn" (click)="goTo('/app/employee/attendance-history')">View All</button>
+
+        <button
+          type="button"
+          class="link-btn"
+          (click)="goTo('/app/employee/attendance-history')"
+        >
+          Lihat semua
+        </button>
       </div>
 
       <div class="list-stack">
-        <article class="list-card" *ngFor="let log of logs">
-          <div class="list-main">
-            <span class="meta-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <div>
-              <h3>{{ log.date }}</h3>
-              <p>{{ log.checkIn }} · {{ log.checkOut }}</p>
-            </div>
+        <article class="list-card" *ngFor="let item of attendanceHistory; trackBy: trackByAttendanceLog">
+          <div>
+            <h3>{{ item.date }}</h3>
+            <p>{{ item.checkIn }} - {{ item.checkOut }}</p>
+            <small>
+              {{ item.latitude || '-' }}, {{ item.longitude || '-' }}
+            </small>
           </div>
-          <span class="status-badge" [class.success]="log.status === 'Tepat Waktu'">{{ log.status }}</span>
+
+          <span
+            class="status-badge"
+            [class.done]="item.status === 'Selesai'"
+            [class.late]="item.status === 'Terlambat'"
+          >
+            {{ item.status }}
+          </span>
         </article>
       </div>
     </section>
 
-    <nav class="bottom-nav">
-      <button type="button" class="nav-item " (click)="goTo('/app/employee/dashboard')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4H10V10H4V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 4H20V10H14V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M4 14H10V20H4V14Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.8"/></svg>
-        <span>Dashboard</span>
-      </button>
-      <button type="button" class="nav-item active" (click)="goTo('/app/employee/attendance')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <span>Attendance</span>
-      </button>
-      <button type="button" class="nav-item " (click)="goTo('/app/employee/leave')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <span>Leave</span>
-      </button>
-      <button type="button" class="nav-item " (click)="goTo('/app/employee/payslip')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 15C13.657 15 15 13.657 15 12C15 10.343 13.657 9 12 9C10.343 9 9 10.343 9 12C9 13.657 10.343 15 12 15Z" stroke="currentColor" stroke-width="1.8"/></svg>
-        <span>Payroll</span>
-      </button>
-      <button type="button" class="nav-item " (click)="goTo('/app/employee/profile')">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M20 21C20 17.7 16.4 15 12 15C7.6 15 4 17.7 4 21" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z" stroke="currentColor" stroke-width="1.8"/></svg>
-        <span>Profile</span>
-      </button>
-    </nav>
+    <app-employee-bottom-nav active="attendance"></app-employee-bottom-nav>
   </div>
 </ion-content>

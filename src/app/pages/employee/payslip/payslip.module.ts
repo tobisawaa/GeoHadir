@@ -6,12 +6,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { PayslipPageRoutingModule } from './payslip-routing.module';
 import { PayslipPage } from './payslip.page';
+import { EmployeeBottomNavModule } from '../../../components/employee-bottom-nav/employee-bottom-nav.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    EmployeeBottomNavModule,
     PayslipPageRoutingModule,
   ],
   declarations: [PayslipPage],

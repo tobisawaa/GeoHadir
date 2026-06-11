@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 interface PayrollHistory {
   month: string;
@@ -34,7 +35,16 @@ export class PayslipPage implements OnInit {
     { month: 'Juli 2026', total: 'Rp 10.000.000', status: 'Tersedia' },
   ];
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private offlineSync: OfflineSyncService
+  ) {}
+
   ngOnInit(): void {}
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+  }
+
   goTo(route: string): void { this.router.navigateByUrl(route); }
 }

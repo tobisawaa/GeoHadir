@@ -1,13 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
+import { ApiService } from '../../../services/api.service';
+import { OfflineSyncService } from '../../../services/offline-sync.service';
 
-interface OvertimeRequest {
-  id: number;
+interface OvertimeForm {
   date: string;
   duration: number;
   reason: string;
-  status: 'Menunggu' | 'Disetujui' | 'Ditolak';
+}
+
+interface OvertimeRequest {
+  id?: number;
+  date: string;
+  duration: number;
+  reason: string;
+  status: 'Disetujui' | 'Menunggu' | 'Ditolak' | string;
 }
 
 @Component({
@@ -17,36 +25,231 @@ interface OvertimeRequest {
   standalone: false,
 })
 export class OvertimePage implements OnInit {
-  approvedHours = 12;
-  pendingRequest = 2;
+  approvedOvertime = 0;
+  pendingOvertime = 0;
+  isLoading = false;
 
-  form = { date: '', duration: 1, reason: '' };
+  form: OvertimeForm = {
+    date: '',
+    duration: 1,
+    reason: '',
+  };
 
-  recentRequests: OvertimeRequest[] = [
-    { id: 1, date: '18 Mei 2026', duration: 2.5, reason: 'Deployment aplikasi', status: 'Disetujui' },
-    { id: 2, date: '22 Mei 2026', duration: 3, reason: 'Closing laporan', status: 'Menunggu' },
-  ];
+  recentRequests: OvertimeRequest[] = [];
 
-  constructor(private router: Router, private toastCtrl: ToastController) {}
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private offlineSync: OfflineSyncService,
+    private loadingCtrl: LoadingController,
+    private toastCtrl: ToastController
+  ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setDefaultDate();
+  }
+
+  ionViewWillEnter(): void {
+    void this.offlineSync.syncWhenOnline();
+    this.loadOvertimeData();
+  }
+
+  goTo(route: string): void {
+    this.router.navigateByUrl(route);
+  }
+
+  trackByOvertimeRequest(index: number, item: OvertimeRequest): number | string {
+    return item.id ?? `${item.date}-${index}`;
+  }
 
   async submitOvertime(): Promise<void> {
     if (!this.form.date || !this.form.duration || !this.form.reason.trim()) {
-      await this.showToast('Lengkapi tanggal, durasi, dan alasan lembur dulu.', 'warning');
+      await this.showToast('Tanggal, durasi, dan alasan lembur wajib diisi.', 'warning');
       return;
     }
 
-    this.recentRequests = [{ id: Date.now(), date: this.form.date, duration: Number(this.form.duration), reason: this.form.reason, status: 'Menunggu' }, ...this.recentRequests];
-    this.pendingRequest += 1;
-    this.form = { date: '', duration: 1, reason: '' };
-    await this.showToast('[BACKEND] Pengajuan lembur dikirim dengan status pending.', 'success');
+    if (Number(this.form.duration) < 1) {
+      await this.showToast('Durasi lembur minimal 1 jam.', 'warning');
+      return;
+    }
+
+    const loading = await this.loadingCtrl.create({
+      message: 'Mengirim pengajuan lembur...',
+      spinner: 'circular',
+    });
+
+    await loading.present();
+
+    const payload = {
+      date: this.form.date,
+      duration: Number(this.form.duration),
+      duration_hours: Number(this.form.duration),
+      reason: this.form.reason.trim(),
+    };
+
+    this.api.post<any>('overtimes', payload).subscribe({
+      next: async (response) => {
+        await loading.dismiss();
+
+        const createdData = this.extractData(response);
+
+        this.recentRequests.unshift({
+          id: createdData?.id ?? Date.now(),
+          date: this.formatDate(payload.date),
+          duration: payload.duration,
+          reason: payload.reason,
+          status: this.normalizeStatus(createdData?.status ?? 'pending'),
+        });
+
+        this.pendingOvertime += 1;
+        this.resetForm();
+
+        await this.showToast('Pengajuan lembur berhasil dikirim.', 'success');
+      },
+      error: async (error) => {
+        await loading.dismiss();
+
+        const message =
+          error?.error?.message ||
+          error?.message ||
+          'Gagal mengirim pengajuan lembur. Pastikan backend API sudah berjalan.';
+
+        await this.showToast(message, 'danger');
+      },
+    });
   }
 
-  goTo(route: string): void { this.router.navigateByUrl(route); }
+  private loadOvertimeData(): void {
+    this.isLoading = true;
 
-  private async showToast(message: string, color: 'success' | 'warning' | 'danger'): Promise<void> {
-    const toast = await this.toastCtrl.create({ message, duration: 2400, color, position: 'top' });
+    this.api.get<any>('overtimes/my').subscribe({
+      next: (response) => {
+        const data = this.extractData(response);
+        const list = Array.isArray(data) ? data : data?.items ?? data?.overtimes ?? [];
+
+        this.recentRequests = list.map((item: any) => this.mapOvertimeItem(item));
+        this.calculateSummary(this.recentRequests);
+        this.isLoading = false;
+      },
+      error: () => {
+        this.recentRequests = this.getFallbackRequests();
+        this.calculateSummary(this.recentRequests);
+        this.isLoading = false;
+      },
+    });
+  }
+
+  private calculateSummary(items: OvertimeRequest[]): void {
+    this.approvedOvertime = items
+      .filter((item) => item.status === 'Disetujui')
+      .reduce((total, item) => total + Number(item.duration || 0), 0);
+
+    this.pendingOvertime = items.filter((item) => item.status === 'Menunggu').length;
+  }
+
+  private mapOvertimeItem(item: any): OvertimeRequest {
+    return {
+      id: item?.id,
+      date: this.formatDate(item?.date ?? item?.overtime_date ?? item?.created_at ?? ''),
+      duration: Number(item?.duration ?? item?.duration_hours ?? item?.hours ?? 0),
+      reason: item?.reason ?? item?.description ?? '-',
+      status: this.normalizeStatus(item?.status),
+    };
+  }
+
+  private normalizeStatus(status: string): string {
+    const value = String(status || '').toLowerCase();
+
+    if (value === 'approved' || value === 'disetujui') {
+      return 'Disetujui';
+    }
+
+    if (value === 'rejected' || value === 'ditolak') {
+      return 'Ditolak';
+    }
+
+    return 'Menunggu';
+  }
+
+  private extractData(response: any): any {
+    if (response?.data !== undefined) {
+      return response.data;
+    }
+
+    return response;
+  }
+
+  private setDefaultDate(): void {
+    if (this.form.date) {
+      return;
+    }
+
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const date = String(today.getDate()).padStart(2, '0');
+
+    this.form.date = `${year}-${month}-${date}`;
+  }
+
+  private resetForm(): void {
+    this.form = {
+      date: '',
+      duration: 1,
+      reason: '',
+    };
+
+    this.setDefaultDate();
+  }
+
+  private formatDate(value: string): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric',
+    });
+  }
+
+  private getFallbackRequests(): OvertimeRequest[] {
+    return [
+      {
+        id: 1,
+        date: '18 Mei 2026',
+        duration: 2.5,
+        reason: 'Deployment aplikasi',
+        status: 'Disetujui',
+      },
+      {
+        id: 2,
+        date: '22 Mei 2026',
+        duration: 3,
+        reason: 'Closing laporan',
+        status: 'Menunggu',
+      },
+    ];
+  }
+
+  private async showToast(
+    message: string,
+    color: 'success' | 'warning' | 'danger' | 'primary' = 'primary'
+  ): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration: 2500,
+      color,
+      position: 'top',
+    });
+
     await toast.present();
   }
 }

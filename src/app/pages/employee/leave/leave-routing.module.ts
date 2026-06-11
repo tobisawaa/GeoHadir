@@ -1,8 +1,7 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LeavePage } from './leave.page';
-
 const routes: Routes = [
   {
     path: '',

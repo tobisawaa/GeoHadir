@@ -6,12 +6,14 @@ import { IonicModule } from '@ionic/angular';
 
 import { LeavePageRoutingModule } from './leave-routing.module';
 import { LeavePage } from './leave.page';
+import { EmployeeBottomNavModule } from '../../../components/employee-bottom-nav/employee-bottom-nav.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    EmployeeBottomNavModule,
     LeavePageRoutingModule,
   ],
   declarations: [LeavePage],
