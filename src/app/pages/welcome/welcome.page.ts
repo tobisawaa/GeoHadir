@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OfflineSyncService } from '../../services/offline-sync.service';
+import { AuthService } from '../../services/auth.service';
 
 interface WelcomeSlide {
   badge: string;
@@ -19,6 +20,7 @@ interface WelcomeSlide {
 })
 export class WelcomePage implements OnInit {
   private readonly welcomeKey = 'geohadir_welcome_done';
+  private readonly privacyAcceptedKey = 'geohadir_privacy_accepted';
 
   // GANTI LINK INI DENGAN LINK PRIVACY POLICY KAMU
   private readonly privacyPolicyUrl = 'https://peridot-quokka-f8e.notion.site/GeoHadir-Privacy-Policy-37bcefef99d480089270c840c4f78432?pvs=74';
@@ -68,19 +70,17 @@ export class WelcomePage implements OnInit {
 
   constructor(
     private router: Router,
-    private offlineSync: OfflineSyncService
+    private offlineSync: OfflineSyncService,
+    private auth: AuthService
   ) {}
 
   ngOnInit(): void {
-    const alreadySeen = localStorage.getItem(this.welcomeKey);
-
-    if (alreadySeen === 'true') {
-      this.router.navigateByUrl('/login', { replaceUrl: true });
-    }
+    this.redirectIfWelcomeDone();
   }
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
+    this.redirectIfWelcomeDone();
   }
 
   get isFirstSlide(): boolean {
@@ -141,14 +141,50 @@ export class WelcomePage implements OnInit {
       return;
     }
 
-    localStorage.setItem(this.welcomeKey, 'true');
+    this.markWelcomeDone();
     this.router.navigateByUrl('/login', { replaceUrl: true });
   }
 
   resetWelcomeForTesting(): void {
     localStorage.removeItem(this.welcomeKey);
+    localStorage.removeItem(this.privacyAcceptedKey);
     this.activeSlide = 0;
     this.privacyAccepted = false;
     this.privacyOpened = false;
+  }
+
+  private redirectIfWelcomeDone(): void {
+    if (!this.hasCompletedWelcome() && !this.auth.isLoggedIn()) {
+      return;
+    }
+
+    this.markWelcomeDone();
+    this.router.navigateByUrl(this.getDefaultRoute(), { replaceUrl: true });
+  }
+
+  private hasCompletedWelcome(): boolean {
+    return (
+      localStorage.getItem(this.welcomeKey) === 'true' ||
+      localStorage.getItem(this.privacyAcceptedKey) === 'true'
+    );
+  }
+
+  private markWelcomeDone(): void {
+    localStorage.setItem(this.welcomeKey, 'true');
+    localStorage.setItem(this.privacyAcceptedKey, 'true');
+  }
+
+  private getDefaultRoute(): string {
+    const role = this.auth.getRole();
+
+    if (role === 'manager') {
+      return '/app/manager/dashboard';
+    }
+
+    if (role === 'employee') {
+      return '/app/employee/dashboard';
+    }
+
+    return '/login';
   }
 }

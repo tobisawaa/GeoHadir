@@ -5,10 +5,10 @@ import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   {
-  path: 'welcome',
-  loadChildren: () =>
-    import('./pages/welcome/welcome.module').then((m) => m.WelcomePageModule),
-},
+    path: 'welcome',
+    loadChildren: () =>
+      import('./pages/welcome/welcome.module').then((m) => m.WelcomePageModule),
+  },
   {
     path: 'login',
     loadChildren: () =>
@@ -186,14 +186,10 @@ const routes: Routes = [
     path: '',
     redirectTo: 'welcome',
     pathMatch: 'full',
-},
+  },
   {
     path: '**',
     redirectTo: 'login',
-  },
-  {
-    path: 'welcome',
-    loadChildren: () => import('./pages/welcome/welcome.module').then( m => m.WelcomePageModule)
   },
 ];
 

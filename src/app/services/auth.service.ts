@@ -11,6 +11,8 @@ import { User, AuthResponse, LoginCredentials } from '../interfaces/models';
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
+  private readonly WELCOME_KEY = 'geohadir_welcome_done';
+  private readonly PRIVACY_ACCEPTED_KEY = 'geohadir_privacy_accepted';
 
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   private tokenSubject = new BehaviorSubject<string | null>(null);
@@ -73,6 +75,8 @@ export class AuthService {
   private setSession(res: AuthResponse): void {
     localStorage.setItem(this.TOKEN_KEY, res.token);
     localStorage.setItem(this.USER_KEY, JSON.stringify(res.user));
+    localStorage.setItem(this.WELCOME_KEY, 'true');
+    localStorage.setItem(this.PRIVACY_ACCEPTED_KEY, 'true');
 
     this.currentUserSubject.next(res.user);
     this.tokenSubject.next(res.token);
