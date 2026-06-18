@@ -1,75 +1,200 @@
-﻿ion-content {
-  --background: var(--ion-background-color);
+:host {
+  display: block;
+}
+
+ion-content {
+  --background: #f5f8ff;
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.topbar {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  min-width: 0;
+}
+
+.page-title span {
+  display: inline-flex;
+  margin-bottom: 4px;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.page-title h1 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 22px;
+  line-height: 1.08;
+  font-weight: 950;
+  letter-spacing: -0.6px;
+}
+
+.page-title p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+.back-btn {
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #dbeafe;
+  border-radius: 15px;
+  background: #ffffff;
+  color: #2563eb;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
+}
+
+.back-btn svg {
+  width: 21px;
+  height: 21px;
+}
+
+.page-wrap {
+  min-height: 100%;
+  padding: 18px 16px 118px;
+  background:
+    radial-gradient(circle at top right, rgba(37, 99, 235, 0.11), transparent 30%),
+    linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
+}
+
+.loading-indicator,
+.state-wrap,
+.empty-state {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 34px 18px;
+  border: 1px solid #dbeafe;
+  border-radius: 24px;
+  background: #ffffff;
+  color: #64748b;
+  text-align: center;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
+}
+
+.state-icon,
+.empty-state .material-symbols-outlined {
+  color: #2563eb;
+  font-size: 42px;
+}
+
+.state-wrap h3,
+.empty-state h3 {
+  margin: 0;
+  color: #0f172a;
+  font-size: 16px;
+  font-weight: 950;
+}
+
+.state-wrap p,
+.empty-state p,
+.loading-indicator p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.btn-outline {
+  height: 42px;
+  padding: 0 16px;
+  border: 1px solid #bfdbfe;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 950;
 }
 
 .list-area {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: grid;
+  gap: 10px;
 }
 
 .att-item {
-  background: var(--surface-container-lowest);
-  border: 1px solid var(--outline-variant);
-  border-radius: 0.75rem;
-  padding: 14px 16px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  padding: 15px;
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 14px 34px rgba(15, 23, 42, 0.06);
 }
 
 .att-head {
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 8px;
+  gap: 12px;
+  margin-bottom: 10px;
 }
 
 .att-date {
+  min-width: 0;
+  color: #0f172a;
   font-size: 14px;
-  font-weight: 600;
-  color: var(--ion-text-color);
+  font-weight: 950;
 }
 
 .att-info {
   display: flex;
   align-items: center;
   gap: 6px;
+  margin-top: 5px;
+  color: #64748b;
   font-size: 12px;
-  color: var(--on-surface-variant);
+  font-weight: 750;
+}
 
-  strong { font-weight: 600; color: var(--ion-text-color); }
+.att-time strong {
+  color: #0f172a;
+  font-weight: 950;
 }
 
 .att-sep {
-  color: var(--outline-variant);
+  color: #cbd5e1;
 }
 
-.state-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 64px 24px;
-  text-align: center;
-
-  .state-icon {
-    font-size: 48px;
-    color: var(--ion-color-danger);
-    margin-bottom: 12px;
-  }
-
-  h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--ion-text-color);
-    margin: 0 0 4px;
-  }
-
-  p {
-    font-size: 14px;
-    color: var(--on-surface-variant);
-    margin: 0 0 16px;
-  }
+.status-badge {
+  flex: 0 0 auto;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #334155;
+  font-size: 10px;
+  font-weight: 950;
+  white-space: nowrap;
 }
 
-/* manager-bottom-nav-spacing */
-:host { padding-bottom: 120px; }
+.status-badge.present {
+  background: #dcfce7;
+  color: #15803d;
+}
 
+.status-badge.late {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.status-badge.absent {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.back-btn:active,
+.btn-outline:active,
+.att-item:active {
+  transform: scale(0.985);
+}

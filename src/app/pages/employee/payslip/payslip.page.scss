@@ -16,10 +16,10 @@ ion-content.employee-content {
 }
 
 .topbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  gap: 14px;
+  gap: 12px;
   margin-bottom: 16px;
 }
 
@@ -51,7 +51,7 @@ ion-content.employee-content {
 .page-title h1 {
   margin: 0;
   color: #0f172a;
-  font-size: 17px;
+  font-size: 20px;
   line-height: 1.15;
   font-weight: 950;
   letter-spacing: -0.35px;
@@ -65,7 +65,8 @@ ion-content.employee-content {
   font-weight: 700;
 }
 
-.icon-btn {
+.icon-btn,
+.back-btn {
   width: 42px;
   height: 42px;
   flex: 0 0 auto;
@@ -79,6 +80,7 @@ ion-content.employee-content {
 }
 
 .icon-btn svg,
+.back-btn svg,
 .nav-item svg,
 .menu-icon svg,
 .card-icon svg,

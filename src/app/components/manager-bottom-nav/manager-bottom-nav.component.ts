@@ -22,7 +22,7 @@ export class ManagerBottomNavComponent {
   navItems: ManagerNavItem[] = [
     {
       key: 'dashboard',
-      label: 'Overview',
+      label: 'Ringkasan',
       route: '/app/manager/dashboard',
       icon: 'overview',
     },
@@ -40,7 +40,7 @@ export class ManagerBottomNavComponent {
     },
     {
       key: 'approval',
-      label: 'Approval',
+      label: 'Persetujuan',
       route: '/app/manager/team-leave',
       icon: 'approval',
     },

@@ -12,14 +12,14 @@ import { OfflineSyncService } from '../../../services/offline-sync.service';
 })
 export class ProfilePage implements OnInit {
   employee = {
-    name: 'Muhamad Ridho',
-    employeeId: 'EMP-2026-001',
-    position: 'Frontend Developer',
-    department: 'Information Technology',
-    email: 'employee@geohadir.com',
-    phone: '0812-3456-7890',
-    manager: 'Manager Demo',
-    workLocation: 'Jakarta Office',
+    name: 'Karyawan',
+    employeeId: '-',
+    position: 'Karyawan',
+    department: '-',
+    email: '-',
+    phone: '-',
+    manager: '-',
+    workLocation: '-',
   };
 
   constructor(
@@ -32,6 +32,7 @@ export class ProfilePage implements OnInit {
   ngOnInit(): void {}
 
   ionViewWillEnter(): void {
+    this.loadCurrentUser();
     void this.offlineSync.syncWhenOnline();
   }
 
@@ -49,7 +50,7 @@ export class ProfilePage implements OnInit {
           role: 'cancel',
         },
         {
-          text: 'Logout',
+          text: 'Keluar',
           role: 'destructive',
           handler: () => {
             this.auth.logout();
@@ -60,5 +61,29 @@ export class ProfilePage implements OnInit {
     });
 
     await alert.present();
+  }
+
+  private loadCurrentUser(): void {
+    const user = this.auth.getCurrentUser();
+
+    this.employee = {
+      ...this.employee,
+      name: user?.name || 'Karyawan',
+      employeeId: this.stringifyValue(user?.employee_code || user?.employee_id || user?.id),
+      position: user?.position || 'Karyawan',
+      department: user?.department || '-',
+      email: user?.email || '-',
+      phone: user?.phone || '-',
+      manager: user?.manager_name || user?.manager || '-',
+      workLocation: user?.work_location || user?.location || '-',
+    };
+  }
+
+  private stringifyValue(value: unknown): string {
+    if (value === null || value === undefined || value === '') {
+      return '-';
+    }
+
+    return String(value);
   }
 }

@@ -54,7 +54,8 @@ ion-content.employee-content {
   font-weight: 700;
 }
 
-.icon-btn {
+.icon-btn,
+.back-btn {
   width: 44px;
   height: 44px;
   flex: 0 0 auto;
@@ -67,7 +68,8 @@ ion-content.employee-content {
   box-shadow: 0 12px 26px rgba(15, 23, 42, 0.08);
 }
 
-.icon-btn svg {
+.icon-btn svg,
+.back-btn svg {
   width: 21px;
   height: 21px;
 }
@@ -435,6 +437,7 @@ input[type="date"]::-webkit-datetime-edit-year-field {
 }
 
 .icon-btn:active,
+.back-btn:active,
 .submit-btn:active,
 .list-card:active {
   transform: scale(0.985);

@@ -8,11 +8,11 @@ export class LeaveService {
   constructor(private api: ApiService) {}
 
   submit(data: Partial<LeaveRequest>): Observable<ApiResponse<LeaveRequest>> {
-    return this.api.post<ApiResponse<LeaveRequest>>('leaves', data);
+    return this.api.post<ApiResponse<LeaveRequest>>('leaves/apply', data);
   }
 
   getMyLeaves(params?: { page?: number; per_page?: number }): Observable<ApiResponse<LeaveRequest[]>> {
-    return this.api.get<ApiResponse<LeaveRequest[]>>('leaves/my', params as any);
+    return this.api.get<ApiResponse<LeaveRequest[]>>('leaves/history', params as any);
   }
 
   getById(id: number): Observable<ApiResponse<LeaveRequest>> {
@@ -24,14 +24,20 @@ export class LeaveService {
   }
 
   getTeamLeaves(params?: { status?: string }): Observable<ApiResponse<LeaveRequest[]>> {
-    return this.api.get<ApiResponse<LeaveRequest[]>>('leaves/team', params as any);
+    return this.api.get<ApiResponse<LeaveRequest[]>>('manager/approvals/leaves', params as any);
   }
 
   approve(id: number, notes?: string): Observable<ApiResponse<LeaveRequest>> {
-    return this.api.patch<ApiResponse<LeaveRequest>>(`leaves/${id}/approve`, { notes });
+    return this.api.post<ApiResponse<LeaveRequest>>(`manager/approvals/leaves/${id}/action`, {
+      status: 'approved',
+      notes,
+    });
   }
 
   reject(id: number, notes?: string): Observable<ApiResponse<LeaveRequest>> {
-    return this.api.patch<ApiResponse<LeaveRequest>>(`leaves/${id}/reject`, { notes });
+    return this.api.post<ApiResponse<LeaveRequest>>(`manager/approvals/leaves/${id}/action`, {
+      status: 'rejected',
+      notes,
+    });
   }
 }

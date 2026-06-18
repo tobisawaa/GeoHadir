@@ -1,10 +1,10 @@
-<nav class="employee-bottom-nav" aria-label="Employee bottom navigation">
+<nav class="employee-bottom-nav" aria-label="Navigasi bawah karyawan">
   <button
     type="button"
     class="nav-action"
     [class.active]="active === 'dashboard'"
     (click)="goTo('/app/employee/dashboard')"
-    aria-label="Dashboard"
+    aria-label="Beranda"
   >
     <span class="nav-icon">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -14,7 +14,7 @@
         <path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.9" />
       </svg>
     </span>
-    <span class="nav-label">Dashboard</span>
+    <span class="nav-label">Beranda</span>
   </button>
 
   <button
@@ -22,7 +22,7 @@
     class="nav-action"
     [class.active]="active === 'attendance'"
     (click)="goTo('/app/employee/attendance')"
-    aria-label="Attendance"
+    aria-label="Presensi"
   >
     <span class="nav-icon">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -31,7 +31,7 @@
         <path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </span>
-    <span class="nav-label">Attendance</span>
+    <span class="nav-label">Presensi</span>
   </button>
 
   <button
@@ -39,7 +39,7 @@
     class="nav-action"
     [class.active]="active === 'requests'"
     (click)="goTo('/app/employee/requests')"
-    aria-label="Requests"
+    aria-label="Pengajuan"
   >
     <span class="nav-icon">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -48,7 +48,7 @@
         <path d="M8.5 13H15.5M8.5 16H12.5" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" />
       </svg>
     </span>
-    <span class="nav-label">Request</span>
+    <span class="nav-label">Pengajuan</span>
   </button>
 
   <button
@@ -56,7 +56,7 @@
     class="nav-action"
     [class.active]="active === 'payroll'"
     (click)="goTo('/app/employee/payslip')"
-    aria-label="Payroll"
+    aria-label="Gaji"
   >
     <span class="nav-icon">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -65,7 +65,7 @@
         <path d="M12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15Z" stroke="currentColor" stroke-width="1.9" />
       </svg>
     </span>
-    <span class="nav-label">Payroll</span>
+    <span class="nav-label">Gaji</span>
   </button>
 
   <button
@@ -73,7 +73,7 @@
     class="nav-action"
     [class.active]="active === 'profile'"
     (click)="goTo('/app/employee/profile')"
-    aria-label="Profile"
+    aria-label="Profil"
   >
     <span class="nav-icon">
       <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -81,6 +81,6 @@
         <path d="M12 12C14.2 12 16 10.2 16 8C16 5.8 14.2 4 12 4C9.8 4 8 5.8 8 8C8 10.2 9.8 12 12 12Z" stroke="currentColor" stroke-width="1.9" />
       </svg>
     </span>
-    <span class="nav-label">Profile</span>
+    <span class="nav-label">Profil</span>
   </button>
 </nav>

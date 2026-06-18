@@ -8,11 +8,11 @@ export class OvertimeService {
   constructor(private api: ApiService) {}
 
   submit(data: Partial<OvertimeRequest>): Observable<ApiResponse<OvertimeRequest>> {
-    return this.api.post<ApiResponse<OvertimeRequest>>('overtimes', data);
+    return this.api.post<ApiResponse<OvertimeRequest>>('overtimes/apply', data);
   }
 
   getMyOvertimes(params?: { page?: number; per_page?: number }): Observable<ApiResponse<OvertimeRequest[]>> {
-    return this.api.get<ApiResponse<OvertimeRequest[]>>('overtimes/my', params as any);
+    return this.api.get<ApiResponse<OvertimeRequest[]>>('overtimes/history', params as any);
   }
 
   getById(id: number): Observable<ApiResponse<OvertimeRequest>> {
@@ -24,14 +24,20 @@ export class OvertimeService {
   }
 
   getTeamOvertimes(params?: { status?: string }): Observable<ApiResponse<OvertimeRequest[]>> {
-    return this.api.get<ApiResponse<OvertimeRequest[]>>('overtimes/team', params as any);
+    return this.api.get<ApiResponse<OvertimeRequest[]>>('manager/approvals/overtimes', params as any);
   }
 
   approve(id: number, notes?: string): Observable<ApiResponse<OvertimeRequest>> {
-    return this.api.patch<ApiResponse<OvertimeRequest>>(`overtimes/${id}/approve`, { notes });
+    return this.api.post<ApiResponse<OvertimeRequest>>(`manager/approvals/overtimes/${id}/action`, {
+      status: 'approved',
+      notes,
+    });
   }
 
   reject(id: number, notes?: string): Observable<ApiResponse<OvertimeRequest>> {
-    return this.api.patch<ApiResponse<OvertimeRequest>>(`overtimes/${id}/reject`, { notes });
+    return this.api.post<ApiResponse<OvertimeRequest>>(`manager/approvals/overtimes/${id}/action`, {
+      status: 'rejected',
+      notes,
+    });
   }
 }

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../../services/auth.service';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
+import { UserService } from '../../../services/user.service';
 import { User } from '../../../interfaces/models';
 
 @Component({
@@ -16,6 +17,7 @@ export class ProfilePage implements OnInit {
 
   constructor(
     private auth: AuthService,
+    private userService: UserService,
     private offlineSync: OfflineSyncService,
     private router: Router,
     private alertCtrl: AlertController,
@@ -28,15 +30,29 @@ export class ProfilePage implements OnInit {
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
+    this.loadProfile();
+  }
+
+  loadProfile(): void {
+    this.userService.getProfile().subscribe({
+      next: (response) => {
+        const user = response?.data ?? response;
+        this.user = this.normalizeUser(user);
+      },
+      error: async () => {
+        this.user = this.auth.getCurrentUser();
+        await this.showToast('Gagal memuat profil terbaru dari server.', 'warning');
+      },
+    });
   }
 
   async changePassword() {
     const alert = await this.alertCtrl.create({
-      header: 'Ubah Password',
+      header: 'Ubah Kata Sandi',
       inputs: [
-        { name: 'current_password', type: 'password', placeholder: 'Password saat ini' },
-        { name: 'new_password', type: 'password', placeholder: 'Password baru' },
-        { name: 'confirm_password', type: 'password', placeholder: 'Konfirmasi password baru' },
+        { name: 'current_password', type: 'password', placeholder: 'Kata sandi saat ini' },
+        { name: 'new_password', type: 'password', placeholder: 'Kata sandi baru' },
+        { name: 'confirm_password', type: 'password', placeholder: 'Konfirmasi kata sandi baru' },
       ],
       buttons: [
         { text: 'Batal', role: 'cancel' },
@@ -44,15 +60,15 @@ export class ProfilePage implements OnInit {
           text: 'Simpan',
           handler: (data) => {
             if (data.new_password !== data.confirm_password) {
-              this.showToast('Konfirmasi password tidak cocok', 'danger');
+              this.showToast('Konfirmasi kata sandi tidak cocok', 'danger');
               return false;
             }
             this.auth.changePassword(data).subscribe({
               next: () => {
-                this.showToast('Password berhasil diubah', 'success');
+                this.showToast('Kata sandi berhasil diubah', 'success');
               },
               error: (err) => {
-                this.showToast(err.error?.message || 'Gagal mengubah password', 'danger');
+                this.showToast(err.error?.message || 'Gagal mengubah kata sandi', 'danger');
               },
             });
             return true;
@@ -65,12 +81,12 @@ export class ProfilePage implements OnInit {
 
   async logout() {
     const alert = await this.alertCtrl.create({
-      header: 'Konfirmasi Logout',
-      message: 'Apakah Anda yakin ingin logout?',
+      header: 'Konfirmasi Keluar',
+      message: 'Apakah Anda yakin ingin keluar dari aplikasi?',
       buttons: [
         { text: 'Batal', role: 'cancel' },
         {
-          text: 'Logout',
+          text: 'Keluar',
           handler: () => {
             this.auth.logout();
             this.router.navigate(['/login'], { replaceUrl: true });
@@ -87,8 +103,8 @@ export class ProfilePage implements OnInit {
   }
 
   getRoleLabel(role?: string): string {
-    const labels: Record<string, string> = { manager: 'Manager', employee: 'Karyawan' };
-    return labels[role || ''] || role || 'Manager';
+    const labels: Record<string, string> = { manager: 'Manajer', employee: 'Karyawan' };
+    return labels[role || ''] || role || 'Manajer';
   }
 
   formatDate(dateStr: string | null): string {
@@ -108,5 +124,19 @@ export class ProfilePage implements OnInit {
   private async showToast(message: string, color: string = 'danger') {
     const toast = await this.toastCtrl.create({ message, duration: 3000, color, position: 'top' });
     toast.present();
+  }
+
+  private normalizeUser(user: any): User {
+    return {
+      ...user,
+      department: typeof user?.department === 'object'
+        ? user.department?.name
+        : user?.department ?? '',
+      position: typeof user?.position === 'object'
+        ? user.position?.title
+        : user?.position ?? '',
+      phone: user?.phone ?? '',
+      join_date: user?.join_date ?? '',
+    } as User;
   }
 }

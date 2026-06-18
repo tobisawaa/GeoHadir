@@ -14,6 +14,15 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
+    <div class="approval-switch">
+      <button type="button" class="switch-btn" (click)="navigateTo('/app/manager/team-leave')">
+        Cuti
+      </button>
+      <button type="button" class="switch-btn active">
+        Lembur
+      </button>
+    </div>
+
     <div class="loading-indicator" *ngIf="loading">
       <p>Memuat data...</p>
     </div>

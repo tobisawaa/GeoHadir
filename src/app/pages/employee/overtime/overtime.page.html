@@ -1,10 +1,16 @@
 <ion-content class="employee-content" fullscreen>
   <div class="page-shell">
     <header class="topbar">
+      <button type="button" class="back-btn" (click)="goTo('/app/employee/dashboard')" aria-label="Kembali ke beranda">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
       <div class="page-title">
-        <span class="page-kicker">Employee Request</span>
+        <span class="page-kicker">Pengajuan Karyawan</span>
         <h1>Pengajuan Lembur</h1>
-        <p>Ajukan lembur dan pantau status approval manager.</p>
+        <p>Ajukan lembur dan pantau status persetujuan manajer.</p>
       </div>
 
       <button
@@ -49,15 +55,15 @@
 
       <div class="summary-grid">
         <article class="summary-item primary">
-          <span>Lembur Approved</span>
+          <span>Lembur Disetujui</span>
           <strong>{{ approvedOvertime }}</strong>
           <small>jam disetujui</small>
         </article>
 
         <article class="summary-item warning">
-          <span>Pending</span>
+          <span>Menunggu</span>
           <strong>{{ pendingOvertime }}</strong>
-          <small>menunggu approval</small>
+          <small>menunggu persetujuan</small>
         </article>
       </div>
     </section>
@@ -66,7 +72,7 @@
       <div class="section-heading">
         <div>
           <h2>Form Lembur</h2>
-          <p>[BACKEND] Submit ke endpoint overtime/request.</p>
+          <p>Lengkapi data lembur sebelum dikirim ke manajer.</p>
         </div>
       </div>
 
@@ -119,7 +125,7 @@
     <section class="section-block">
       <div class="section-heading with-link">
         <div>
-          <h2>Request Terbaru</h2>
+          <h2>Pengajuan Terbaru</h2>
           <p>Status lembur terakhir</p>
         </div>
 

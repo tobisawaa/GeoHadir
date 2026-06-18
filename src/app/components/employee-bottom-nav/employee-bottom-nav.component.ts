@@ -27,31 +27,31 @@ export class EmployeeBottomNavComponent {
   navItems: EmployeeNavItem[] = [
     {
       key: 'dashboard',
-      label: 'Dashboard',
+      label: 'Beranda',
       route: '/app/employee/dashboard',
       icon: 'grid',
     },
     {
       key: 'attendance',
-      label: 'Attendance',
+      label: 'Presensi',
       route: '/app/employee/attendance',
       icon: 'attendance',
     },
     {
       key: 'requests',
-      label: 'Request',
+      label: 'Pengajuan',
       route: '/app/employee/requests',
       icon: 'request',
     },
     {
       key: 'payroll',
-      label: 'Payroll',
+      label: 'Gaji',
       route: '/app/employee/payslip',
       icon: 'payroll',
     },
     {
       key: 'profile',
-      label: 'Profile',
+      label: 'Profil',
       route: '/app/employee/profile',
       icon: 'profile',
     },

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
-import { delay, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { User, AuthResponse, LoginCredentials } from '../interfaces/models';
 
@@ -30,6 +30,13 @@ export class AuthService {
     const user = localStorage.getItem(this.USER_KEY);
 
     if (token) {
+      if (token.startsWith('mock-token') || token.startsWith('mock_token')) {
+        this.clearAuthStorage();
+        this.tokenSubject.next(null);
+        this.currentUserSubject.next(null);
+        return;
+      }
+
       this.tokenSubject.next(token);
     }
 
@@ -49,17 +56,10 @@ export class AuthService {
   }
 
   login(credentials: LoginCredentials): Observable<AuthResponse> {
-    if (environment.useMock) {
-      return this.mockLogin(credentials).pipe(
-        tap((res) => {
-          this.setSession(res);
-        })
-      );
-    }
-
     return this.http
-      .post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials)
+      .post<any>(`${this.apiUrl}/login`, credentials)
       .pipe(
+        map((res) => this.normalizeAuthResponse(res)),
         tap((res) => {
           this.setSession(res);
         })
@@ -145,6 +145,14 @@ export class AuthService {
 
     try {
       const parsedUser = JSON.parse(storageUser) as User;
+
+      if (this.isLegacyMockUser(parsedUser)) {
+        this.clearAuthStorage();
+        this.currentUserSubject.next(null);
+        this.tokenSubject.next(null);
+        return null;
+      }
+
       this.currentUserSubject.next(parsedUser);
       return parsedUser;
     } catch {
@@ -178,54 +186,72 @@ export class AuthService {
     new_password: string;
     confirm_password: string;
   }): Observable<any> {
-    return this.http.put(`${this.apiUrl}/auth/change-password`, data, {
+    const user = this.getCurrentUser();
+
+    return this.http.post(`${this.apiUrl}/profile/update`, {
+      name: user?.name ?? '',
+      email: user?.email ?? '',
+      password: data.new_password,
+    }, {
       headers: { Authorization: `Bearer ${this.getToken()}` },
     });
   }
 
   updateProfile(data: Partial<User>): Observable<User> {
-    return this.http.put<User>(`${this.apiUrl}/auth/profile`, data, {
+    return this.http.post<any>(`${this.apiUrl}/profile/update`, data, {
       headers: { Authorization: `Bearer ${this.getToken()}` },
-    });
+    }).pipe(map((res) => this.normalizeUser(res?.data ?? res)));
   }
 
-  private mockLogin(credentials: LoginCredentials): Observable<AuthResponse> {
-    const email = String(credentials.email || '').trim().toLowerCase();
-    const password = String(credentials.password || '').trim();
+  private normalizeAuthResponse(response: any): AuthResponse {
+    const payload = response?.data ?? response;
+    return {
+      token: payload?.token,
+      user: this.normalizeUser(payload?.user),
+    };
+  }
 
-    if (!email || password.length < 6) {
-      return throwError(() => ({
-        error: {
-          message: 'Email dan password wajib diisi dengan benar.',
-        },
-      }));
+  private normalizeUser(user: any): User {
+    const department = typeof user?.department === 'object'
+      ? user.department?.name
+      : user?.department;
+    const position = typeof user?.position === 'object'
+      ? user.position?.title
+      : user?.position;
+    const manager = typeof user?.manager === 'object'
+      ? user.manager?.name
+      : user?.manager;
+    const workLocation = typeof user?.work_location === 'object'
+      ? user.work_location?.name
+      : user?.work_location ?? user?.location;
+
+    return {
+      ...user,
+      employee_id: user?.employee_id ?? user?.employee?.id ?? user?.employee_code ?? '',
+      employee_code: user?.employee_code ?? user?.employee?.code ?? '',
+      role: user?.role === 'manager' ? 'manager' : 'employee',
+      department: department ?? '',
+      position: position ?? '',
+      phone: user?.phone ?? '',
+      join_date: user?.join_date ?? '',
+      manager: manager ?? user?.manager_name ?? '',
+      manager_name: user?.manager_name ?? manager ?? '',
+      work_location: workLocation ?? '',
+      location: user?.location ?? workLocation ?? '',
+    } as User;
+  }
+
+  private isLegacyMockUser(user: User | null): boolean {
+    if (!user) {
+      return false;
     }
 
-    let role: 'employee' | 'manager' = 'employee';
-    let name = 'Muhamad Ridho';
-    let position = 'Frontend Developer';
-
-    if (email.includes('manager')) {
-      role = 'manager';
-      name = 'Manager Demo';
-      position = 'Team Manager';
-    }
-
-    const user = {
-      id: role === 'manager' ? 2 : 1,
-      name,
-      email,
-      role,
-      position,
-      department: 'Information Technology',
-      phone: '0812-3456-7890',
-    } as unknown as User;
-
-    const response = {
-      token: `mock-token-${role}-${Date.now()}`,
-      user,
-    } as AuthResponse;
-
-    return of(response).pipe(delay(500));
+    return (
+      user.email === 'employee@geohadir.com' ||
+      user.email === 'manager@geohadir.com' ||
+      user.name === 'Ridho Pratama' ||
+      user.name === 'Muhamad Ridho' ||
+      user.name === 'Manager Demo'
+    );
   }
 }

@@ -246,6 +246,31 @@
   gap: 12px;
 }
 
+.empty-state-sm {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 24px 16px;
+  border: 1px solid #dbeafe;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #64748b;
+  text-align: center;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.05);
+}
+
+.empty-state-sm .material-symbols-outlined {
+  color: #2563eb;
+  font-size: 28px;
+}
+
+.empty-state-sm p {
+  margin: 0;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 800;
+}
+
 .list-card {
   display: flex;
   align-items: center;

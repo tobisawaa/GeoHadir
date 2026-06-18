@@ -2,15 +2,15 @@
   <div class="page-shell">
     <header class="topbar">
       <div class="page-title">
-        <h1>History Aktivitas</h1>
+        <h1>Riwayat Aktivitas</h1>
         <p>Semua riwayat HR dalam satu tempat.</p>
       </div>
-      <button type="button" class="icon-btn" (click)="goTo('/app/employee/dashboard')"><svg viewBox="0 0 24 24" fill="none"><path d="M4 4H10V10H4V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 4H20V10H14V4Z" stroke="currentColor" stroke-width="1.8"/><path d="M4 14H10V20H4V14Z" stroke="currentColor" stroke-width="1.8"/><path d="M14 14H20V20H14V14Z" stroke="currentColor" stroke-width="1.8"/></svg></button>
+      <button type="button" class="back-btn" (click)="goTo('/app/employee/overtime')" aria-label="Kembali ke pengajuan lembur"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     </header>
 
     <section class="hero-card compact">
       <div>
-        <p class="eyebrow">Unified History</p>
+        <p class="eyebrow">Riwayat Terpadu</p>
         <h2>{{ selectedFilter }}</h2>
         <p>Filter absensi, cuti, lembur, dan payroll tanpa pindah-pindah halaman.</p>
       </div>
@@ -30,7 +30,7 @@
               <ng-container [ngSwitch]="item.type">
                 <ng-container *ngSwitchCase="'Absensi'"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 14L11 16L15 12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></ng-container>
                 <ng-container *ngSwitchCase="'Cuti'"><svg viewBox="0 0 24 24" fill="none"><path d="M7 3V6M17 3V6M4 9H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M5 5H19V20H5V5Z" stroke="currentColor" stroke-width="1.8"/><path d="M9 13H15M9 16H13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></ng-container>
-                <ng-container *ngSwitchCase="'Payroll'"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 15C13.657 15 15 13.657 15 12C15 10.343 13.657 9 12 9C10.343 9 9 10.343 9 12C9 13.657 10.343 15 12 15Z" stroke="currentColor" stroke-width="1.8"/></svg></ng-container>
+                <ng-container *ngSwitchCase="'Gaji'"><svg viewBox="0 0 24 24" fill="none"><path d="M4 7H20V18H4V7Z" stroke="currentColor" stroke-width="1.8"/><path d="M7 10H10M16 15H17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M12 15C13.657 15 15 13.657 15 12C15 10.343 13.657 9 12 9C10.343 9 9 10.343 9 12C9 13.657 10.343 15 12 15Z" stroke="currentColor" stroke-width="1.8"/></svg></ng-container>
                 <ng-container *ngSwitchDefault><svg viewBox="0 0 24 24" fill="none"><path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M21 12C21 16.97 16.97 21 12 21C7.03 21 3 16.97 3 12C3 7.03 7.03 3 12 3C16.97 3 21 7.03 21 12Z" stroke="currentColor" stroke-width="1.8"/></svg></ng-container>
               </ng-container>
             </span>

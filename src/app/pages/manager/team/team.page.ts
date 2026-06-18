@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { ToastController } from '@ionic/angular';
-import { environment } from '../../../../environments/environment';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
+import { UserService } from '../../../services/user.service';
 
 interface TeamMember {
   id: number;
@@ -27,11 +26,9 @@ export class TeamPage implements OnInit {
 
   teamMembers: TeamMember[] = [];
 
-  private apiUrl = environment.apiUrl;
-
   constructor(
     private router: Router,
-    private http: HttpClient,
+    private userService: UserService,
     private offlineSync: OfflineSyncService,
     private toastCtrl: ToastController
   ) {}
@@ -50,25 +47,22 @@ export class TeamPage implements OnInit {
   loadTeamMembers(): void {
     this.isLoading = true;
 
-    this.http.get<any>(`${this.apiUrl}/manager/team`).subscribe({
+    this.userService.getManagerDashboard().subscribe({
       next: (response) => {
         const data = this.extractData(response);
-        const list = Array.isArray(data) ? data : data?.members ?? data?.team ?? [];
+        const list = data?.today_attendance ?? [];
 
-        this.teamMembers = list.length
-          ? list.map((item: any) => this.mapTeamMember(item))
-          : this.getFallbackMembers();
-
+        this.teamMembers = list.map((item: any) => this.mapTeamMember(item));
         this.isLoading = false;
       },
-      error: async () => {
-        this.teamMembers = this.getFallbackMembers();
+      error: async (error) => {
+        this.teamMembers = [];
         this.isLoading = false;
 
         const toast = await this.toastCtrl.create({
-          message: 'Backend belum merespons. Data tim demo ditampilkan.',
+          message: error?.error?.message || 'Gagal memuat data tim dari ringkasan manajer.',
           duration: 2200,
-          color: 'warning',
+          color: 'danger',
           position: 'top',
         });
 
@@ -137,13 +131,13 @@ export class TeamPage implements OnInit {
 
   private mapTeamMember(item: any): TeamMember {
     return {
-      id: Number(item?.id ?? item?.employee_id ?? Date.now()),
-      name: item?.name ?? item?.employee_name ?? 'Employee',
-      position: item?.position ?? item?.job_title ?? 'Staff',
-      department: item?.department ?? item?.department_name ?? 'General',
+      id: Number(item?.id ?? item?.employee_id ?? item?.user_id ?? 0),
+      name: item?.name ?? item?.employee_name ?? 'Karyawan',
+      position: item?.position ?? item?.job_title ?? 'Karyawan',
+      department: item?.department ?? item?.department_name ?? 'Umum',
       email: item?.email ?? '-',
       phone: item?.phone ?? item?.phone_number ?? '-',
-      attendanceStatus: this.normalizeStatus(item?.attendance_status ?? item?.status ?? 'Belum Absen'),
+      attendanceStatus: this.normalizeStatus(item?.attendance_status ?? item?.attendance_today?.status ?? item?.status ?? 'absent'),
     };
   }
 
@@ -163,46 +157,5 @@ export class TeamPage implements OnInit {
     }
 
     return 'Belum Absen';
-  }
-
-  private getFallbackMembers(): TeamMember[] {
-    return [
-      {
-        id: 1,
-        name: 'Budi Santoso',
-        position: 'Frontend Developer',
-        department: 'Information Technology',
-        email: 'budi@geohadir.com',
-        phone: '0812-1000-2001',
-        attendanceStatus: 'Hadir',
-      },
-      {
-        id: 2,
-        name: 'Siti Aminah',
-        position: 'UI/UX Designer',
-        department: 'Product Design',
-        email: 'siti@geohadir.com',
-        phone: '0812-1000-2002',
-        attendanceStatus: 'Terlambat',
-      },
-      {
-        id: 3,
-        name: 'Andi Pratama',
-        position: 'Backend Developer',
-        department: 'Information Technology',
-        email: 'andi@geohadir.com',
-        phone: '0812-1000-2003',
-        attendanceStatus: 'Cuti',
-      },
-      {
-        id: 4,
-        name: 'Dewi Lestari',
-        position: 'QA Engineer',
-        department: 'Quality Assurance',
-        email: 'dewi@geohadir.com',
-        phone: '0812-1000-2004',
-        attendanceStatus: 'Belum Absen',
-      },
-    ];
   }
 }

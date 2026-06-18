@@ -1,5 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://api.geohadir.com/api',
-  useMock: true,
+  apiUrl: 'https://hris.gaskeunproject.site/api/v1',
 };

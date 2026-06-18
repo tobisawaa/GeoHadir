@@ -38,7 +38,7 @@ export class TeamOvertimePage implements OnInit {
 
     this.overtimeService.getTeamOvertimes().subscribe({
       next: (res) => {
-        this.overtimes = res.data;
+        this.overtimes = this.extractList(res).map((item) => this.mapOvertime(item));
         this.loading = false;
       },
       error: (err) => {
@@ -52,7 +52,7 @@ export class TeamOvertimePage implements OnInit {
   async doRefresh(event: any) {
     this.overtimeService.getTeamOvertimes().subscribe({
       next: (res) => {
-        this.overtimes = res.data;
+        this.overtimes = this.extractList(res).map((item) => this.mapOvertime(item));
         event.target.complete();
       },
       error: () => {
@@ -152,5 +152,20 @@ export class TeamOvertimePage implements OnInit {
   private async showToast(message: string, color: string = 'danger') {
     const toast = await this.toastCtrl.create({ message, duration: 3000, color, position: 'top' });
     toast.present();
+  }
+
+  private extractList(response: any): any[] {
+    const data = response?.data !== undefined ? response.data : response;
+    return Array.isArray(data) ? data : data?.data ?? data?.items ?? data?.overtimes ?? [];
+  }
+
+  private mapOvertime(item: any): OvertimeRequest {
+    return {
+      ...item,
+      user_name: item?.user_name ?? item?.user?.name ?? 'Anggota Tim',
+      duration_hours: Number(item?.duration_hours ?? 0),
+      reason: item?.reason ?? '-',
+      status: item?.status ?? 'pending',
+    } as OvertimeRequest;
   }
 }

@@ -1,14 +1,26 @@
 <ion-content class="profile-content" fullscreen>
   <div class="page-shell">
+    <header class="page-header">
+      <button type="button" class="back-btn" (click)="goTo('/app/employee/dashboard')" aria-label="Kembali ke beranda">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <div>
+        <span>Profil</span>
+        <h1>Akun Karyawan</h1>
+      </div>
+    </header>
+
     <section class="profile-hero">
       <div class="hero-avatar">
         {{ employee.name.charAt(0) }}
       </div>
 
       <div class="hero-copy">
-        <p>Employee Profile</p>
         <h1>{{ employee.name }}</h1>
-        <span>{{ employee.position }} · {{ employee.department }}</span>
+        <span>{{ employee.position }} - {{ employee.department }}</span>
       </div>
     </section>
 
@@ -16,89 +28,66 @@
       <div class="section-heading">
         <div>
           <h2>Data Karyawan</h2>
-          <p>Informasi utama employee untuk HRIS.</p>
+          <p>Informasi akun yang tersimpan di sistem.</p>
         </div>
       </div>
 
-      <div class="profile-grid">
-        <article class="profile-info">
+      <div class="info-list">
+        <article>
           <span>ID Karyawan</span>
           <strong>{{ employee.employeeId }}</strong>
         </article>
 
-        <article class="profile-info">
-          <span>Manager</span>
-          <strong>{{ employee.manager }}</strong>
-        </article>
-
-        <article class="profile-info">
+        <article>
           <span>Email</span>
           <strong>{{ employee.email }}</strong>
         </article>
 
-        <article class="profile-info">
+        <article>
           <span>No. HP</span>
           <strong>{{ employee.phone }}</strong>
         </article>
 
-        <article class="profile-info wide">
+        <article>
+          <span>Jabatan</span>
+          <strong>{{ employee.position }}</strong>
+        </article>
+
+        <article>
+          <span>Departemen</span>
+          <strong>{{ employee.department }}</strong>
+        </article>
+
+        <article>
+          <span>Manajer</span>
+          <strong>{{ employee.manager }}</strong>
+        </article>
+
+        <article>
           <span>Lokasi Kerja</span>
           <strong>{{ employee.workLocation }}</strong>
         </article>
       </div>
     </section>
 
-    <section class="content-card">
-      <div class="section-heading">
-        <div>
-          <h2>Update Profile</h2>
-          <p>[BACKEND] Field yang boleh diedit mengikuti aturan HR.</p>
-        </div>
-      </div>
-
-      <div class="form-stack">
-        <div class="form-group">
-          <label>Nama</label>
-          <input type="text" [value]="employee.name" />
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" [value]="employee.email" />
-        </div>
-
-        <div class="form-group">
-          <label>No. Handphone</label>
-          <input type="text" [value]="employee.phone" />
-        </div>
-
-        <button type="button" class="submit-btn">
-          Simpan Perubahan
-        </button>
-      </div>
-    </section>
-
     <section class="content-card security-card">
-      <div class="security-icon">
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          <path
-            d="M7 10V8C7 5.24 9.24 3 12 3C14.76 3 17 5.24 17 8V10"
-            stroke="currentColor"
-            stroke-width="1.8"
-            stroke-linecap="round"
-          />
-          <path
-            d="M6.5 10H17.5C18.6 10 19.5 10.9 19.5 12V19C19.5 20.1 18.6 21 17.5 21H6.5C5.4 21 4.5 20.1 4.5 19V12C4.5 10.9 5.4 10 6.5 10Z"
-            stroke="currentColor"
-            stroke-width="1.8"
-          />
-        </svg>
+      <div class="security-copy">
+        <div class="security-icon">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M7 10V8C7 5.24 9.24 3 12 3C14.76 3 17 5.24 17 8V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            <path d="M6.5 10H17.5C18.6 10 19.5 10.9 19.5 12V19C19.5 20.1 18.6 21 17.5 21H6.5C5.4 21 4.5 20.1 4.5 19V12C4.5 10.9 5.4 10 6.5 10Z" stroke="currentColor" stroke-width="1.8" />
+          </svg>
+        </div>
+
+        <div>
+          <h3>Keamanan Akun</h3>
+          <p>Kelola kata sandi untuk menjaga akses akun tetap aman.</p>
+        </div>
       </div>
 
-      <div>
-        <h3>Keamanan Akun</h3>
-        <p>[BACKEND] Ubah password dan validasi akun diproses melalui API.</p>
-      </div>
+      <button type="button" class="password-btn" (click)="goTo('/app/employee/change-password')">
+        Ubah Kata Sandi
+      </button>
     </section>
 
     <section class="content-card logout-card">
@@ -129,14 +118,15 @@
 
         <div>
           <h3>Keluar dari Akun</h3>
-          <p>Logout dari sesi employee saat ini dan kembali ke halaman login.</p>
+          <p>Keluar dari sesi karyawan saat ini dan kembali ke halaman login.</p>
         </div>
       </div>
 
       <button type="button" class="logout-btn" (click)="logout()">
-        Logout
+        Keluar
       </button>
     </section>
+
     <app-employee-bottom-nav active="profile"></app-employee-bottom-nav>
   </div>
 </ion-content>

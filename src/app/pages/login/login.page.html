@@ -1,20 +1,15 @@
 <ion-content class="login-content" fullscreen>
   <div class="login-shell">
-    <div class="bg-orb orb-one"></div>
-    <div class="bg-orb orb-two"></div>
-
     <section class="brand-section">
-      <div class="brand-logo">
-        <div class="logo-mark">
-          <span>GH</span>
-        </div>
+      <div class="brand-card">
+        <img src="assets/logo.png" alt="Logo GeoHadir" />
       </div>
 
       <div class="brand-copy">
-        <p class="eyebrow">Human Resource Information System</p>
-        <h1>GeoHadir</h1>
+        <p class="eyebrow">Aplikasi HRIS Mobile</p>
+        <h1>Masuk ke GeoHadir</h1>
         <p class="subtitle">
-          Kelola absensi, cuti, lembur, approval, dan payroll dalam satu aplikasi mobile.
+          Akses presensi, pengajuan cuti, lembur, persetujuan, dan slip gaji dari satu aplikasi.
         </p>
       </div>
     </section>
@@ -22,13 +17,9 @@
     <section class="login-card">
       <div class="card-header">
         <div>
-          <h2>Masuk Akun</h2>
-          <p>Gunakan akun demo atau kredensial yang sudah tersedia.</p>
-        </div>
-
-        <div class="status-pill">
-          <span></span>
-          Mock Mode
+          <span>Autentikasi akun</span>
+          <h2>Selamat Datang</h2>
+          <p>Gunakan email dan kata sandi yang terdaftar di sistem GeoHadir.</p>
         </div>
       </div>
 
@@ -38,29 +29,20 @@
           [class.focused]="emailFocused"
           [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched"
         >
-          <label>Email / Username</label>
+          <label>Email</label>
 
           <div class="input-wrap">
             <span class="input-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M20 21C20 17.6863 16.4183 15 12 15C7.58172 15 4 17.6863 4 21"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M12 12C14.2091 12 16 10.2091 16 8C16 5.79086 14.2091 4 12 4C9.79086 4 8 5.79086 8 8C8 10.2091 9.79086 12 12 12Z"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                />
+                <path d="M4 6.5H20V17.5H4V6.5Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <path d="M5 7.5L12 13L19 7.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </span>
 
             <ion-input
               type="email"
               formControlName="email"
-              placeholder="employee@geohadir.com"
+              placeholder="nama@perusahaan.com"
               (ionFocus)="emailFocused = true"
               (ionBlur)="emailFocused = false"
             ></ion-input>
@@ -76,35 +58,21 @@
           [class.focused]="passwordFocused"
           [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
         >
-          <label>Password</label>
+          <label>Kata Sandi</label>
 
           <div class="input-wrap">
             <span class="input-icon">
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M7 10V8C7 5.23858 9.23858 3 12 3C14.7614 3 17 5.23858 17 8V10"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M6.5 10H17.5C18.6046 10 19.5 10.8954 19.5 12V19C19.5 20.1046 18.6046 21 17.5 21H6.5C5.39543 21 4.5 20.1046 4.5 19V12C4.5 10.8954 5.39543 10 6.5 10Z"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                />
-                <path
-                  d="M12 15V17"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
+                <path d="M7 10V8C7 5.24 9.24 3 12 3C14.76 3 17 5.24 17 8V10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M6.5 10H17.5C18.6 10 19.5 10.9 19.5 12V19C19.5 20.1 18.6 21 17.5 21H6.5C5.4 21 4.5 20.1 4.5 19V12C4.5 10.9 5.4 10 6.5 10Z" stroke="currentColor" stroke-width="1.8" />
+                <path d="M12 15V17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
               </svg>
             </span>
 
             <ion-input
               [type]="showPassword ? 'text' : 'password'"
               formControlName="password"
-              placeholder="password123"
+              placeholder="Masukkan kata sandi"
               (ionFocus)="passwordFocused = true"
               (ionBlur)="passwordFocused = false"
             ></ion-input>
@@ -113,67 +81,25 @@
               type="button"
               class="password-toggle"
               (click)="showPassword = !showPassword"
-              aria-label="Toggle password visibility"
+              aria-label="Tampilkan atau sembunyikan kata sandi"
             >
               <svg *ngIf="!showPassword" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M2.75 12C4.35 7.9 7.55 5.75 12 5.75C16.45 5.75 19.65 7.9 21.25 12C19.65 16.1 16.45 18.25 12 18.25C7.55 18.25 4.35 16.1 2.75 12Z"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M12 15.25C13.7949 15.25 15.25 13.7949 15.25 12C15.25 10.2051 13.7949 8.75 12 8.75C10.2051 8.75 8.75 10.2051 8.75 12C8.75 13.7949 10.2051 15.25 12 15.25Z"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                />
+                <path d="M2.75 12C4.35 7.9 7.55 5.75 12 5.75C16.45 5.75 19.65 7.9 21.25 12C19.65 16.1 16.45 18.25 12 18.25C7.55 18.25 4.35 16.1 2.75 12Z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" />
+                <path d="M12 15.25C13.79 15.25 15.25 13.79 15.25 12C15.25 10.21 13.79 8.75 12 8.75C10.21 8.75 8.75 10.21 8.75 12C8.75 13.79 10.21 15.25 12 15.25Z" stroke="currentColor" stroke-width="1.8" />
               </svg>
 
               <svg *ngIf="showPassword" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M4 4L20 20"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M10.58 10.58C10.21 10.95 10 11.45 10 12C10 13.1 10.9 14 12 14C12.55 14 13.05 13.79 13.42 13.42"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                />
-                <path
-                  d="M8.46 6.62C9.55 6.05 10.73 5.75 12 5.75C16.45 5.75 19.65 7.9 21.25 12C20.63 13.6 19.76 14.9 18.66 15.89"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
-                <path
-                  d="M15.54 17.38C14.45 17.95 13.27 18.25 12 18.25C7.55 18.25 4.35 16.1 2.75 12C3.37 10.4 4.24 9.1 5.34 8.11"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                <path d="M4 4L20 20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M10.58 10.58C10.21 10.95 10 11.45 10 12C10 13.1 10.9 14 12 14C12.55 14 13.05 13.79 13.42 13.42" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+                <path d="M8.46 6.62C9.55 6.05 10.73 5.75 12 5.75C16.45 5.75 19.65 7.9 21.25 12C20.63 13.6 19.76 14.9 18.66 15.89" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M15.54 17.38C14.45 17.95 13.27 18.25 12 18.25C7.55 18.25 4.35 16.1 2.75 12C3.37 10.4 4.24 9.1 5.34 8.11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
           </div>
 
           <small *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
-            Password minimal 6 karakter.
+            Kata sandi minimal 6 karakter.
           </small>
-        </div>
-
-        <div class="form-options">
-          <label class="remember-check">
-            <span class="fake-checkbox"></span>
-            Ingat saya
-          </label>
-
-          <button type="button" class="forgot-link">
-            Lupa password?
-          </button>
         </div>
 
         <ion-button
@@ -185,109 +111,7 @@
           <span *ngIf="!isLoading">Masuk</span>
           <span *ngIf="isLoading">Memproses...</span>
         </ion-button>
-
-        <div class="divider">
-          <span></span>
-          <p>atau masuk cepat</p>
-          <span></span>
-        </div>
-
-        <button type="button" class="biometric-btn" (click)="loginWithBiometrics()">
-          <span class="bio-icon">
-            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M12 3.25C7.72 3.25 4.25 6.72 4.25 11"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M19.75 11C19.75 6.72 16.28 3.25 12 3.25"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M7.25 11C7.25 8.38 9.38 6.25 12 6.25C14.62 6.25 16.75 8.38 16.75 11"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M7.25 13.25C7.25 16.05 8.65 18.5 10.75 20"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M16.75 13.25C16.75 16.35 15.05 19.05 12.5 20.45"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M10.25 11C10.25 10.03 11.03 9.25 12 9.25C12.97 9.25 13.75 10.03 13.75 11"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M10.25 13.25C10.25 15.15 11.02 16.88 12.25 18.15"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-              <path
-                d="M13.75 13.25C13.75 14.72 13.15 16.05 12.2 17.02"
-                stroke="currentColor"
-                stroke-width="1.8"
-                stroke-linecap="round"
-              />
-            </svg>
-          </span>
-
-          <div>
-            <strong>Masuk dengan Biometrik</strong>
-            <small>Simulasi fingerprint / face unlock</small>
-          </div>
-        </button>
       </form>
-    </section>
-
-    <section class="demo-card">
-      <div class="demo-heading">
-        <div>
-          <h3>Akun Demo</h3>
-          <p>Pilih role untuk testing cepat tanpa backend.</p>
-        </div>
-        <span>Tester</span>
-      </div>
-
-      <div class="demo-list">
-        <button
-          type="button"
-          class="demo-item"
-          *ngFor="let account of demoAccounts"
-          (click)="fillDemoAccount(account)"
-        >
-          <div
-            class="demo-avatar"
-            [class.manager]="account.role === 'Manager'"
-            [class.employee]="account.role === 'Employee'"
-          >
-            {{ account.role.charAt(0) }}
-          </div>
-
-          <div class="demo-detail">
-            <strong>{{ account.role }}</strong>
-            <span>{{ account.email }}</span>
-          </div>
-
-          <div class="demo-password">
-            {{ account.password }}
-          </div>
-        </button>
-      </div>
     </section>
 
     <footer class="login-footer">

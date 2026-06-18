@@ -26,6 +26,14 @@ interface AttendanceLog {
   longitude?: number | null;
 }
 
+interface AttendanceArea {
+  name: string;
+  address: string;
+  latitude: number;
+  longitude: number;
+  radiusMeter: number;
+}
+
 @Component({
   selector: 'app-attendance',
   templateUrl: './attendance.page.html',
@@ -33,6 +41,16 @@ interface AttendanceLog {
   standalone: false,
 })
 export class AttendancePage implements OnInit {
+  private readonly attendanceCooldownSeconds = 30;
+
+  readonly attendanceArea: AttendanceArea = {
+    name: 'Universitas Buana Perjuangan Karawang',
+    address: 'Jl. HS. Ronggo Waluyo, Telukjambe Timur, Karawang',
+    latitude: -6.322082,
+    longitude: 107.305543,
+    radiusMeter: 500,
+  };
+
   currentTime = '';
   currentDate = new Date();
   currentLocation: GeoPosition | null = null;
@@ -41,10 +59,11 @@ export class AttendancePage implements OnInit {
   isCheckingIn = false;
   isCheckingOut = false;
   isDetectingLocation = false;
+  attendanceCooldownRemaining = 0;
 
   todayAttendance: TodayAttendance = {
     date: '-',
-    status: 'Belum Check-In',
+    status: 'Belum Masuk',
     checkIn: '-',
     checkOut: '-',
     checkInLatitude: null,
@@ -56,6 +75,8 @@ export class AttendancePage implements OnInit {
   attendanceHistory: AttendanceLog[] = [];
 
   private clockTimer?: ReturnType<typeof setInterval>;
+  private cooldownTimer?: ReturnType<typeof setInterval>;
+  private readonly mapPreviewRangeMeter = 650;
 
   constructor(
     private router: Router,
@@ -68,6 +89,102 @@ export class AttendancePage implements OnInit {
 
   ngOnInit(): void {}
 
+  get distanceFromAreaMeter(): number | null {
+    if (!this.currentLocation) {
+      return null;
+    }
+
+    return this.calculateDistanceMeter(
+      this.currentLocation.lat,
+      this.currentLocation.lng,
+      this.attendanceArea.latitude,
+      this.attendanceArea.longitude
+    );
+  }
+
+  get isInsideAttendanceArea(): boolean {
+    const distance = this.distanceFromAreaMeter;
+    return distance !== null && distance <= this.attendanceArea.radiusMeter;
+  }
+
+  get areaStatusText(): string {
+    if (!this.currentLocation) {
+      return 'Belum dicek';
+    }
+
+    return this.isInsideAttendanceArea ? 'Dalam area presensi' : 'Di luar area presensi';
+  }
+
+  get distanceText(): string {
+    const distance = this.distanceFromAreaMeter;
+
+    if (distance === null) {
+      return '-';
+    }
+
+    if (distance >= 1000) {
+      return `${(distance / 1000).toFixed(2)} km dari titik kampus`;
+    }
+
+    return `${Math.round(distance)} meter dari titik kampus`;
+  }
+
+  get accuracyText(): string {
+    if (!this.currentLocation?.accuracy) {
+      return '-';
+    }
+
+    return `${Math.round(this.currentLocation.accuracy)} meter`;
+  }
+
+  get isAttendanceCooldownActive(): boolean {
+    return this.attendanceCooldownRemaining > 0;
+  }
+
+  get checkInButtonText(): string {
+    if (this.isCheckingIn) {
+      return 'Memproses...';
+    }
+
+    if (this.isAttendanceCooldownActive) {
+      return `Coba lagi ${this.attendanceCooldownRemaining}d`;
+    }
+
+    return 'Masuk';
+  }
+
+  get checkOutButtonText(): string {
+    if (this.isCheckingOut) {
+      return 'Memproses...';
+    }
+
+    if (this.isAttendanceCooldownActive) {
+      return `Coba lagi ${this.attendanceCooldownRemaining}d`;
+    }
+
+    return 'Pulang';
+  }
+
+  get userMarkerStyle(): Record<string, string> {
+    if (!this.currentLocation) {
+      return {};
+    }
+
+    const latMeter = (this.currentLocation.lat - this.attendanceArea.latitude) * 110540;
+    const lngMeter =
+      (this.currentLocation.lng - this.attendanceArea.longitude) *
+      111320 *
+      Math.cos((this.attendanceArea.latitude * Math.PI) / 180);
+
+    const left = this.clamp(50 + (lngMeter / this.mapPreviewRangeMeter) * 50, 7, 93);
+    const top = this.clamp(50 - (latMeter / this.mapPreviewRangeMeter) * 50, 7, 93);
+
+    return {
+      left: `${left}%`,
+      top: `${top}%`,
+    };
+  }
+
   ionViewWillEnter(): void {
     this.startClock();
     void this.offlineSync.syncWhenOnline();
@@ -77,6 +194,7 @@ export class AttendancePage implements OnInit {
 
   ionViewWillLeave(): void {
     this.stopClock();
+    this.stopAttendanceCooldown();
   }
 
   goTo(route: string): void {
@@ -104,7 +222,7 @@ export class AttendancePage implements OnInit {
     this.isCheckingIn = true;
 
     const loading = await this.loadingCtrl.create({
-      message: 'Mengambil lokasi check-in...',
+      message: 'Mengambil lokasi masuk...',
       spinner: 'circular',
     });
 
@@ -114,9 +232,18 @@ export class AttendancePage implements OnInit {
       const location = await this.locationService.getCurrentPositionPromise();
       this.currentLocation = location;
 
+      if (!this.isLocationInsideAttendanceArea(location)) {
+        await loading.dismiss();
+        await this.showToast(
+          `Presensi belum bisa diproses. Lokasi kamu ${this.distanceText}, di luar radius ${this.attendanceArea.radiusMeter} meter dari ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
+          'warning'
+        );
+        this.startAttendanceCooldown();
+        this.isCheckingIn = false;
+        return;
+      }
+
       const payload = {
-        lat: location.lat,
-        lng: location.lng,
         latitude: location.lat,
         longitude: location.lng,
         accuracy: location.accuracy,
@@ -126,18 +253,24 @@ export class AttendancePage implements OnInit {
         next: async (response) => {
           await loading.dismiss();
 
+          if (response?.queued) {
+            await this.showToast('Presensi masuk disimpan offline dan akan disinkronkan saat koneksi stabil.', 'warning');
+            this.isCheckingIn = false;
+            return;
+          }
+
           const data = this.extractData(response);
 
           this.todayAttendance = {
             ...this.todayAttendance,
             date: this.formatDate(new Date().toISOString()),
-            status: 'Check-In',
+            status: 'Masuk',
             checkIn: this.formatTime(data?.check_in ?? data?.checkIn ?? new Date().toISOString()),
             checkInLatitude: location.lat,
             checkInLongitude: location.lng,
           };
 
-          await this.showToast('Check-in berhasil dengan lokasi.', 'success');
+          await this.showToast('Presensi masuk berhasil dengan lokasi.', 'success');
           this.loadTodayAttendance();
           this.loadAttendanceHistory();
           this.isCheckingIn = false;
@@ -145,12 +278,7 @@ export class AttendancePage implements OnInit {
         error: async (error) => {
           await loading.dismiss();
 
-          const message =
-            error?.error?.message ||
-            error?.message ||
-            'Gagal check-in. Pastikan backend API sudah berjalan.';
-
-          await this.showToast(message, 'danger');
+          await this.showToast(this.getErrorMessage(error, 'Gagal mencatat presensi masuk.'), 'danger');
           this.isCheckingIn = false;
         },
       });
@@ -169,7 +297,7 @@ export class AttendancePage implements OnInit {
     this.isCheckingOut = true;
 
     const loading = await this.loadingCtrl.create({
-      message: 'Mengambil lokasi check-out...',
+      message: 'Mengambil lokasi pulang...',
       spinner: 'circular',
     });
 
@@ -179,9 +307,18 @@ export class AttendancePage implements OnInit {
       const location = await this.locationService.getCurrentPositionPromise();
       this.currentLocation = location;
 
+      if (!this.isLocationInsideAttendanceArea(location)) {
+        await loading.dismiss();
+        await this.showToast(
+          `Presensi pulang belum bisa diproses. Lokasi kamu ${this.distanceText}, di luar radius ${this.attendanceArea.radiusMeter} meter dari ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
+          'warning'
+        );
+        this.startAttendanceCooldown();
+        this.isCheckingOut = false;
+        return;
+      }
+
       const payload = {
-        lat: location.lat,
-        lng: location.lng,
         latitude: location.lat,
         longitude: location.lng,
         accuracy: location.accuracy,
@@ -190,6 +327,12 @@ export class AttendancePage implements OnInit {
       this.api.post<any>('attendance/check-out', payload).subscribe({
         next: async (response) => {
           await loading.dismiss();
+
+          if (response?.queued) {
+            await this.showToast('Presensi pulang disimpan offline dan akan disinkronkan saat koneksi stabil.', 'warning');
+            this.isCheckingOut = false;
+            return;
+          }
 
           const data = this.extractData(response);
 
@@ -201,7 +344,7 @@ export class AttendancePage implements OnInit {
             checkOutLongitude: location.lng,
           };
 
-          await this.showToast('Check-out berhasil dengan lokasi.', 'success');
+          await this.showToast('Presensi pulang berhasil dengan lokasi.', 'success');
           this.loadTodayAttendance();
           this.loadAttendanceHistory();
           this.isCheckingOut = false;
@@ -209,12 +352,7 @@ export class AttendancePage implements OnInit {
         error: async (error) => {
           await loading.dismiss();
 
-          const message =
-            error?.error?.message ||
-            error?.message ||
-            'Gagal check-out. Pastikan backend API sudah berjalan.';
-
-          await this.showToast(message, 'danger');
+          await this.showToast(this.getErrorMessage(error, 'Gagal mencatat presensi pulang.'), 'danger');
           this.isCheckingOut = false;
         },
       });
@@ -228,12 +366,13 @@ export class AttendancePage implements OnInit {
   loadTodayAttendance(): void {
     this.isLoading = true;
 
-    this.api.get<any>('attendance/today').subscribe({
+    this.api.get<any>('dashboard').subscribe({
       next: (response) => {
         const data = this.extractData(response);
+        const attendance = data?.attendance_today ?? data;
 
-        if (data) {
-          this.todayAttendance = this.mapTodayAttendance(data);
+        if (attendance) {
+          this.todayAttendance = this.mapTodayAttendance(attendance);
         }
 
         this.isLoading = false;
@@ -241,7 +380,7 @@ export class AttendancePage implements OnInit {
       error: () => {
         this.todayAttendance = {
           date: this.formatDate(new Date().toISOString()),
-          status: 'Belum Check-In',
+          status: 'Belum Masuk',
           checkIn: '-',
           checkOut: '-',
           checkInLatitude: null,
@@ -259,12 +398,13 @@ export class AttendancePage implements OnInit {
     this.api.get<any>('attendance/history').subscribe({
       next: (response) => {
         const data = this.extractData(response);
-        const list = Array.isArray(data) ? data : data?.items ?? data?.attendance ?? [];
+        const list = Array.isArray(data) ? data : data?.data ?? data?.items ?? data?.attendance ?? [];
 
         this.attendanceHistory = list.map((item: any) => this.mapAttendanceLog(item));
       },
-      error: () => {
-        this.attendanceHistory = this.getFallbackHistory();
+      error: async (error) => {
+        this.attendanceHistory = [];
+        await this.showToast(this.getErrorMessage(error, 'Gagal memuat riwayat absensi dari database.'), 'danger');
       },
     });
   }
@@ -277,12 +417,12 @@ export class AttendancePage implements OnInit {
     return {
       date: this.formatDate(data?.date ?? data?.attendance_date ?? new Date().toISOString()),
       status: this.normalizeStatus(data?.status ?? data?.attendance_status),
-      checkIn: this.formatTime(data?.check_in ?? data?.checkIn),
-      checkOut: this.formatTime(data?.check_out ?? data?.checkOut),
-      checkInLatitude: this.toNumberOrNull(data?.check_in_latitude ?? data?.checkInLatitude),
-      checkInLongitude: this.toNumberOrNull(data?.check_in_longitude ?? data?.checkInLongitude),
-      checkOutLatitude: this.toNumberOrNull(data?.check_out_latitude ?? data?.checkOutLatitude),
-      checkOutLongitude: this.toNumberOrNull(data?.check_out_longitude ?? data?.checkOutLongitude),
+      checkIn: this.formatTime(data?.check_in ?? data?.checkIn ?? data?.check_in_time),
+      checkOut: this.formatTime(data?.check_out ?? data?.checkOut ?? data?.check_out_time),
+      checkInLatitude: this.toNumberOrNull(data?.check_in_latitude ?? data?.checkInLatitude ?? data?.latitude_in ?? data?.coordinates_in?.latitude),
+      checkInLongitude: this.toNumberOrNull(data?.check_in_longitude ?? data?.checkInLongitude ?? data?.longitude_in ?? data?.coordinates_in?.longitude),
+      checkOutLatitude: this.toNumberOrNull(data?.check_out_latitude ?? data?.checkOutLatitude ?? data?.latitude_out ?? data?.coordinates_out?.latitude),
+      checkOutLongitude: this.toNumberOrNull(data?.check_out_longitude ?? data?.checkOutLongitude ?? data?.longitude_out ?? data?.coordinates_out?.longitude),
     };
   }
 
@@ -293,8 +433,8 @@ export class AttendancePage implements OnInit {
       checkIn: this.formatTime(item?.check_in ?? item?.checkIn),
       checkOut: this.formatTime(item?.check_out ?? item?.checkOut),
       status: this.normalizeStatus(item?.status ?? item?.attendance_status),
-      latitude: this.toNumberOrNull(item?.check_in_latitude ?? item?.latitude),
-      longitude: this.toNumberOrNull(item?.check_in_longitude ?? item?.longitude),
+      latitude: this.toNumberOrNull(item?.check_in_latitude ?? item?.latitude_in ?? item?.latitude),
+      longitude: this.toNumberOrNull(item?.check_in_longitude ?? item?.longitude_in ?? item?.longitude),
     };
   }
 
@@ -306,14 +446,14 @@ export class AttendancePage implements OnInit {
     }
 
     if (value.includes('check') || value.includes('hadir') || value.includes('present')) {
-      return 'Check-In';
+      return 'Masuk';
     }
 
     if (value.includes('late') || value.includes('terlambat')) {
       return 'Terlambat';
     }
 
-    return 'Belum Check-In';
+    return 'Belum Masuk';
   }
 
   private extractData(response: any): any {
@@ -352,6 +492,28 @@ export class AttendancePage implements OnInit {
 
     clearInterval(this.clockTimer);
     this.clockTimer = undefined;
+  }
+
+  private startAttendanceCooldown(): void {
+    this.stopAttendanceCooldown();
+    this.attendanceCooldownRemaining = this.attendanceCooldownSeconds;
+
+    this.cooldownTimer = setInterval(() => {
+      this.attendanceCooldownRemaining -= 1;
+
+      if (this.attendanceCooldownRemaining <= 0) {
+        this.stopAttendanceCooldown();
+      }
+    }, 1000);
+  }
+
+  private stopAttendanceCooldown(): void {
+    if (this.cooldownTimer) {
+      clearInterval(this.cooldownTimer);
+      this.cooldownTimer = undefined;
+    }
+
+    this.attendanceCooldownRemaining = 0;
   }
 
   private formatDate(value: string): string {
@@ -399,27 +561,62 @@ export class AttendancePage implements OnInit {
     return Number.isNaN(parsed) ? null : parsed;
   }
 
-  private getFallbackHistory(): AttendanceLog[] {
-    return [
-      {
-        id: 1,
-        date: 'Senin, 08 Juni 2026',
-        checkIn: '08.05',
-        checkOut: '17.02',
-        status: 'Selesai',
-        latitude: -6.2,
-        longitude: 106.816666,
-      },
-      {
-        id: 2,
-        date: 'Jumat, 05 Juni 2026',
-        checkIn: '08.18',
-        checkOut: '17.00',
-        status: 'Terlambat',
-        latitude: -6.2,
-        longitude: 106.816666,
-      },
-    ];
+  private isLocationInsideAttendanceArea(location: GeoPosition): boolean {
+    const distance = this.calculateDistanceMeter(
+      location.lat,
+      location.lng,
+      this.attendanceArea.latitude,
+      this.attendanceArea.longitude
+    );
+
+    return distance <= this.attendanceArea.radiusMeter;
+  }
+
+  private calculateDistanceMeter(
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number
+  ): number {
+    const earthRadiusMeter = 6371000;
+    const toRad = (value: number) => (value * Math.PI) / 180;
+    const dLat = toRad(lat2 - lat1);
+    const dLng = toRad(lng2 - lng1);
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) *
+        Math.cos(toRad(lat2)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return earthRadiusMeter * c;
+  }
+
+  private clamp(value: number, min: number, max: number): number {
+    return Math.min(Math.max(value, min), max);
+  }
+
+  private getErrorMessage(error: any, fallback: string): string {
+    const message = error?.error?.message || error?.message;
+    const validation = error?.error?.data;
+
+    if (validation && typeof validation === 'object') {
+      const firstKey = Object.keys(validation)[0];
+      const firstMessage = Array.isArray(validation[firstKey])
+        ? validation[firstKey][0]
+        : validation[firstKey];
+
+      if (firstMessage) {
+        return firstMessage;
+      }
+    }
+
+    if (message) {
+      return message;
+    }
+
+    return `${fallback} Pastikan sudah login dan koneksi ke server stabil.`;
   }
 
   private async showToast(

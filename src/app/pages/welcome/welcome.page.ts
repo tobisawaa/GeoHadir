@@ -7,7 +7,7 @@ interface WelcomeSlide {
   badge: string;
   title: string;
   description: string;
-  icon: string;
+  visual: 'platform' | 'attendance' | 'approval' | 'privacy';
   points: string[];
   type: 'intro' | 'privacy';
 }
@@ -32,38 +32,38 @@ export class WelcomePage implements OnInit {
   slides: WelcomeSlide[] = [
     {
       type: 'intro',
-      badge: 'HRIS Mobile',
-      title: 'Kelola aktivitas HR dalam satu aplikasi',
+      badge: 'Sistem SDM Seluler',
+      title: 'Kelola aktivitas kerja harian dengan lebih rapi',
       description:
-        'GeoHadir membantu karyawan dan manager mengelola absensi, cuti, lembur, approval, dan slip gaji secara digital.',
-      icon: 'GH',
-      points: ['Absensi geolocation', 'Cuti dan lembur', 'Slip gaji karyawan'],
+        'GeoHadir membantu karyawan dan manajer mengelola presensi, cuti, lembur, persetujuan, dan slip gaji secara digital.',
+      visual: 'platform',
+      points: ['Presensi berbasis lokasi', 'Cuti dan lembur', 'Slip gaji karyawan'],
     },
     {
       type: 'intro',
-      badge: 'Attendance',
+      badge: 'Presensi',
       title: 'Presensi berbasis lokasi',
       description:
-        'Check-in dan check-out dapat dilakukan dengan pencatatan lokasi untuk mendukung monitoring kehadiran yang lebih akurat.',
-      icon: 'AT',
-      points: ['Check-in', 'Check-out', 'Koordinat lokasi'],
+        'Masuk dan pulang kerja dapat dicatat dengan lokasi agar monitoring kehadiran lebih akurat.',
+      visual: 'attendance',
+      points: ['Catat masuk', 'Catat pulang', 'Koordinat lokasi'],
     },
     {
       type: 'intro',
-      badge: 'Approval',
+      badge: 'Persetujuan',
       title: 'Pengajuan lebih terstruktur',
       description:
-        'Karyawan dapat mengajukan cuti dan lembur, sementara manager dapat memantau serta memproses approval tim.',
-      icon: 'AP',
-      points: ['Approval cuti', 'Approval lembur', 'Status pengajuan'],
+        'Karyawan dapat mengajukan cuti dan lembur, sementara manajer dapat memantau serta memproses persetujuan tim.',
+      visual: 'approval',
+      points: ['Persetujuan cuti', 'Persetujuan lembur', 'Status pengajuan'],
     },
     {
       type: 'privacy',
-      badge: 'Privacy Policy',
+      badge: 'Kebijakan Privasi',
       title: 'Privasi dan keamanan data',
       description:
         'Sebelum menggunakan GeoHadir, pengguna wajib membuka dan menyetujui Kebijakan Privasi aplikasi.',
-      icon: 'PP',
+      visual: 'privacy',
       points: [],
     },
   ];

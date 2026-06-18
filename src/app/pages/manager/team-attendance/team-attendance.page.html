@@ -1,18 +1,28 @@
-﻿<ion-content>
-  <header class="top-app-bar">
-    <div class="top-bar-left">
-      <button class="back-btn" (click)="goBack()">
-        <span class="material-symbols-outlined">arrow_back</span>
-      </button>
-      <h1 class="top-app-bar-title">Absensi Tim</h1>
-    </div>
-    <div style="width:40px"></div>
-  </header>
-
+<ion-content>
   <div class="page-wrap">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
+
+    <header class="topbar">
+      <button class="back-btn" (click)="goBack()" aria-label="Kembali">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M15 6L9 12L15 18"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+
+      <div class="page-title">
+        <span>Area Manajer</span>
+        <h1>Absensi Tim</h1>
+        <p>Pantau status kehadiran bawahan hari ini.</p>
+      </div>
+    </header>
 
     <div class="loading-indicator" *ngIf="loading">
       <p>Memuat data...</p>
@@ -34,15 +44,18 @@
     <div class="list-area" *ngIf="!loading && !error && attendances.length > 0">
       <div class="att-item" *ngFor="let att of attendances; trackBy: trackByAttendance">
         <div class="att-head">
-          <span class="att-date">{{ att.date | date:'dd MMM yyyy' }}</span>
+          <span class="att-date">{{ att.name }}</span>
           <span class="status-badge" [class.present]="att.status === 'present'" [class.late]="att.status === 'late'" [class.absent]="att.status === 'absent'">
             {{ getStatusText(att.status) }}
           </span>
         </div>
         <div class="att-info">
-          <span class="att-time">Check In: <strong>{{ (att.check_in | date:'HH:mm') || '-' }}</strong></span>
+          <span class="att-time">{{ att.position }} · {{ att.department }}</span>
+        </div>
+        <div class="att-info">
+          <span class="att-time">Masuk: <strong>{{ (att.check_in | date:'HH:mm') || '-' }}</strong></span>
           <span class="att-sep">&middot;</span>
-          <span class="att-time">Check Out: <strong>{{ (att.check_out | date:'HH:mm') || '-' }}</strong></span>
+          <span class="att-time">Pulang: <strong>{{ (att.check_out | date:'HH:mm') || '-' }}</strong></span>
         </div>
       </div>
     </div>
@@ -50,4 +63,3 @@
 
   <app-manager-bottom-nav active="attendance"></app-manager-bottom-nav>
 </ion-content>
-

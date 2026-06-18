@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
+import { PayrollService } from '../../../services/payroll.service';
 
-type HistoryType = 'Semua' | 'Absensi' | 'Cuti' | 'Lembur' | 'Payroll';
+type HistoryType = 'Semua' | 'Absensi' | 'Cuti' | 'Lembur' | 'Gaji';
 
 interface HistoryItem {
   id: number;
@@ -20,30 +21,28 @@ interface HistoryItem {
   standalone: false,
 })
 export class PayrollHistoryPage implements OnInit {
-  selectedFilter: HistoryType = 'Payroll';
-  filters: HistoryType[] = ['Semua', 'Absensi', 'Cuti', 'Lembur', 'Payroll'];
-
-  histories: HistoryItem[] = [
-    { id: 1, type: 'Absensi', title: 'Check-in Kantor Pusat', description: '08:42 AM · Lokasi valid', date: '24 Okt 2026', status: 'Tepat Waktu' },
-    { id: 2, type: 'Cuti', title: 'Cuti Tahunan', description: '15 Jun 2026 - 17 Jun 2026', date: '22 Mei 2026', status: 'Menunggu' },
-    { id: 3, type: 'Lembur', title: 'Deployment aplikasi', description: '18 Mei 2026 · 2.5 jam', date: '18 Mei 2026', status: 'Disetujui' },
-    { id: 4, type: 'Payroll', title: 'Slip Gaji Oktober', description: 'Total diterima Rp 12.450.000', date: '25 Okt 2026', status: 'Tersedia' },
-    { id: 5, type: 'Cuti', title: 'Sakit', description: '10 Mei 2026 - 11 Mei 2026', date: '10 Mei 2026', status: 'Disetujui' },
-  ];
+  selectedFilter: HistoryType = 'Gaji';
+  filters: HistoryType[] = ['Semua', 'Absensi', 'Cuti', 'Lembur', 'Gaji'];
+  histories: HistoryItem[] = [];
 
   constructor(
     private router: Router,
-    private offlineSync: OfflineSyncService
+    private offlineSync: OfflineSyncService,
+    private payrollService: PayrollService
   ) {}
 
   ngOnInit(): void {}
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
+    this.loadPayrollHistory();
   }
 
   get filteredHistories(): HistoryItem[] {
-    if (this.selectedFilter === 'Semua') return this.histories;
+    if (this.selectedFilter === 'Semua') {
+      return this.histories;
+    }
+
     return this.histories.filter((item) => item.type === this.selectedFilter);
   }
 
@@ -56,8 +55,61 @@ export class PayrollHistoryPage implements OnInit {
   }
 
   getStatusClass(status: string): string {
-    if (status === 'Disetujui' || status === 'Tepat Waktu' || status === 'Tersedia') return 'success';
-    if (status === 'Ditolak' || status === 'Terlambat') return 'danger';
+    if (status === 'Disetujui' || status === 'Tepat Waktu' || status === 'Tersedia') {
+      return 'success';
+    }
+
+    if (status === 'Ditolak' || status === 'Terlambat') {
+      return 'danger';
+    }
+
     return '';
+  }
+
+  private loadPayrollHistory(): void {
+    this.payrollService.getHistory().subscribe({
+      next: (response: any) => {
+        const data = response?.data !== undefined ? response.data : response;
+        const slips = Array.isArray(data) ? data : data?.items ?? data?.payrolls ?? [];
+
+        this.histories = slips.map((item: any) => ({
+          id: item?.id,
+          type: 'Gaji',
+          title: `Slip Gaji ${this.formatPeriod(item?.period)}`,
+          description: `Total diterima ${this.formatCurrency(item?.net_salary ?? 0)}`,
+          date: this.formatPeriod(item?.period),
+          status: this.formatStatus(item?.status),
+        }));
+      },
+      error: () => {
+        this.histories = [];
+      },
+    });
+  }
+
+  private formatPeriod(value: string): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(`${value}-01`);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' });
+  }
+
+  private formatStatus(status: string): HistoryItem['status'] {
+    return String(status || '').toLowerCase() === 'cancelled' ? 'Ditolak' : 'Tersedia';
+  }
+
+  private formatCurrency(value: number | string): string {
+    return new Intl.NumberFormat('id-ID', {
+      style: 'currency',
+      currency: 'IDR',
+      maximumFractionDigits: 0,
+    }).format(Number(value || 0));
   }
 }

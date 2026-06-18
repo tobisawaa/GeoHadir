@@ -1,5 +1,7 @@
 export interface User {
   id: number;
+  employee_id?: string | number;
+  employee_code?: string;
   name: string;
   email: string;
   role: 'employee' | 'manager';
@@ -8,6 +10,10 @@ export interface User {
   phone: string;
   avatar?: string;
   join_date: string;
+  manager?: string;
+  manager_name?: string;
+  work_location?: string;
+  location?: string;
 }
 
 export interface AuthResponse {
@@ -100,6 +106,7 @@ export interface TeamMember {
 }
 
 export interface DashboardStats {
+  total_members?: number;
   total_present: number;
   total_absent: number;
   total_late: number;
@@ -119,11 +126,24 @@ export interface EmployeeDashboardData {
 
 export interface ManagerDashboardData {
   team_stats: DashboardStats;
-  today_attendance: TeamMember[];
+  today_attendance: TeamAttendanceRow[];
   pending_requests: {
     leave: number;
     overtime: number;
   };
+}
+
+export interface TeamAttendanceRow {
+  id?: number | null;
+  user_id: number;
+  employee_id: number;
+  name: string;
+  position: string;
+  department: string;
+  date: string;
+  check_in: string | null;
+  check_out: string | null;
+  status: 'present' | 'late' | 'absent' | string;
 }
 
 export interface ChangePasswordData {

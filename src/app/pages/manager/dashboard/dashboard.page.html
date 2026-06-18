@@ -5,7 +5,7 @@
         <div class="avatar">{{ userInitial }}</div>
         <div class="user-copy">
           <h1>Selamat Datang, {{ userName }}</h1>
-          <p>Manager Tim</p>
+          <p>Manajer Tim</p>
         </div>
       </div>
 
@@ -28,20 +28,20 @@
             <p class="hero-overline">Ringkasan Tim</p>
             <h2>Kelola persetujuan dan absensi</h2>
           </div>
-          <span class="hero-badge">Manager</span>
+          <span class="hero-badge">Manajer</span>
         </div>
 
         <div class="hero-grid">
           <article class="hero-metric">
             <span>Anggota Tim</span>
-            <strong>{{ (dashboard?.team_stats?.total_present || 0) + (dashboard?.team_stats?.total_absent || 0) + (dashboard?.team_stats?.total_late || 0) }}</strong>
+            <strong>{{ getTotalMembers() }}</strong>
           </article>
           <article class="hero-metric">
-            <span>Cuti Pending</span>
+            <span>Cuti Menunggu</span>
             <strong>{{ dashboard?.pending_requests?.leave ?? '-' }}</strong>
           </article>
           <article class="hero-metric">
-            <span>Lembur Pending</span>
+            <span>Lembur Menunggu</span>
             <strong>{{ dashboard?.pending_requests?.overtime ?? '-' }}</strong>
           </article>
         </div>
@@ -83,7 +83,7 @@
           <p>Persetujuan cepat</p>
         </button>
 
-        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team-overtime')">
+        <button type="button" class="info-card" (click)="navigateTo('/app/manager/team-leave')">
           <span class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M12 7V12L15 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
@@ -111,8 +111,8 @@
               <h3>{{ member.name }}</h3>
               <p>{{ member.department }}</p>
             </div>
-            <span class="status-badge" [class.present]="member.attendance_today === 'present'" [class.late]="member.attendance_today === 'late'" [class.absent]="member.attendance_today === 'absent'">
-              {{ member.attendance_today === 'present' ? 'Hadir' : member.attendance_today === 'late' ? 'Telat' : 'Tidak Hadir' }}
+            <span class="status-badge" [class.present]="member.status === 'present'" [class.late]="member.status === 'late'" [class.absent]="member.status === 'absent'">
+              {{ getAttendanceText(member.status) }}
             </span>
           </article>
           <div class="empty-state-sm" *ngIf="!(dashboard?.today_attendance?.length) || dashboard?.today_attendance?.length === 0">

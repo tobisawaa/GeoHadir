@@ -1,16 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController, AlertController, ToastController } from '@ionic/angular';
+import { LoadingController, ToastController } from '@ionic/angular';
 import { AuthService } from '../../services/auth.service';
 import { OfflineSyncService } from '../../services/offline-sync.service';
-
-interface DemoAccount {
-  role: string;
-  email: string;
-  password: string;
-  icon: string;
-}
 
 @Component({
   selector: 'app-login',
@@ -25,27 +18,11 @@ export class LoginPage implements OnInit {
   passwordFocused = false;
   isLoading = false;
 
-  demoAccounts: DemoAccount[] = [
-    {
-      role: 'Manager',
-      email: 'manager@geohadir.com',
-      password: 'password123',
-      icon: 'groups',
-    },
-    {
-      role: 'Employee',
-      email: 'employee@geohadir.com',
-      password: 'password123',
-      icon: 'person',
-    },
-  ];
-
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
     private router: Router,
     private loadingCtrl: LoadingController,
-    private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private offlineSync: OfflineSyncService
   ) {
@@ -63,13 +40,6 @@ export class LoginPage implements OnInit {
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
-  }
-
-  fillDemoAccount(account: DemoAccount): void {
-    this.loginForm.patchValue({
-      email: account.email,
-      password: account.password,
-    });
   }
 
   async login(): Promise<void> {
@@ -90,7 +60,7 @@ export class LoginPage implements OnInit {
     this.isLoading = true;
 
     const loading = await this.loadingCtrl.create({
-      message: 'Memproses login...',
+      message: 'Memverifikasi akun...',
       spinner: 'circular',
     });
 
@@ -120,24 +90,6 @@ export class LoginPage implements OnInit {
         await toast.present();
       },
     });
-  }
-
-  async loginWithBiometrics(): Promise<void> {
-    const toast = await this.toastCtrl.create({
-      message: 'Biometric login masih mode simulasi. Akun Employee demo akan digunakan.',
-      duration: 2500,
-      color: 'primary',
-      position: 'top',
-    });
-
-    await toast.present();
-
-    this.loginForm.patchValue({
-      email: 'employee@geohadir.com',
-      password: 'password123',
-    });
-
-    await this.login();
   }
 
   private navigateByRole(): void {

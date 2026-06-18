@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, from } from 'rxjs';
+import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
 
 export interface GeoPosition {
@@ -17,6 +18,10 @@ export class LocationService {
   }
 
   async getCurrentPositionPromise(): Promise<GeoPosition> {
+    if (!Capacitor.isNativePlatform()) {
+      return this.getBrowserPosition();
+    }
+
     try {
       const permission = await Geolocation.requestPermissions();
 
@@ -42,11 +47,15 @@ export class LocationService {
 
   async isGpsEnabled(): Promise<boolean> {
     try {
-      await Geolocation.getCurrentPosition({
-        enableHighAccuracy: true,
-        timeout: 5000,
-        maximumAge: 0,
-      });
+      if (Capacitor.isNativePlatform()) {
+        await Geolocation.getCurrentPosition({
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        });
+      } else {
+        await this.getBrowserPosition(5000);
+      }
 
       return true;
     } catch {
@@ -54,18 +63,46 @@ export class LocationService {
     }
   }
 
+  private getBrowserPosition(timeout = 15000): Promise<GeoPosition> {
+    return new Promise((resolve, reject) => {
+      if (!navigator.geolocation) {
+        reject(new Error('Browser tidak mendukung akses lokasi.'));
+        return;
+      }
+
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          resolve({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+          });
+        },
+        (error) => {
+          reject(new Error(this.resolveLocationError(error)));
+        },
+        {
+          enableHighAccuracy: true,
+          timeout,
+          maximumAge: 0,
+        }
+      );
+    });
+  }
+
   private resolveLocationError(error: any): string {
     const message = String(error?.message || '').toLowerCase();
+    const code = Number(error?.code || 0);
 
-    if (message.includes('permission') || message.includes('denied')) {
+    if (code === 1 || message.includes('permission') || message.includes('denied')) {
       return 'Izin lokasi ditolak. Silakan aktifkan izin lokasi di pengaturan aplikasi.';
     }
 
-    if (message.includes('timeout')) {
+    if (code === 3 || message.includes('timeout')) {
       return 'Waktu permintaan lokasi habis. Pastikan GPS aktif lalu coba lagi.';
     }
 
-    if (message.includes('unavailable')) {
+    if (code === 2 || message.includes('unavailable')) {
       return 'Informasi lokasi tidak tersedia. Pastikan GPS aktif dan sinyal stabil.';
     }
 

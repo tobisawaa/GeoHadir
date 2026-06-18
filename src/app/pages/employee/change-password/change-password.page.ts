@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
 
 @Component({
@@ -8,11 +9,18 @@ import { OfflineSyncService } from '../../../services/offline-sync.service';
   standalone: false,
 })
 export class ChangePasswordPage implements OnInit {
-  constructor(private offlineSync: OfflineSyncService) {}
+  constructor(
+    private router: Router,
+    private offlineSync: OfflineSyncService
+  ) {}
 
   ngOnInit(): void {}
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
+  }
+
+  goTo(route: string): void {
+    this.router.navigateByUrl(route);
   }
 }

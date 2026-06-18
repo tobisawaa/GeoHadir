@@ -17,7 +17,7 @@ export class DashboardPage implements OnInit {
   loading = true;
   error = false;
   errorMessage = '';
-  userName = 'Manager';
+  userName = 'Manajer';
   userInitial = 'M';
 
   constructor(
@@ -30,7 +30,7 @@ export class DashboardPage implements OnInit {
 
   ngOnInit() {
     const user = this.auth.getCurrentUser();
-    this.userName = user?.name ?? 'Manager';
+    this.userName = user?.name ?? 'Manajer';
     this.userInitial = this.userName.trim().charAt(0).toUpperCase() || 'M';
   }
 
@@ -45,7 +45,7 @@ export class DashboardPage implements OnInit {
 
     this.userService.getManagerDashboard().subscribe({
       next: (res) => {
-        this.dashboard = res.data;
+        this.dashboard = this.extractData(res);
         this.loading = false;
       },
       error: (err) => {
@@ -59,7 +59,7 @@ export class DashboardPage implements OnInit {
   async doRefresh(event: any) {
     this.userService.getManagerDashboard().subscribe({
       next: (res) => {
-        this.dashboard = res.data;
+        this.dashboard = this.extractData(res);
         event.target.complete();
       },
       error: () => {
@@ -70,7 +70,30 @@ export class DashboardPage implements OnInit {
   }
 
   trackByDashboardMember(index: number, member: any): number | string {
-    return member?.id ?? `${member?.name || 'member'}-${index}`;
+    return member?.id ?? member?.employee_id ?? member?.user_id ?? `${member?.name || 'member'}-${index}`;
+  }
+
+  getTotalMembers(): number {
+    const stats = this.dashboard?.team_stats;
+
+    return stats?.total_members ?? ((stats?.total_present || 0) + (stats?.total_absent || 0));
+  }
+
+  getAttendanceText(status?: string | null): string {
+    switch (status) {
+      case 'present':
+        return 'Hadir';
+      case 'late':
+        return 'Terlambat';
+      case 'absent':
+        return 'Tidak Hadir';
+      default:
+        return 'Belum Ada Data';
+    }
+  }
+
+  private extractData(response: any): ManagerDashboardData {
+    return response?.data !== undefined ? response.data : response;
   }
 
   private async showToast(message: string, color: string = 'danger') {

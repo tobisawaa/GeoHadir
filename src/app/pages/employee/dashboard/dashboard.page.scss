@@ -63,220 +63,51 @@ ion-content.employee-content {
   font-weight: 700;
 }
 
-.icon-btn {
-  width: 42px;
-  height: 42px;
-  flex: 0 0 auto;
-  display: grid;
-  place-items: center;
-  border: 1px solid #dbeafe;
-  border-radius: 15px;
-  background: #ffffff;
-  color: #2563eb;
-  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.07);
-}
-
-.icon-btn svg {
-  width: 21px;
-  height: 21px;
-}
-
-.hero-card {
-  overflow: hidden;
-  position: relative;
-  padding: 22px;
-  border: 1px solid #dbeafe;
-  border-radius: 26px;
-  background:
-    radial-gradient(circle at top right, rgba(14, 165, 233, 0.17), transparent 36%),
-    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
-  box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
-}
-
-.date-line {
-  margin-top: 4px;
-  text-align: center;
-}
-
-.date-line span {
-  display: block;
-  color: #64748b;
-  font-size: 13px;
-  font-weight: 800;
-}
-
-.date-line strong {
-  display: block;
-  margin-top: 5px;
-  color: #0f172a;
-  font-size: 34px;
-  font-weight: 950;
-  letter-spacing: -1px;
-}
-
-.location-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 14px;
-  padding: 8px 12px;
-  border-radius: 999px;
-  background: #e0f2fe;
-  color: #0369a1;
-  font-size: 11px;
-  font-weight: 900;
-}
-
-.action-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 18px;
-}
-
-.primary-btn,
-.secondary-btn {
-  height: 48px;
-  border-radius: 15px;
-  font-size: 13px;
-  font-weight: 950;
-  letter-spacing: 0.01em;
-}
-
-.primary-btn {
-  border: 0;
-  background: linear-gradient(135deg, #2563eb, #0ea5e9);
-  color: #ffffff;
-  box-shadow: 0 14px 28px rgba(37, 99, 235, 0.25);
-}
-
-.secondary-btn {
-  border: 1px solid #bfdbfe;
-  background: #ffffff;
-  color: #2563eb;
-}
-
-.primary-btn:active,
-.secondary-btn:active,
-.info-card:active,
-.salary-card:active,
 .menu-card:active,
 .list-card:active,
 .nav-item:active {
   transform: scale(0.985);
 }
 
-.stat-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 14px;
-}
-
-.info-card {
-  min-height: 122px;
-  padding: 15px;
-  border: 1px solid #dbeafe;
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-  text-align: left;
-  transition: 180ms ease;
-}
-
-.card-icon,
-.menu-icon,
-.salary-icon {
+.menu-icon {
   display: grid;
   place-items: center;
   background: #eff6ff;
   color: #2563eb;
 }
 
-.card-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 15px;
-}
-
-.card-icon svg,
-.menu-icon svg,
-.salary-icon svg {
+.menu-icon svg {
   width: 21px;
   height: 21px;
 }
 
-.info-card strong {
+.time-card {
+  margin-top: 16px;
+  padding: 22px;
+  border: 1px solid #dbeafe;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.16), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: 0 18px 42px rgba(15, 23, 42, 0.07);
+  text-align: center;
+}
+
+.time-card span {
   display: block;
-  margin-top: 13px;
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 850;
+}
+
+.time-card strong {
+  display: block;
+  margin-top: 8px;
   color: #0f172a;
-  font-size: 25px;
+  font-size: 36px;
   line-height: 1;
   font-weight: 950;
-}
-
-.info-card p {
-  display: block;
-  margin: 6px 0 0;
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 750;
-}
-
-.salary-card {
-  width: 100%;
-  min-height: 84px;
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: 14px;
-  margin-top: 12px;
-  padding: 15px;
-  border: 1px solid #dbeafe;
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
-  text-align: left;
-  transition: 180ms ease;
-}
-
-.salary-icon {
-  width: 46px;
-  height: 46px;
-  flex: 0 0 auto;
-  border-radius: 16px;
-}
-
-.salary-copy {
-  min-width: 0;
-}
-
-.salary-copy h3 {
-  margin: 0;
-  color: #0f172a;
-  font-size: 14px;
-  line-height: 1.25;
-  font-weight: 950;
-}
-
-.salary-copy p {
-  margin: 5px 0 0;
-  color: #64748b;
-  font-size: 12px;
-  font-weight: 750;
-}
-
-.salary-arrow {
-  width: 28px;
-  height: 28px;
-  display: grid;
-  place-items: center;
-  color: #94a3b8;
-}
-
-.salary-arrow svg {
-  width: 20px;
-  height: 20px;
+  letter-spacing: -1px;
 }
 
 .section-block {
@@ -343,6 +174,29 @@ ion-content.employee-content {
 .list-stack {
   display: grid;
   gap: 10px;
+}
+
+.empty-state {
+  padding: 18px;
+  border: 1px solid #dbeafe;
+  border-radius: 20px;
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.05);
+}
+
+.empty-state strong {
+  display: block;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 950;
+}
+
+.empty-state p {
+  margin: 6px 0 0;
+  color: #64748b;
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 700;
 }
 
 .list-card {
@@ -440,10 +294,6 @@ ion-content.employee-content {
     padding-right: 12px;
   }
 
-  .hero-card {
-    padding: 18px;
-  }
-
   .menu-grid {
     gap: 8px;
   }
@@ -453,8 +303,4 @@ ion-content.employee-content {
     height: 46px;
   }
 
-  .salary-card {
-    min-height: 78px;
-    padding: 13px;
-  }
 }

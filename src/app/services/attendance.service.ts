@@ -8,15 +8,21 @@ export class AttendanceService {
   constructor(private api: ApiService) {}
 
   checkIn(data: { lat: number; lng: number }): Observable<ApiResponse<Attendance>> {
-    return this.api.post<ApiResponse<Attendance>>('attendance/check-in', data);
+    return this.api.post<ApiResponse<Attendance>>('attendance/check-in', {
+      latitude: data.lat,
+      longitude: data.lng,
+    });
   }
 
   checkOut(data: { lat: number; lng: number }): Observable<ApiResponse<Attendance>> {
-    return this.api.post<ApiResponse<Attendance>>('attendance/check-out', data);
+    return this.api.post<ApiResponse<Attendance>>('attendance/check-out', {
+      latitude: data.lat,
+      longitude: data.lng,
+    });
   }
 
-  getToday(): Observable<ApiResponse<Attendance | null>> {
-    return this.api.get<ApiResponse<Attendance | null>>('attendance/today');
+  getToday(): Observable<ApiResponse<any>> {
+    return this.api.get<ApiResponse<any>>('dashboard');
   }
 
   getHistory(params?: { page?: number; per_page?: number; month?: string }): Observable<ApiResponse<Attendance[]>> {
@@ -24,6 +30,6 @@ export class AttendanceService {
   }
 
   getEmployeeHistory(userId: number, params?: { month?: string }): Observable<ApiResponse<Attendance[]>> {
-    return this.api.get<ApiResponse<Attendance[]>>(`attendance/employee/${userId}`, params as any);
+    return this.getHistory(params);
   }
 }

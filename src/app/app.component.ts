@@ -131,10 +131,10 @@ export class AppComponent implements OnInit {
   private getRoleLabel(role: string | undefined): string {
     const labels: Record<string, string> = {
       employee: 'Karyawan',
-      manager: 'Manager',
+      manager: 'Manajer',
     };
 
-    return labels[role || ''] || role || 'User';
+    return labels[role || ''] || role || 'Pengguna';
   }
 
   private buildMenu() {
@@ -142,7 +142,7 @@ export class AppComponent implements OnInit {
 
     if (role === 'employee') {
       this.appPages = [
-        { title: 'Dashboard', url: '/app/employee/dashboard', icon: 'grid-outline' },
+        { title: 'Beranda', url: '/app/employee/dashboard', icon: 'grid-outline' },
         { title: 'Absensi', url: '/app/employee/attendance', icon: 'camera-outline' },
         { title: 'Riwayat Absensi', url: '/app/employee/attendance-history', icon: 'time-outline' },
         { title: 'Pengajuan Cuti', url: '/app/employee/leave', icon: 'calendar-outline' },
@@ -150,12 +150,12 @@ export class AppComponent implements OnInit {
         { title: 'Pengajuan Lembur', url: '/app/employee/overtime', icon: 'moon-outline' },
         { title: 'Riwayat Lembur', url: '/app/employee/overtime-history', icon: 'time-outline' },
         { title: 'Slip Gaji', url: '/app/employee/payslip', icon: 'wallet-outline' },
-        { title: 'Riwayat Payroll', url: '/app/employee/payroll-history', icon: 'receipt-outline' },
+        { title: 'Riwayat Gaji', url: '/app/employee/payroll-history', icon: 'receipt-outline' },
         { title: 'Profil', url: '/app/employee/profile', icon: 'person-outline' },
       ];
     } else if (role === 'manager') {
       this.appPages = [
-        { title: 'Dashboard', url: '/app/manager/dashboard', icon: 'grid-outline' },
+        { title: 'Beranda', url: '/app/manager/dashboard', icon: 'grid-outline' },
         { title: 'Tim Saya', url: '/app/manager/team', icon: 'people-outline' },
         { title: 'Absensi Tim', url: '/app/manager/team-attendance', icon: 'camera-outline' },
         { title: 'Cuti Bawahan', url: '/app/manager/team-leave', icon: 'calendar-outline' },

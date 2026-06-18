@@ -82,12 +82,11 @@ export class OvertimePage implements OnInit {
 
     const payload = {
       date: this.form.date,
-      duration: Number(this.form.duration),
       duration_hours: Number(this.form.duration),
       reason: this.form.reason.trim(),
     };
 
-    this.api.post<any>('overtimes', payload).subscribe({
+    this.api.post<any>('overtimes/apply', payload).subscribe({
       next: async (response) => {
         await loading.dismiss();
 
@@ -96,7 +95,7 @@ export class OvertimePage implements OnInit {
         this.recentRequests.unshift({
           id: createdData?.id ?? Date.now(),
           date: this.formatDate(payload.date),
-          duration: payload.duration,
+          duration: payload.duration_hours,
           reason: payload.reason,
           status: this.normalizeStatus(createdData?.status ?? 'pending'),
         });
@@ -122,7 +121,7 @@ export class OvertimePage implements OnInit {
   private loadOvertimeData(): void {
     this.isLoading = true;
 
-    this.api.get<any>('overtimes/my').subscribe({
+    this.api.get<any>('overtimes/history').subscribe({
       next: (response) => {
         const data = this.extractData(response);
         const list = Array.isArray(data) ? data : data?.items ?? data?.overtimes ?? [];
@@ -131,10 +130,11 @@ export class OvertimePage implements OnInit {
         this.calculateSummary(this.recentRequests);
         this.isLoading = false;
       },
-      error: () => {
-        this.recentRequests = this.getFallbackRequests();
+      error: async (error) => {
+        this.recentRequests = [];
         this.calculateSummary(this.recentRequests);
         this.isLoading = false;
+        await this.showToast(error?.error?.message || 'Gagal memuat data lembur dari database.', 'danger');
       },
     });
   }
@@ -218,25 +218,6 @@ export class OvertimePage implements OnInit {
       month: 'long',
       year: 'numeric',
     });
-  }
-
-  private getFallbackRequests(): OvertimeRequest[] {
-    return [
-      {
-        id: 1,
-        date: '18 Mei 2026',
-        duration: 2.5,
-        reason: 'Deployment aplikasi',
-        status: 'Disetujui',
-      },
-      {
-        id: 2,
-        date: '22 Mei 2026',
-        duration: 3,
-        reason: 'Closing laporan',
-        status: 'Menunggu',
-      },
-    ];
   }
 
   private async showToast(

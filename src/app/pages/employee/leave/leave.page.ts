@@ -20,8 +20,8 @@ interface LeaveRequest {
 })
 export class LeavePage implements OnInit {
   leaveBalance = 8;
-  usedLeave = 4;
-  pendingLeave = 1;
+  usedLeave = 0;
+  pendingLeave = 0;
 
   form = {
     type: 'Cuti Tahunan',
@@ -30,10 +30,7 @@ export class LeavePage implements OnInit {
     reason: '',
   };
 
-  recentRequests: LeaveRequest[] = [
-    { id: 1, type: 'Cuti Tahunan', period: '15 Jun 2026 - 17 Jun 2026', reason: 'Keperluan keluarga', status: 'Menunggu' },
-    { id: 2, type: 'Sakit', period: '10 Mei 2026 - 11 Mei 2026', reason: 'Pemeriksaan kesehatan', status: 'Disetujui' },
-  ];
+  recentRequests: LeaveRequest[] = [];
 
   constructor(
     private router: Router,
@@ -46,7 +43,7 @@ export class LeavePage implements OnInit {
 
   ionViewWillEnter(): void {
     void this.offlineSync.syncWhenOnline();
-    // Jangan redirect dari lifecycle. Ini yang biasanya bikin halaman cuti mental balik ke dashboard.
+    this.loadLeaveData();
   }
 
   async submitLeave(): Promise<void> {
@@ -77,6 +74,7 @@ export class LeavePage implements OnInit {
         this.pendingLeave += 1;
         this.form = { type: 'Cuti Tahunan', startDate: '', endDate: '', reason: '' };
         await this.showToast('Pengajuan cuti disimpan dan akan tersinkron otomatis.', 'success');
+        this.loadLeaveData();
       },
       error: async (error) => {
         const message =
@@ -110,5 +108,86 @@ export class LeavePage implements OnInit {
     };
 
     return labels[type] || 'other';
+  }
+
+  private loadLeaveData(): void {
+    this.leaveService.getMyLeaves().subscribe({
+      next: (response: any) => {
+        const data = this.extractData(response);
+        const list = Array.isArray(data) ? data : data?.items ?? data?.leaves ?? [];
+
+        this.recentRequests = list.map((item: any) => this.mapLeaveRequest(item));
+        this.pendingLeave = this.recentRequests.filter((item) => item.status === 'Menunggu').length;
+        this.usedLeave = this.recentRequests.filter((item) => item.status === 'Disetujui').length;
+      },
+      error: async (error) => {
+        this.recentRequests = [];
+        this.pendingLeave = 0;
+        this.usedLeave = 0;
+        await this.showToast(error?.error?.message || 'Gagal memuat data cuti dari database.', 'danger');
+      },
+    });
+  }
+
+  private mapLeaveRequest(item: any): LeaveRequest {
+    return {
+      id: item?.id,
+      type: this.fromApiLeaveType(item?.type),
+      period: `${this.formatDate(item?.start_date)} - ${this.formatDate(item?.end_date)}`,
+      reason: item?.reason ?? '-',
+      status: this.normalizeStatus(item?.status),
+    };
+  }
+
+  private fromApiLeaveType(type: string): string {
+    const labels: Record<string, string> = {
+      annual: 'Cuti Tahunan',
+      sick: 'Sakit',
+      personal: 'Izin',
+      maternity: 'Cuti Melahirkan',
+      other: 'Cuti Lainnya',
+    };
+
+    return labels[String(type || '').toLowerCase()] || 'Cuti';
+  }
+
+  private normalizeStatus(status: string): LeaveRequest['status'] {
+    const value = String(status || '').toLowerCase();
+
+    if (value === 'approved' || value === 'disetujui') {
+      return 'Disetujui';
+    }
+
+    if (value === 'rejected' || value === 'ditolak') {
+      return 'Ditolak';
+    }
+
+    return 'Menunggu';
+  }
+
+  private extractData(response: any): any {
+    if (response?.data !== undefined) {
+      return response.data;
+    }
+
+    return response;
+  }
+
+  private formatDate(value: string): string {
+    if (!value) {
+      return '-';
+    }
+
+    const date = new Date(value);
+
+    if (Number.isNaN(date.getTime())) {
+      return value;
+    }
+
+    return date.toLocaleDateString('id-ID', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    });
   }
 }

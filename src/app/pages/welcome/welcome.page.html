@@ -2,11 +2,13 @@
   <div class="welcome-shell">
     <header class="welcome-topbar">
       <div class="brand">
-        <div class="brand-logo">GH</div>
+        <div class="brand-logo">
+          <img src="assets/logo.png" alt="Logo GeoHadir" />
+        </div>
 
         <div>
           <strong>GeoHadir</strong>
-          <span>Human Resource Information System</span>
+          <span>Sistem Informasi Sumber Daya Manusia</span>
         </div>
       </div>
 
@@ -28,23 +30,89 @@
         >
           <section class="slide" *ngFor="let slide of slides">
             <ng-container *ngIf="slide.type === 'intro'; else privacySlide">
-              <div class="visual-card">
-                <div class="orb orb-one"></div>
-                <div class="orb orb-two"></div>
-
-                <div class="visual-logo">
-                  {{ slide.icon }}
+              <div class="visual-card" [ngClass]="'visual-' + slide.visual">
+                <div class="visual-header">
+                  <span class="visual-logo">
+                    <img src="assets/logo.png" alt="Logo GeoHadir" />
+                  </span>
+                  <div>
+                    <strong>{{ slide.badge }}</strong>
+                    <small>GeoHadir</small>
+                  </div>
                 </div>
 
-                <div class="floating-card card-one">
-                  <span></span>
-                  Check-In
-                </div>
+                <ng-container [ngSwitch]="slide.visual">
+                  <div class="product-preview dashboard-preview" *ngSwitchCase="'platform'">
+                    <div class="preview-top">
+                      <div class="mini-avatar"></div>
+                      <div>
+                        <strong>Selamat Pagi</strong>
+                        <small>Karyawan</small>
+                      </div>
+                    </div>
 
-                <div class="floating-card card-two">
-                  <span></span>
-                  Approval
-                </div>
+                    <div class="preview-hero">
+                      <span>Jumat, 19 Juni 2026</span>
+                      <strong>08.12</strong>
+                    </div>
+
+                    <div class="preview-menu">
+                      <article>Presensi</article>
+                      <article>Cuti</article>
+                      <article>Lembur</article>
+                      <article>Gaji</article>
+                    </div>
+
+                    <div class="preview-list">
+                      <span></span>
+                      <div>
+                        <strong>Aktivitas terbaru</strong>
+                        <small>Data tersinkron dari sistem</small>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="product-preview attendance-preview" *ngSwitchCase="'attendance'">
+                    <div class="map-panel">
+                      <span class="map-pin"></span>
+                      <div class="map-line line-one"></div>
+                      <div class="map-line line-two"></div>
+                      <div class="map-line line-three"></div>
+                    </div>
+
+                    <div class="time-panel">
+                      <small>Jadwal kerja</small>
+                      <strong>08.00 - 17.00</strong>
+                      <div class="time-actions">
+                        <span>Masuk</span>
+                        <span>Pulang</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="product-preview approval-preview" *ngSwitchCase="'approval'">
+                    <article class="approval-item approved">
+                      <div>
+                        <strong>Cuti Tahunan</strong>
+                        <small>Menunggu manajer</small>
+                      </div>
+                      <span>Baru</span>
+                    </article>
+
+                    <article class="approval-item">
+                      <div>
+                        <strong>Lembur Proyek</strong>
+                        <small>2,5 jam diajukan</small>
+                      </div>
+                      <span>Proses</span>
+                    </article>
+
+                    <div class="approval-actions">
+                      <button type="button" tabindex="-1">Tolak</button>
+                      <button type="button" tabindex="-1">Setujui</button>
+                    </div>
+                  </div>
+                </ng-container>
               </div>
 
               <div class="slide-copy">
@@ -77,7 +145,7 @@
             <ng-template #privacySlide>
               <div class="privacy-card">
                 <div class="privacy-icon">
-                  {{ slide.icon }}
+                  <img src="assets/logo.png" alt="Logo GeoHadir" />
                 </div>
 
                 <span class="badge">{{ slide.badge }}</span>
@@ -86,7 +154,7 @@
 
                 <p class="privacy-lead">
                   GeoHadir memproses data akun, profil karyawan, absensi,
-                  lokasi check-in/check-out, cuti, lembur, approval, payroll,
+                  lokasi masuk dan pulang, cuti, lembur, persetujuan, penggajian,
                   dan slip gaji untuk kebutuhan sistem HRIS.
                 </p>
 
@@ -96,25 +164,25 @@
                   <article>
                     <strong>Data yang diproses</strong>
                     <p>
-                      GeoHadir dapat memproses nama, email, nomor telepon, role,
+                      GeoHadir dapat memproses nama, email, nomor telepon, peran,
                       jabatan, departemen, data absensi, lokasi, pengajuan cuti,
-                      pengajuan lembur, status approval, dan data payroll.
+                      pengajuan lembur, status persetujuan, dan data penggajian.
                     </p>
                   </article>
 
                   <article>
                     <strong>Penggunaan lokasi</strong>
                     <p>
-                      Data lokasi digunakan saat check-in dan check-out untuk
-                      membantu validasi absensi berbasis geolocation.
+                      Data lokasi digunakan saat masuk dan pulang kerja untuk
+                      membantu validasi presensi berbasis geolokasi.
                     </p>
                   </article>
 
                   <article>
-                    <strong>Akses berdasarkan role</strong>
+                    <strong>Akses berdasarkan peran</strong>
                     <p>
-                      Employee dapat melihat data pribadinya. Manager dapat
-                      memantau tim dan approval. Admin atau HR dapat mengelola
+                      Karyawan dapat melihat data pribadinya. Manajer dapat
+                      memantau tim dan persetujuan. Admin atau SDM dapat mengelola
                       data sesuai kewenangan.
                     </p>
                   </article>
@@ -125,7 +193,45 @@
                   class="privacy-link-btn"
                   (click)="openPrivacyPolicy()"
                 >
-                  Baca Kebijakan Privasi Lengkap
+                  <span class="privacy-link-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M7 4H13L17 8V20H7V4Z"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M13 4V8H17"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M9.5 13H14.5M9.5 16H13"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </span>
+
+                  <span class="privacy-link-copy">
+                    <strong>Baca Kebijakan Privasi Lengkap</strong>
+                    <small>Wajib dibuka sebelum menyetujui dan mulai memakai aplikasi.</small>
+                  </span>
+
+                  <span class="privacy-link-arrow" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M9 6L15 12L9 18"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </span>
                 </button>
 
                 <div class="privacy-opened-note" *ngIf="privacyOpened">
