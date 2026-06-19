@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { LoadingController, ToastController } from '@ionic/angular';
@@ -57,6 +58,15 @@ export class LoginPage implements OnInit {
       return;
     }
 
+    if (!this.offlineSync.isOnline()) {
+      await this.showToast(
+        'Login membutuhkan koneksi internet. Silakan sambungkan jaringan lalu coba lagi.',
+        'warning',
+        3200
+      );
+      return;
+    }
+
     this.isLoading = true;
 
     const loading = await this.loadingCtrl.create({
@@ -76,9 +86,7 @@ export class LoginPage implements OnInit {
         await loading.dismiss();
         this.isLoading = false;
 
-        const msg =
-          err?.error?.message ||
-          'Email atau password salah. Silakan coba lagi.';
+        const msg = this.getLoginErrorMessage(err);
 
         const toast = await this.toastCtrl.create({
           message: msg,
@@ -90,6 +98,29 @@ export class LoginPage implements OnInit {
         await toast.present();
       },
     });
+  }
+
+  private getLoginErrorMessage(error: unknown): string {
+    if (!this.offlineSync.isOnline() || (error instanceof HttpErrorResponse && error.status === 0)) {
+      return 'Tidak bisa terhubung ke server. Periksa koneksi internet Anda lalu coba login lagi.';
+    }
+
+    if (error instanceof HttpErrorResponse && error.status === 401) {
+      return 'Email atau kata sandi salah. Silakan coba lagi.';
+    }
+
+    return (error as any)?.error?.message || 'Login belum berhasil. Silakan coba lagi beberapa saat lagi.';
+  }
+
+  private async showToast(message: string, color: 'danger' | 'warning' | 'success', duration = 3000): Promise<void> {
+    const toast = await this.toastCtrl.create({
+      message,
+      duration,
+      color,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 
   private navigateByRole(): void {
