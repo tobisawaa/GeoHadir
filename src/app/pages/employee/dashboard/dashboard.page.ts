@@ -31,6 +31,7 @@ interface ActivityItem {
 export class DashboardPage implements OnInit, OnDestroy {
   employeeName = 'Karyawan';
   position = 'Karyawan';
+  greeting = 'Selamat Pagi';
   today = new Date();
   currentTime = '';
   isLoadingActivities = false;
@@ -235,11 +236,29 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   private updateClock(): void {
     const now = new Date();
-    const hour = now.getHours().toString().padStart(2, '0');
+    const currentHour = now.getHours();
+    const hour = currentHour.toString().padStart(2, '0');
     const minute = now.getMinutes().toString().padStart(2, '0');
 
     this.today = now;
+    this.greeting = this.getGreeting(currentHour);
     this.currentTime = `${hour}.${minute}`;
+  }
+
+  private getGreeting(hour: number): string {
+    if (hour >= 4 && hour <= 10) {
+      return 'Selamat Pagi';
+    }
+
+    if (hour >= 11 && hour <= 15) {
+      return 'Selamat Siang';
+    }
+
+    if (hour >= 16 && hour <= 18) {
+      return 'Selamat Sore';
+    }
+
+    return 'Selamat Malam';
   }
 
   private startClock(): void {

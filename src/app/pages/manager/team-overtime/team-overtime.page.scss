@@ -11,15 +11,15 @@ ion-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  padding: 18px 16px 10px;
+  gap: 10px;
+  padding: calc(env(safe-area-inset-top) + 16px) 16px 8px;
   background: linear-gradient(180deg, #f8fbff 0%, #f5f8ff 100%);
 }
 
 .top-bar-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   min-width: 0;
 }
 
@@ -38,9 +38,10 @@ ion-content {
 .top-app-bar-title {
   margin: 0;
   color: #0f172a;
-  font-size: 20px;
+  font-size: 21px;
+  line-height: 1.12;
   font-weight: 950;
-  letter-spacing: -0.4px;
+  letter-spacing: 0;
 }
 
 .page-wrap {

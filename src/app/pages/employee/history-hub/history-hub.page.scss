@@ -9,58 +9,59 @@ ion-content.history-content {
 
 .page-shell {
   min-height: 100%;
-  padding: 20px 18px 112px;
+  padding: calc(env(safe-area-inset-top) + 18px) 16px 112px;
   background:
     radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 30%),
     linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
 }
 
 .page-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
   align-items: center;
-  gap: 14px;
-  margin-bottom: 16px;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
 .back-btn {
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
   border: 1px solid #dbeafe;
-  border-radius: 16px;
+  border-radius: 15px;
   background: #ffffff;
   color: #2563eb;
   box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
 }
 
 .back-btn svg {
-  width: 22px;
-  height: 22px;
+  width: 21px;
+  height: 21px;
 }
 
 .eyebrow {
-  margin: 0 0 5px;
+  margin: 0 0 4px;
   color: #2563eb;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 950;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .page-header h1 {
   margin: 0;
   color: #0f172a;
-  font-size: 24px;
-  line-height: 1.05;
+  font-size: 21px;
+  line-height: 1.12;
   font-weight: 950;
-  letter-spacing: -0.7px;
+  letter-spacing: 0;
 }
 
 .page-header span {
   display: block;
-  margin-top: 5px;
+  margin-top: 4px;
   color: #64748b;
   font-size: 12px;
   font-weight: 700;

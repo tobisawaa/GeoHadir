@@ -9,7 +9,7 @@ ion-content.employee-content {
 
 .page-shell {
   min-height: 100%;
-  padding: 18px 16px 96px;
+  padding: calc(env(safe-area-inset-top) + 18px) 16px 96px;
   background:
     radial-gradient(circle at top right, rgba(37, 99, 235, 0.12), transparent 28%),
     linear-gradient(180deg, #f8fbff 0%, #eef4ff 100%);
