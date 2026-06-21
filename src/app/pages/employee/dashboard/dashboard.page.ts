@@ -39,7 +39,7 @@ export class DashboardPage implements OnInit, OnDestroy {
   private clockInterval?: ReturnType<typeof setInterval>;
 
   menuItems: MenuItem[] = [
-    { label: 'Absensi', route: '/app/employee/attendance', icon: 'attendance' },
+    { label: 'Presensi', route: '/app/employee/attendance', icon: 'attendance' },
     { label: 'Cuti', route: '/app/employee/leave', icon: 'leave' },
     { label: 'Lembur', route: '/app/employee/overtime', icon: 'overtime' },
     { label: 'Slip Gaji', route: '/app/employee/payslip', icon: 'payroll' },

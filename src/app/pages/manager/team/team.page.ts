@@ -47,10 +47,10 @@ export class TeamPage implements OnInit {
   loadTeamMembers(): void {
     this.isLoading = true;
 
-    this.userService.getManagerDashboard().subscribe({
+    this.userService.getManagerTeam().subscribe({
       next: (response) => {
         const data = this.extractData(response);
-        const list = data?.today_attendance ?? [];
+        const list = Array.isArray(data) ? data : [];
 
         this.teamMembers = list.map((item: any) => this.mapTeamMember(item));
         this.isLoading = false;
@@ -60,7 +60,7 @@ export class TeamPage implements OnInit {
         this.isLoading = false;
 
         const toast = await this.toastCtrl.create({
-          message: error?.error?.message || 'Gagal memuat data tim dari ringkasan manajer.',
+          message: error?.error?.message || 'Gagal memuat anggota tim dari server.',
           duration: 2200,
           color: 'danger',
           position: 'top',

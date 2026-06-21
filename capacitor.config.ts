@@ -4,10 +4,15 @@ const config: CapacitorConfig = {
   appId: 'com.gaskeunproject.geohadir',
   appName: 'GeoHadir',
   webDir: 'www',
-server: {
+  server: {
     androidScheme: 'https',
   },
   plugins: {
+    StatusBar: {
+      overlaysWebView: false,
+      backgroundColor: '#f5f8ff',
+      style: 'DARK',
+    },
     SplashScreen: {
       launchShowDuration: 1800,
       launchAutoHide: true,

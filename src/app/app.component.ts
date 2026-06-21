@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 import { AuthService } from './services/auth.service';
 import { User } from './interfaces/models';
@@ -52,6 +53,12 @@ export class AppComponent implements OnInit {
 
   private async initializeApp(): Promise<void> {
     await this.platform.ready();
+
+    if (this.platform.is('capacitor')) {
+      await StatusBar.setOverlaysWebView({ overlay: false });
+      await StatusBar.setBackgroundColor({ color: '#f5f8ff' });
+      await StatusBar.setStyle({ style: Style.Dark });
+    }
 
     setTimeout(async () => {
       try {
