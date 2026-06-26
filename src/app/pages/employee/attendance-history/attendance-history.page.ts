@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
 
-type HistoryType = 'Semua' | 'Absensi' | 'Cuti' | 'Lembur' | 'Gaji';
+type HistoryType = 'Semua' | 'Presensi' | 'Cuti' | 'Lembur' | 'Gaji';
 
 interface HistoryItem {
   id: number;
@@ -21,8 +21,8 @@ interface HistoryItem {
   standalone: false,
 })
 export class AttendanceHistoryPage implements OnInit {
-  selectedFilter: HistoryType = 'Absensi';
-  filters: HistoryType[] = ['Semua', 'Absensi'];
+  selectedFilter: HistoryType = 'Presensi';
+  filters: HistoryType[] = ['Semua', 'Presensi'];
   histories: HistoryItem[] = [];
 
   constructor(
@@ -74,8 +74,8 @@ export class AttendanceHistoryPage implements OnInit {
 
         this.histories = list.map((item: any) => ({
           id: item?.id,
-          type: 'Absensi',
-          title: 'Absensi karyawan',
+          type: 'Presensi',
+          title: 'Presensi karyawan',
           description: `${this.formatTime(item?.check_in)} - ${this.formatTime(item?.check_out)}`,
           date: this.formatDate(item?.date ?? item?.created_at),
           status: this.normalizeStatus(item?.status),

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { OfflineSyncService } from '../../../services/offline-sync.service';
 import { PayrollService } from '../../../services/payroll.service';
 
-type HistoryType = 'Semua' | 'Absensi' | 'Cuti' | 'Lembur' | 'Gaji';
+type HistoryType = 'Semua' | 'Presensi' | 'Cuti' | 'Lembur' | 'Gaji';
 
 interface HistoryItem {
   id: number;
@@ -22,7 +22,7 @@ interface HistoryItem {
 })
 export class PayrollHistoryPage implements OnInit {
   selectedFilter: HistoryType = 'Gaji';
-  filters: HistoryType[] = ['Semua', 'Absensi', 'Cuti', 'Lembur', 'Gaji'];
+  filters: HistoryType[] = ['Semua', 'Presensi', 'Cuti', 'Lembur', 'Gaji'];
   histories: HistoryItem[] = [];
 
   constructor(

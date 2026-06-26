@@ -125,7 +125,7 @@ export class DashboardPage implements OnInit, OnDestroy {
 
   private mapAttendanceActivities(items: Attendance[]): ActivityItem[] {
     return items.map((item) => ({
-      title: 'Absensi',
+      title: 'Presensi',
       date: `${this.formatDate(item.date)} - ${this.formatTime(item.check_in)}${item.check_out ? ` - ${this.formatTime(item.check_out)}` : ''}`,
       status: this.mapAttendanceStatus(item.status),
       sortDate: this.toTimestamp(item.date || item.check_in),

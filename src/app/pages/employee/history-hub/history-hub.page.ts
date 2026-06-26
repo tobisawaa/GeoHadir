@@ -8,7 +8,7 @@ import { OfflineSyncService } from '../../../services/offline-sync.service';
 type HistoryFilter = 'all' | 'attendance' | 'requests' | 'payroll';
 
 interface HistoryItem {
-  type: 'Absensi' | 'Cuti' | 'Lembur' | 'Gaji';
+  type: 'Presensi' | 'Cuti' | 'Lembur' | 'Gaji';
   title: string;
   date: string;
   description: string;
@@ -27,7 +27,7 @@ export class HistoryHubPage implements OnInit {
 
   filters: Array<{ label: string; value: HistoryFilter }> = [
     { label: 'Semua', value: 'all' },
-    { label: 'Absensi', value: 'attendance' },
+    { label: 'Presensi', value: 'attendance' },
     { label: 'Pengajuan', value: 'requests' },
     { label: 'Gaji', value: 'payroll' },
   ];
@@ -89,8 +89,8 @@ export class HistoryHubPage implements OnInit {
 
   private mapAttendance(item: any): HistoryItem {
     return {
-      type: 'Absensi',
-      title: 'Absensi',
+      type: 'Presensi',
+      title: 'Presensi',
       date: item?.date ?? item?.created_at ?? '',
       description: `${this.formatTime(item?.check_in)} - ${this.formatTime(item?.check_out)}`,
       status: 'Hadir',
