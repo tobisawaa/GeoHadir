@@ -353,14 +353,12 @@ ion-content.employee-content {
 }
 
 .area-status-row {
-  display: grid;
-  grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+  display: flex;
   gap: 8px;
   margin-top: 12px;
 }
 
-.area-status,
-.area-distance {
+.area-status {
   min-width: 0;
   padding: 10px 12px;
   border-radius: 999px;
@@ -382,14 +380,6 @@ ion-content.employee-content {
 .area-status.invalid {
   background: #fee2e2;
   color: #b91c1c;
-}
-
-.area-distance {
-  overflow: hidden;
-  background: #ffffff;
-  color: #475569;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .coordinate-grid article,

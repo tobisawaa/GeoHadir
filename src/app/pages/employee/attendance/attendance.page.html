@@ -17,7 +17,7 @@
         type="button"
         class="icon-btn"
         (click)="loadTodayAttendance(); loadAttendanceHistory()"
-        aria-label="Refresh absensi"
+        aria-label="Refresh presensi"
       >
         <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
           <path
@@ -132,9 +132,6 @@
             {{ areaStatusText }}
           </div>
 
-          <div class="area-distance">
-            {{ distanceText }}
-          </div>
         </div>
       </div>
 
@@ -197,14 +194,6 @@
           <h2>Riwayat Presensi</h2>
           <p>Riwayat masuk dan pulang terakhir.</p>
         </div>
-
-        <button
-          type="button"
-          class="link-btn"
-          (click)="goTo('/app/employee/attendance-history')"
-        >
-          Lihat semua
-        </button>
       </div>
 
       <div class="list-stack">

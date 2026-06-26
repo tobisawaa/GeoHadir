@@ -137,7 +137,16 @@ export class HistoryHubPage implements OnInit {
 
   private extractList(response: any): any[] {
     const data = response?.data !== undefined ? response.data : response;
-    return Array.isArray(data) ? data : data?.items ?? [];
+
+    if (Array.isArray(data)) {
+      return data;
+    }
+
+    if (Array.isArray(data?.data)) {
+      return data.data;
+    }
+
+    return data?.items ?? data?.attendance ?? data?.leaves ?? data?.overtimes ?? data?.payrolls ?? [];
   }
 
   private formatDate(value: string): string {

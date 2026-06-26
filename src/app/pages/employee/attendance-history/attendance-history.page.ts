@@ -70,7 +70,7 @@ export class AttendanceHistoryPage implements OnInit {
     this.api.get<any>('attendance/history').subscribe({
       next: (response) => {
         const data = response?.data !== undefined ? response.data : response;
-        const list = Array.isArray(data) ? data : data?.items ?? data?.attendance ?? [];
+        const list = Array.isArray(data) ? data : data?.data ?? data?.items ?? data?.attendance ?? [];
 
         this.histories = list.map((item: any) => ({
           id: item?.id,

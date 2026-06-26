@@ -42,6 +42,7 @@ interface AttendanceArea {
 })
 export class AttendancePage implements OnInit {
   private readonly attendanceCooldownSeconds = 30;
+  private readonly gpsToleranceMeter = 500;
 
   readonly attendanceArea: AttendanceArea = {
     name: 'Universitas Buana Perjuangan Karawang',
@@ -76,7 +77,7 @@ export class AttendancePage implements OnInit {
 
   private clockTimer?: ReturnType<typeof setInterval>;
   private cooldownTimer?: ReturnType<typeof setInterval>;
-  private readonly mapPreviewRangeMeter = 650;
+  private readonly mapPreviewRangeMeter = 1200;
 
   constructor(
     private router: Router,
@@ -104,7 +105,7 @@ export class AttendancePage implements OnInit {
 
   get isInsideAttendanceArea(): boolean {
     const distance = this.distanceFromAreaMeter;
-    return distance !== null && distance <= this.attendanceArea.radiusMeter;
+    return distance !== null && distance <= this.effectiveAttendanceRadiusMeter;
   }
 
   get areaStatusText(): string {
@@ -147,7 +148,7 @@ export class AttendancePage implements OnInit {
     }
 
     if (this.isAttendanceCooldownActive) {
-      return `Coba lagi ${this.attendanceCooldownRemaining}d`;
+      return `Coba lagi ${this.attendanceCooldownRemaining} detik`;
     }
 
     return 'Masuk';
@@ -159,7 +160,7 @@ export class AttendancePage implements OnInit {
     }
 
     if (this.isAttendanceCooldownActive) {
-      return `Coba lagi ${this.attendanceCooldownRemaining}d`;
+      return `Coba lagi ${this.attendanceCooldownRemaining} detik`;
     }
 
     return 'Pulang';
@@ -235,7 +236,7 @@ export class AttendancePage implements OnInit {
       if (!this.isLocationInsideAttendanceArea(location)) {
         await loading.dismiss();
         await this.showToast(
-          `Presensi belum bisa diproses. Lokasi kamu ${this.distanceText}, di luar radius ${this.attendanceArea.radiusMeter} meter dari ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
+          `Presensi belum bisa diproses. Lokasi kamu ${this.distanceText}, masih di luar area presensi ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
           'warning'
         );
         this.startAttendanceCooldown();
@@ -310,7 +311,7 @@ export class AttendancePage implements OnInit {
       if (!this.isLocationInsideAttendanceArea(location)) {
         await loading.dismiss();
         await this.showToast(
-          `Presensi pulang belum bisa diproses. Lokasi kamu ${this.distanceText}, di luar radius ${this.attendanceArea.radiusMeter} meter dari ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
+          `Presensi pulang belum bisa diproses. Lokasi kamu ${this.distanceText}, masih di luar area presensi ${this.attendanceArea.name}. Coba lagi dalam ${this.attendanceCooldownSeconds} detik.`,
           'warning'
         );
         this.startAttendanceCooldown();
@@ -569,7 +570,11 @@ export class AttendancePage implements OnInit {
       this.attendanceArea.longitude
     );
 
-    return distance <= this.attendanceArea.radiusMeter;
+    return distance <= this.effectiveAttendanceRadiusMeter;
+  }
+
+  private get effectiveAttendanceRadiusMeter(): number {
+    return this.attendanceArea.radiusMeter + this.gpsToleranceMeter;
   }
 
   private calculateDistanceMeter(
